@@ -4,7 +4,7 @@ import Radium, {Style} from 'radium'
 // import {} from '../actionCreators'
 // import Header from './Header'
 import {AppBar, AppCanvas} from 'material-ui'
-import {DefaultAreaChart, DefaultColumnChart, DefaultLineChart} from 'safe-framework'
+// import {DefaultAreaChart, DefaultColumnChart, DefaultLineChart} from 'safe-framework'
 // import {Sections} from './Sections'
 // import {Footer} from './Footer'
 
@@ -29,8 +29,6 @@ class App extends Component {
           iconClassNameRight="muidocs-icon-navigation-expand-more"
           title="Title"
         />
-
-
 
       </AppCanvas>
     )

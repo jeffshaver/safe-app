@@ -12,7 +12,7 @@ var gulpif = require('gulp-if')
 var assign = require('lodash').assign
 
 var customOpts = {
-  entries: 'js/index.jsx',
+  entries: 'src/js/index.jsx',
   extensions: ['.jsx']
 }
 
