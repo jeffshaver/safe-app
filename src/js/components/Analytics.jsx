@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react'
-import {Card, CardTitle, Paper, SelectField, TextField} from 'material-ui'
+import {SelectField, TextField} from 'material-ui'
 import MenuItem from 'material-ui/lib/menus/menu-item'
 import FloatingActionButton from 'material-ui/lib/floating-action-button'
 import ContentAdd from 'material-ui/lib/svg-icons/content/add'
@@ -13,6 +13,13 @@ const style = {
 }
 
 class Analytics extends Component {
+  static propTypes = {
+    dataSource: PropTypes.string.isRequired,
+    dataSources: PropTypes.array.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    filters: PropTypes.array.isRequired
+  }
+
   handleChangeDataSource (ev, index, value) {
     const {dispatch} = this.props
 
@@ -61,8 +68,8 @@ class Analytics extends Component {
         <h2>Analytics</h2>
         <h3>Select a data source</h3>
         <SelectField
-          floatingLabelText="Select a data source"
-          hintText="Select a data source"
+          floatingLabelText='Select a data source'
+          hintText='Select a data source'
           value={dataSource}
           onChange={::this.handleChangeDataSource}
         >
@@ -77,30 +84,46 @@ class Analytics extends Component {
         <h3>Select filter criteria (optional)</h3>
         {
           filters.map((filter, i) => (
-            <div>
+            <div key={filter.field}>
               <SelectField
-                floatingLabelText="Select a field"
-                hintText="Select a field"
+                floatingLabelText='Select a field'
+                hintText='Select a field'
                 style={style.verticalTop}
                 value={filter.field}
               >
+                <MenuItem />
               </SelectField>
               <SelectField
-                floatingLabelText="Select an operator"
-                hintText="Select an operator"
+                floatingLabelText='Select an operator'
+                hintText='Select an operator'
                 style={style.verticalTop}
                 value={filter.operator}
                 onChange={(ev, index, value) => this.handleSetFilterOperator(i, value)}
               >
-                <MenuItem value={'='} primaryText='=' />
-                <MenuItem value={'>'} primaryText='>' />
-                <MenuItem value={'>='} primaryText='>=' />
-                <MenuItem value={'<'} primaryText='<' />
-                <MenuItem value={'<='} primaryText='<=' />
+                <MenuItem
+                  primaryText='='
+                  value={'='}
+                />
+                <MenuItem
+                  primaryText='>'
+                  value={'>'}
+                />
+                <MenuItem
+                  primaryText='>='
+                  value={'>='}
+                />
+                <MenuItem
+                  primaryText='<'
+                  value={'<'}
+                />
+                <MenuItem
+                  primaryText='<='
+                  value={'<='}
+                />
               </SelectField>
               <TextField
-                floatingLabelText="Filter Criteria"
-                hintText="Filter Criteria"
+                floatingLabelText='Filter Criteria'
+                hintText='Filter Criteria'
                 style={style.verticalTop}
                 value={filter.value}
                 onChange={(ev) => this.handleSetFilterValue(i, ev.target.value)}

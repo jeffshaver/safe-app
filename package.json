@@ -4,7 +4,8 @@
   "description": "Safe App",
   "repository": "https://github.com/jeffshaver/safe-app",
   "scripts": {
-    "test": "mocha --compilers js:babel/register test/index",
+    "lint": "eslint `find src/js -type f -name '*.js*'`",
+    "test": "mocha --compilers js:babel-register test/index",
     "test:watch": "npm test -- --watch"
   },
   "author": "Jeff Shaver <jeff.e.shaver@gmail.com> (http://jeffshaver.me)",
@@ -21,6 +22,7 @@
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
+    "babel-register": "^6.5.2",
     "babel-runtime": "^6.5.0",
     "babelify": "^7.2.0",
     "browserify": "^11.2.0",

@@ -1,5 +1,4 @@
-import React, {Component, PropTypes} from 'react'
-import {Card, CardTitle, Paper} from 'material-ui'
+import React, {Component} from 'react'
 
 class Home extends Component {
   render () {

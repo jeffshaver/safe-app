@@ -27,7 +27,6 @@ export const dataSources = (state = [], action) => {
   }
 }
 
-
 let nextFilterId = 0
 export const filters = (state = [
   {

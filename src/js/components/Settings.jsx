@@ -1,14 +1,14 @@
-import React, {Component, PropTypes} from 'react'
-import {Card, CardTitle, Paper} from 'material-ui'
+import React, {Component} from 'react'
 
 class Settings extends Component {
-    render () {
-       return (
-         <div>
-          <h2>Settings</h2>
-          <h3>Admin</h3>
-         </div>
-    )}
+  render () {
+    return (
+      <div>
+        <h2>Settings</h2>
+        <h3>Admin</h3>
+      </div>
+    )
+  }
 }
 
-export default (Settings)
+export default Settings

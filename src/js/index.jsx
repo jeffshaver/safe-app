@@ -24,14 +24,35 @@ const history = syncHistoryWithStore(hashHistory, store)
 ReactDOM.render((
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/" component={App}>
-        <Route path="analytics" component={Analytics}/>
-        <Route path="data" component={Data}/>
-        <Route path="home" component={Home}/>
-        <Route path="search" component={Search}/>
-        <Route path="settings" component={Settings}/>
+      <Route
+        component={App}
+        path='/'
+      >
+        <Route
+          component={Analytics}
+          path='analytics'
+        />
+        <Route
+          component={Data}
+          path='data'
+        />
+        <Route
+          component={Home}
+          path='home'
+        />
+        <Route
+          component={Search}
+          path='search'
+        />
+        <Route
+          component={Settings}
+          path='settings'
+        />
       </Route>
-      <Route path="*" component={App}/>
+      <Route
+        component={App}
+        path='*'
+      />
     </Router>
   </Provider>
 ), document.querySelector('.app'))

@@ -3,7 +3,7 @@ import React, {Component, PropTypes} from 'react'
 import {AppBar, AppCanvas, Avatar, LeftNav, ListItem} from 'material-ui'
 import {large} from '../styles/mediaQueries'
 // import {DefaultAreaChart, DefaultColumnChart, DefaultLineChart} from 'safe-framework'
-//SVG
+// SVG
 import ActionAssessment from 'material-ui/lib/svg-icons/action/assessment'
 import ActionHome from 'material-ui/lib/svg-icons/action/home'
 import ActionSearch from 'material-ui/lib/svg-icons/action/search'
@@ -29,10 +29,10 @@ class App extends Component {
   static propTypes = {
     children: PropTypes.node
   };
-  
+
   render () {
     const {children} = this.props
-    
+
     return (
       <AppCanvas>
         <Style rules={{
@@ -45,7 +45,7 @@ class App extends Component {
         }}/>
         <AppBar
           showMenuIconButton = {false}
-          title = "SAFE"
+          title = 'SAFE'
           zDepth = {1}
         />
         <LeftNav
@@ -55,55 +55,54 @@ class App extends Component {
         >
           <ListItem
             key={0}
-            primaryText="&nbsp;"
             leftAvatar={
               <Avatar
                 icon={<ActionHome />}
               />
-            } 
-            onTouchTap={() => window.location = '#/home'}
-          />          
-       
+            }
+            primaryText='&nbsp;'
+            onTouchTap={() => (window.location = '#/home')}
+          />
           <ListItem
             key={2}
-            primaryText="&nbsp;"
             leftAvatar={
               <Avatar
                 icon={<ActionSearch />}
               />
             }
-            onTouchTap={() => window.location = '#/search'}
-          />          
+            primaryText='&nbsp;'
+            onTouchTap={() => (window.location = '#/search')}
+          />
           <ListItem
             key={3}
-            primaryText="&nbsp;"
             leftAvatar={
               <Avatar
                 icon={<ActionAssessment />}
               />
             }
-            onTouchTap={() => window.location = '#/analytics'}
+            primaryText='&nbsp;'
+            onTouchTap={() => (window.location = '#/analytics')}
           />
           <ListItem
             key={1}
-            primaryText="&nbsp;"
             leftAvatar={
               <Avatar
                 icon={<FileFolder />}
               />
             }
-            onTouchTap={() => window.location = '#/data'}
-          />   
+            primaryText='&nbsp;'
+            onTouchTap={() => (window.location = '#/data')}
+          />
           <ListItem
             key={4}
-            primaryText="&nbsp;"
             leftAvatar={
               <Avatar
                 icon={<ActionSettings />}
               />
             }
-            onTouchTap={() => window.location = '#/settings'}
-          />          
+            primaryText='&nbsp;'
+            onTouchTap={() => (window.location = '#/settings')}
+          />
        </LeftNav>
         <div style={style.wrapper}>
           {children}
@@ -113,4 +112,4 @@ class App extends Component {
   }
 }
 
-export default /* connect() */(App)
+export default App
