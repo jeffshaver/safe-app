@@ -1,31 +1,9 @@
-import {combineReducers} from 'redux'
-import {routerReducer as routing} from 'react-router-redux'
 import {
-  SET_DATA_SOURCE,
-  SET_DATA_SOURCES,
   ADD_FILTER,
   EDIT_FILTER,
   REMOVE_FILTER,
   RESET_FILTERS
-} from './actionTypes'
-
-export const dataSource = (state = '', action) => {
-  switch (action.type) {
-    case SET_DATA_SOURCE:
-      return action.value
-    default:
-      return state
-  }
-}
-
-export const dataSources = (state = [], action) => {
-  switch (action.type) {
-    case SET_DATA_SOURCES:
-      return action.value
-    default:
-      return state
-  }
-}
+} from '../actionTypes'
 
 let nextFilterId = 0
 export const filters = (state = [
@@ -62,12 +40,3 @@ export const filters = (state = [
       return state
   }
 }
-
-export const rootReducer = combineReducers({
-  dataSource,
-  dataSources,
-  filters,
-
-  // for react-router-redux
-  routing
-})

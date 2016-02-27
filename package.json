@@ -39,8 +39,10 @@
     "livereactload": "^2.1.1",
     "lodash": "^3.10.1",
     "mocha": "^2.4.5",
+    "nock": "^7.2.2",
     "node-notifier": "^4.3.1",
     "react-proxy": "^1.1.1",
+    "redux-mock-store": "0.0.6",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.5.0"

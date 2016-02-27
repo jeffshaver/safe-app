@@ -1,24 +1,24 @@
 import expect from 'expect'
 import {
-  SET_DATA_SOURCE
+  SET_SOURCE
 } from '../../src/js/actionTypes'
 import {
-  dataSource as reducer
+  source as reducer
 } from '../../src/js/reducers'
 
-describe('dataSource reducer', () => {
+describe('source reducer', () => {
   it('should return the initial state', () => {
     const expectedValue = ''
 
     expect(reducer(undefined, {})).toEqual(expectedValue)
   })
 
-  it('should handle SET_DATA_SOURCE', () => {
-    const newDataSource = 'DataSourceA'
+  it('should handle SET_SOURCE', () => {
+    const newSource = 'SourceA'
 
     expect(reducer(undefined, {
-      type: SET_DATA_SOURCE,
-      value: newDataSource
-    })).toEqual(newDataSource)
+      type: SET_SOURCE,
+      value: newSource
+    })).toEqual(newSource)
   })
 })

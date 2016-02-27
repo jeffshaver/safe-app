@@ -1,21 +1,9 @@
 import {
-  SET_DATA_SOURCE,
-  SET_DATA_SOURCES,
   ADD_FILTER,
   EDIT_FILTER,
   REMOVE_FILTER,
   RESET_FILTERS
-} from './actionTypes'
-
-export const setDataSource = (dataSource) => ({
-  type: SET_DATA_SOURCE,
-  value: dataSource
-})
-
-export const setDataSources = (dataSources) => ({
-  type: SET_DATA_SOURCES,
-  value: dataSources
-})
+} from '../actionTypes'
 
 export const addFilter = (filters) => ({
   type: ADD_FILTER,

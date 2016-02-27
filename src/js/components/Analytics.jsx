@@ -4,7 +4,7 @@ import MenuItem from 'material-ui/lib/menus/menu-item'
 import FloatingActionButton from 'material-ui/lib/floating-action-button'
 import ContentAdd from 'material-ui/lib/svg-icons/content/add'
 import {connect} from 'react-redux'
-import {addFilter, editFilter, setDataSource} from '../actions'
+import {addFilter, editFilter, fetchSourceFields, fetchSources, setSource} from '../actions'
 
 const style = {
   verticalTop: {
@@ -14,17 +14,27 @@ const style = {
 
 class Analytics extends Component {
   static propTypes = {
-    dataSource: PropTypes.string.isRequired,
-    dataSources: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired,
-    filters: PropTypes.array.isRequired
+    fields: PropTypes.object.isRequired,
+    filters: PropTypes.array.isRequired,
+    source: PropTypes.string.isRequired,
+    sources: PropTypes.object.isRequired
   }
 
-  handleChangeDataSource (ev, index, value) {
+  constructor (props) {
+    super(props)
+
+    const {dispatch} = props
+
+    dispatch(fetchSources())
+  }
+
+  handleChangeSource (ev, index, source) {
     const {dispatch} = this.props
 
     ev.preventDefault()
-    dispatch(setDataSource(value))
+    dispatch(setSource(source))
+    dispatch(fetchSourceFields(source))
   }
 
   handleAddFilter (ev) {
@@ -38,7 +48,7 @@ class Analytics extends Component {
     }))
   }
 
-  handleSetFilterField (ev, index, field) {
+  handleSetFilterField (index, field) {
     const {dispatch} = this.props
 
     dispatch(editFilter(index, {field}))
@@ -58,9 +68,10 @@ class Analytics extends Component {
 
   render () {
     const {
-      dataSource,
-      dataSources,
-      filters
+      fields,
+      filters,
+      source,
+      sources
     } = this.props
 
     return (
@@ -70,28 +81,37 @@ class Analytics extends Component {
         <SelectField
           floatingLabelText='Select a data source'
           hintText='Select a data source'
-          value={dataSource}
-          onChange={::this.handleChangeDataSource}
+          value={source}
+          onChange={::this.handleChangeSource}
         >
-          {dataSources.map((dataSource) => (
+          {sources.data.map((source) => (
             <MenuItem
-              key={dataSource}
-              primaryText={dataSource}
-              value={dataSource}
+              key={source}
+              primaryText={source}
+              value={source}
             />
           ))}
         </SelectField>
         <h3>Select filter criteria (optional)</h3>
         {
           filters.map((filter, i) => (
-            <div key={filter.field}>
+            <div key={i}>
               <SelectField
                 floatingLabelText='Select a field'
                 hintText='Select a field'
                 style={style.verticalTop}
                 value={filter.field}
+                onChange={(ev, index, value) => this.handleSetFilterField(i, value)}
               >
-                <MenuItem />
+                {
+                  fields.data.map((field) => (
+                    <MenuItem
+                      key={field}
+                      primaryText={field}
+                      value={field}
+                    />
+                  ))
+                }
               </SelectField>
               <SelectField
                 floatingLabelText='Select an operator'
@@ -152,7 +172,8 @@ class Analytics extends Component {
 }
 
 export default connect((state) => ({
-  dataSource: state.dataSource,
-  dataSources: state.dataSources,
+  source: state.source,
+  sources: state.sources,
+  fields: state.fields,
   filters: state.filters
 }))(Analytics)
