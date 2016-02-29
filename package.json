@@ -4,6 +4,7 @@
   "description": "Safe App",
   "repository": "https://github.com/jeffshaver/safe-app",
   "scripts": {
+    "create-default-config": "echo \"module.exports={hotModuleReloadUri:'localhost',domain:'localhost',port:80}\" > config.js",
     "lint": "eslint `find src/js -type f -name '*.js*'`",
     "test": "mocha --compilers js:babel-register test/index",
     "test:watch": "npm test -- --watch"
