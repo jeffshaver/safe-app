@@ -1,8 +1,9 @@
+/* globals afterEach, describe, it */
+
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import nock from 'nock'
 import expect from 'expect'
-import fetch from 'isomorphic-fetch'
 import {
   FETCH_VISUALIZATIONS_REQUEST,
   FETCH_VISUALIZATIONS_SUCCESS
@@ -18,7 +19,7 @@ const mockStore = configureMockStore(middlewares)
 const analytic = 'AnalyticA'
 
 describe('visualizations actions', () => {
-  describe ('sync actions', () => {
+  describe('sync actions', () => {
     it('fetchVisualizations should create a FETCH_VISUALIZATIONS_REQUEST action', () => {
       const expectedAction = {
         type: FETCH_VISUALIZATIONS_REQUEST

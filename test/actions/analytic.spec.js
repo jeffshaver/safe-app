@@ -1,3 +1,5 @@
+/* globals describe, it */
+
 import expect from 'expect'
 import {
   SET_ANALYTIC
@@ -6,7 +8,7 @@ import {
   setAnalytic
 } from '../../src/js/actions'
 
-describe('analytic actions', () =>{
+describe('analytic actions', () => {
   it('setAnalytic should create an SET_ANALYTIC action', () => {
     const source = 'AnalyticA'
     const expectedAction = {

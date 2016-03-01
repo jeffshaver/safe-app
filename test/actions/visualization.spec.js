@@ -1,3 +1,5 @@
+/* globals describe, it */
+
 import expect from 'expect'
 import {
   SET_VISUALIZATION
@@ -6,7 +8,7 @@ import {
   setVisualization
 } from '../../src/js/actions'
 
-describe('visualization actions', () =>{
+describe('visualization actions', () => {
   it('setVisualization should create an SET_VISUALIZATION action', () => {
     const source = 'AnalyticA'
     const expectedAction = {

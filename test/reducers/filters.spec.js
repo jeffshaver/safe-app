@@ -1,3 +1,5 @@
+/* globals describe, it */
+
 import expect from 'expect'
 import {
   ADD_FILTER,
@@ -88,7 +90,6 @@ describe('filters reducer', () => {
       operator: '<=',
       value: 'fieldBValue'
     }]
-    const index = 0
 
     expect(reducer(existingFilters, {
       type: REMOVE_FILTER,

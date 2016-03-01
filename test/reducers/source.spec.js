@@ -1,3 +1,5 @@
+/* globals describe, it */
+
 import expect from 'expect'
 import {
   SET_SOURCE

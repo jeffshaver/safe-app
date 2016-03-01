@@ -1,6 +1,6 @@
-var fixtures = require('./fixtures.js');
+var fixtures = require('./fixtures.js')
 
-module.exports = function(app){
+module.exports = function (app) {
   // LIST OF ALL ANALYTICS
   app.get('/analytics', function (req, res) {
     console.log(req)

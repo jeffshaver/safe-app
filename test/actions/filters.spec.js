@@ -1,3 +1,5 @@
+/* globals describe, it */
+
 import expect from 'expect'
 import {
   ADD_FILTER,
@@ -12,7 +14,7 @@ import {
   resetFilters
 } from '../../src/js/actions'
 
-describe('filter actions', () =>{
+describe('filter actions', () => {
   it('addFilter should create an ADD_FILTER action', () => {
     const filter = {
       id: 0,
@@ -31,7 +33,7 @@ describe('filter actions', () =>{
   it('editFilter should create an EDIT_FILTER action', () => {
     const index = 0
     const value = 'value'
-    const expectedAction ={
+    const expectedAction = {
       type: EDIT_FILTER,
       index,
       value

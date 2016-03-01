@@ -1,4 +1,5 @@
 /* globals describe, it */
+
 import expect from 'expect'
 import {
   FETCH_SOURCES_REQUEST,

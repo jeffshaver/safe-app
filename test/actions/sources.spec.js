@@ -1,8 +1,9 @@
+/* globals afterEach, describe, it */
+
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import nock from 'nock'
 import expect from 'expect'
-import fetch from 'isomorphic-fetch'
 import {
   FETCH_SOURCES_REQUEST,
   FETCH_SOURCES_SUCCESS
@@ -17,7 +18,7 @@ const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
 describe('sources actions', () => {
-  describe ('sync actions', () => {
+  describe('sync actions', () => {
     it('fetchSources should create a FETCH_SOURCES_REQUEST action', () => {
       const expectedAction = {
         type: FETCH_SOURCES_REQUEST

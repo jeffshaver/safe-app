@@ -7,12 +7,11 @@ const createStoreWithMiddleware = applyMiddleware(thunk)(createStore)
 export const configureStore = (initialState) => {
   const store = createStoreWithMiddleware(rootReducer, initialState)
 
-  if (module.onReload) {
-    module.onReload(() => {
+  if (module.hot) {
+    module.hot.accept('./reducers', () => {
       const nextReducer = require('./reducers').rootReducer
 
       store.replaceReducer(nextReducer)
-      return true
     })
   }
 

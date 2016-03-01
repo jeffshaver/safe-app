@@ -1,3 +1,5 @@
+/* globals describe, it */
+
 import expect from 'expect'
 import {
   SET_SOURCE
@@ -6,7 +8,7 @@ import {
   setSource
 } from '../../src/js/actions'
 
-describe('source actions', () =>{
+describe('source actions', () => {
   it('setSource should create an SET_SOURCE action', () => {
     const source = 'SourceA'
     const expectedAction = {
