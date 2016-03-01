@@ -1,4 +1,12 @@
 import {
+  setAnalytic
+} from './analytic'
+import {
+  fetchAnalytics,
+  fetchAnalyticsRequest,
+  fetchAnalyticsSuccess
+} from './analytics'
+import {
   fetchSourceFields,
   fetchSourceFieldsRequest,
   fetchSourceFieldsSuccess
@@ -17,7 +25,19 @@ import {
   fetchSourcesRequest,
   fetchSourcesSuccess
 } from './sources'
+import {
+  setVisualization
+} from './visualization'
+import {
+  fetchVisualizations,
+  fetchVisualizationsRequest,
+  fetchVisualizationsSuccess
+} from './visualizations'
 
+export {setAnalytic}
+export {fetchAnalytics}
+export {fetchAnalyticsRequest}
+export {fetchAnalyticsSuccess}
 export {fetchSourceFields}
 export {fetchSourceFieldsRequest}
 export {fetchSourceFieldsSuccess}
@@ -29,3 +49,7 @@ export {setSource}
 export {fetchSources}
 export {fetchSourcesRequest}
 export {fetchSourcesSuccess}
+export {setVisualization}
+export {fetchVisualizations}
+export {fetchVisualizationsRequest}
+export {fetchVisualizationsSuccess}

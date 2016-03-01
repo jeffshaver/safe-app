@@ -34,15 +34,15 @@ describe('sources reducer', () => {
   })
 
   it('should handle FETCH_SOURCES_SUCCESS', () => {
-    const newDataSources = ['DataSourceA', 'DataSourceB']
+    const newSources = ['SourceA', 'SourceB']
     const actualValue = reducer(undefined, {
-      data: newDataSources,
+      data: newSources,
       didInvalidate: false,
       isFetching: false,
       type: FETCH_SOURCES_SUCCESS
     })
     const expectedValue = {
-      data: newDataSources,
+      data: newSources,
       didInvalidate: false,
       isFetching: false,
       lastUpdated: actualValue.lastUpdated

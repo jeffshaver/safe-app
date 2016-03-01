@@ -4,26 +4,27 @@ import nock from 'nock'
 import expect from 'expect'
 import fetch from 'isomorphic-fetch'
 import {
-  FETCH_SOURCES_REQUEST,
-  FETCH_SOURCES_SUCCESS
+  FETCH_ANALYTICS_REQUEST,
+  FETCH_ANALYTICS_SUCCESS
 } from '../../src/js/actionTypes'
 import {
-  fetchSources,
-  fetchSourcesRequest
+  fetchAnalytics,
+  fetchAnalyticsRequest
 } from '../../src/js/actions'
 import {domain, port, protocol} from '../../config.js'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
+const source = 'SourceA'
 
-describe('sources actions', () => {
+describe('analytics actions', () => {
   describe ('sync actions', () => {
-    it('fetchSources should create a FETCH_SOURCES_REQUEST action', () => {
+    it('fetchAnalytics should create a FETCH_ANALYTICS_REQUEST action', () => {
       const expectedAction = {
-        type: FETCH_SOURCES_REQUEST
+        type: FETCH_ANALYTICS_REQUEST
       }
 
-      expect(fetchSourcesRequest()).toEqual(expectedAction)
+      expect(fetchAnalyticsRequest()).toEqual(expectedAction)
     })
   })
 
@@ -32,20 +33,20 @@ describe('sources actions', () => {
       nock.cleanAll()
     })
 
-    it('creates FETCH_SOURCES_SUCCESS action when fetching souces has been done', (done) => {
+    it('creates FETCH_ANALYTICS_SUCCESS action when fetching datasouces has been done', (done) => {
       nock(`${protocol}://${domain}${port ? ':' + port : ''}`)
-        .get('/sources')
-        .reply(200, {sources: ['SourceA', 'SourceB']})
+        .get(`/sources/${source}/analytics`)
+        .reply(200, {analytics: ['AnalyticA', 'AnalyticB']})
 
       const requestAction = {
-        type: FETCH_SOURCES_REQUEST
+        type: FETCH_ANALYTICS_REQUEST
       }
       const recieveAction = (action) => {
         const expectedAction = {
-          type: FETCH_SOURCES_SUCCESS,
+          type: FETCH_ANALYTICS_SUCCESS,
           data: [
-            'SourceA',
-            'SourceB'
+            'AnalyticA',
+            'AnalyticB'
           ],
           didInvalidate: false,
           isFetching: false,
@@ -59,8 +60,8 @@ describe('sources actions', () => {
         requestAction,
         recieveAction
       ]
-      const store = mockStore({sources: []}, expectedActions, done)
-      store.dispatch(fetchSources())
+      const store = mockStore({analytics: []}, expectedActions, done)
+      store.dispatch(fetchAnalytics(source))
     })
   })
 })

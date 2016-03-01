@@ -11,30 +11,30 @@ module.exports = function(app){
     console.log(req)
     res.send(fixtures.analytic)
   })
-  // LIST OF CHARTS SUPPORTED BY AN ANALYTIC
-  app.get('/analytics/:analytic/charts', function (req, res) {
+  // LIST OF VISUALIZATIONS SUPPORTED BY AN ANALYTIC
+  app.get('/analytics/:analytic/visualizations', function (req, res) {
     console.log(req)
-    res.send(fixtures.analyticCharts)
+    res.send(fixtures.analyticVisualizations)
   })
-  // LIST OF PARAMETERS REQUIRED FOR A SPECIFIC ANALYTIC - CHARTS REQUIRE THEIR OWN PARAMETERS
+  // LIST OF PARAMETERS REQUIRED FOR A SPECIFIC ANALYTIC - VISUALIZATIONS REQUIRE THEIR OWN PARAMETERS
   app.get('/analytics/:analytic/params', function (req, res) {
     console.log(req)
     res.send(fixtures.analyticParams)
   })
-  // LIST OF ALL CHARTS
-  app.get('/charts', function (req, res) {
+  // LIST OF ALL VISUALIZATIONS
+  app.get('/visualizations', function (req, res) {
     console.log(req)
-    res.send(fixtures.charts)
+    res.send(fixtures.visualizations)
   })
-  // INFORMATION ABOUT A SPECIFIC CHART
-  app.get('/charts/:chart', function (req, res) {
+  // INFORMATION ABOUT A SPECIFIC VISUALIZATION
+  app.get('/visualizations/:visualization', function (req, res) {
     console.log(req)
-    res.send(fixtures.chart)
+    res.send(fixtures.visualizations)
   })
-  // LIST OF PARAMETERS REQUIRED FOR A SPECIFIC CHART - ANALYTICS REQUIRE THEIR OWN PARAMETERS
-  app.get('/charts/:chart/params', function (req, res) {
+  // LIST OF PARAMETERS REQUIRED FOR A SPECIFIC VISUALIZATION - ANALYTICS REQUIRE THEIR OWN PARAMETERS
+  app.get('/visualizations/:visualization/params', function (req, res) {
     console.log(req)
-    res.send(fixtures.chartParams)
+    res.send(fixtures.visualizationParams)
   })
   // LIST OF DATA SOURCES
   app.get('/sources', function (req, res) {

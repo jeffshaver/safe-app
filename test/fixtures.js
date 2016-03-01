@@ -1,8 +1,8 @@
 var exports = module.exports = {}
 
 // SPECIFIC CHARTS FOR AN ANALYTIC
-var analyticCharts = exports.analyticCharts = {
-  charts:[
+var analyticVisualizations = exports.analyticVisualizations = {
+  visualizations:[
     'Area',
     'Bar',
     'Column',
@@ -21,7 +21,7 @@ var analyticParams = exports.analyticParams = {
 ]}
 
 // SPECIFIC PARAMS FOR A CHART
-var chartParams = exports.chartParams = {
+var visualizationParams = exports.visualizationParams = {
   params:[
     'Title',
     'Subtitle',
@@ -42,7 +42,7 @@ var sourceAnalytics= exports.sourceAnalytics = {
     'Median',
     'Minimum',
     'Mode',
-    'Sum', 
+    'Sum',
     'Variance'
 ]}
 
@@ -73,13 +73,13 @@ exports.analytics  = {
     'Median',
     'Minimum',
     'Mode',
-    'Normal Distribution', 
+    'Normal Distribution',
     'Percentile',
     'Permutations',
     'Poisson Distribution',
     'Skew',
-    'Standard Deviation', 
-    'Sum', 
+    'Standard Deviation',
+    'Sum',
     'Variance'
 ]}
 
@@ -106,8 +106,8 @@ exports.areaSeries = [{
 }]
 
 // ALL CHARTS
-exports.charts  = {
-  charts:[
+exports.visualizations  = {
+  visualizations:[
     'Area',
     'Bar',
     'Column',
@@ -459,8 +459,8 @@ exports.pieSeries = [{
 // ALL DATA SOURCES
 exports.sources = {
   sources: [
-    'CSV_20160122', 
-    'CSV_20160121', 
+    'CSV_20160122',
+    'CSV_20160121',
     'CSV_20160101'
     ]
 }
@@ -477,11 +477,11 @@ exports.tableColumns = [
 // SPECIFIC ANALYTIC
 exports.analytic = {
   params: analyticParams.params,
-  charts: analyticCharts.charts
+  charts: analyticVisualizations.visualizations
 }
 // SPECIFIC CHART
-exports.chart = {
-  params: chartParams.params
+exports.visualization = {
+  params: visualizationParams.params
 }
 // SPECIFIC CHART
 exports.source = {

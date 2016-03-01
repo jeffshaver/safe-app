@@ -4,26 +4,27 @@ import nock from 'nock'
 import expect from 'expect'
 import fetch from 'isomorphic-fetch'
 import {
-  FETCH_SOURCES_REQUEST,
-  FETCH_SOURCES_SUCCESS
+  FETCH_VISUALIZATIONS_REQUEST,
+  FETCH_VISUALIZATIONS_SUCCESS
 } from '../../src/js/actionTypes'
 import {
-  fetchSources,
-  fetchSourcesRequest
+  fetchVisualizations,
+  fetchVisualizationsRequest
 } from '../../src/js/actions'
 import {domain, port, protocol} from '../../config.js'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
+const analytic = 'AnalyticA'
 
-describe('sources actions', () => {
+describe('visualizations actions', () => {
   describe ('sync actions', () => {
-    it('fetchSources should create a FETCH_SOURCES_REQUEST action', () => {
+    it('fetchVisualizations should create a FETCH_VISUALIZATIONS_REQUEST action', () => {
       const expectedAction = {
-        type: FETCH_SOURCES_REQUEST
+        type: FETCH_VISUALIZATIONS_REQUEST
       }
 
-      expect(fetchSourcesRequest()).toEqual(expectedAction)
+      expect(fetchVisualizationsRequest()).toEqual(expectedAction)
     })
   })
 
@@ -32,20 +33,20 @@ describe('sources actions', () => {
       nock.cleanAll()
     })
 
-    it('creates FETCH_SOURCES_SUCCESS action when fetching souces has been done', (done) => {
+    it('creates FETCH_VISUALIZATIONS_SUCCESS action when fetching datasouces has been done', (done) => {
       nock(`${protocol}://${domain}${port ? ':' + port : ''}`)
-        .get('/sources')
-        .reply(200, {sources: ['SourceA', 'SourceB']})
+        .get(`/analytics/${analytic}/visualizations`)
+        .reply(200, {visualizations: ['VisualizationA', 'VisualizationB']})
 
       const requestAction = {
-        type: FETCH_SOURCES_REQUEST
+        type: FETCH_VISUALIZATIONS_REQUEST
       }
       const recieveAction = (action) => {
         const expectedAction = {
-          type: FETCH_SOURCES_SUCCESS,
+          type: FETCH_VISUALIZATIONS_SUCCESS,
           data: [
-            'SourceA',
-            'SourceB'
+            'VisualizationA',
+            'VisualizationB'
           ],
           didInvalidate: false,
           isFetching: false,
@@ -59,8 +60,8 @@ describe('sources actions', () => {
         requestAction,
         recieveAction
       ]
-      const store = mockStore({sources: []}, expectedActions, done)
-      store.dispatch(fetchSources())
+      const store = mockStore({visualizations: []}, expectedActions, done)
+      store.dispatch(fetchVisualizations(analytic))
     })
   })
 })

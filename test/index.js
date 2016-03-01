@@ -1,15 +1,39 @@
-// filters
-require('./actions/filters.spec.js')
-require('./reducers/filters.spec.js')
+// analytic
 
-// datasource
-require('./actions/source.spec.js')
-require('./reducers/source.spec.js')
+require('./actions/analytic.spec')
+require('./reducers/analytic.spec')
+
+// analytics
+
+require('./actions/analytics.spec')
+require('./reducers/analytics.spec')
+
+// filters
+
+require('./actions/filters.spec')
+require('./reducers/filters.spec')
+
+// source
+
+require('./actions/source.spec')
+require('./reducers/source.spec')
 
 // source fields
-require('./actions/fields.spec.js')
-require('./reducers/fields.spec.js')
+
+require('./actions/fields.spec')
+require('./reducers/fields.spec')
 
 // sources
-require('./actions/sources.spec.js')
-require('./reducers/sources.spec.js')
+
+require('./actions/sources.spec')
+require('./reducers/sources.spec')
+
+// visualization
+
+require('./actions/visualization.spec')
+require('./reducers/visualization.spec')
+
+// visualizations
+
+require('./actions/visualizations.spec')
+require('./reducers/visualizations.spec')
