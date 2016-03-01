@@ -4,9 +4,7 @@ import {Router, Route, hashHistory} from 'react-router'
 import {syncHistoryWithStore} from 'react-router-redux'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import {Provider} from 'react-redux'
-import {rootReducer} from './reducers'
-import {createStore, applyMiddleware} from 'redux'
-import thunk from 'redux-thunk'
+import {configureStore} from './configureStore'
 import App from './components/App'
 import Home from './components/Home'
 import Search from './components/Search'
@@ -16,9 +14,7 @@ import Settings from './components/Settings'
 
 injectTapEventPlugin()
 
-const createStoreWithMiddleware = applyMiddleware(thunk)(createStore)
-
-const store = createStoreWithMiddleware(rootReducer)
+const store = configureStore()
 const history = syncHistoryWithStore(hashHistory, store)
 
 ReactDOM.render((

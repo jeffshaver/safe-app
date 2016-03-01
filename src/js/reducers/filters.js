@@ -6,14 +6,14 @@ import {
 } from '../actionTypes'
 
 let nextFilterId = 0
-export const filters = (state = [
-  {
-    id: nextFilterId,
-    field: '',
-    operator: '',
-    value: ''
-  }
-], action) => {
+const initialState = [{
+  id: nextFilterId,
+  field: '',
+  operator: '',
+  value: ''
+}]
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_FILTER:
       return [

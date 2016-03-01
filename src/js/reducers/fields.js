@@ -4,12 +4,14 @@ import {
   FETCH_SOURCE_FIELDS_SUCCESS
 } from '../actionTypes'
 
-export const fields = (state = {
+const initialState = {
   data: [],
   didInvalidate: false,
   isFetching: false,
   lastUpdated: null
-}, action) => {
+}
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case FETCH_SOURCE_FIELDS_SUCCESS:
       return {
@@ -29,3 +31,5 @@ export const fields = (state = {
       return state
   }
 }
+
+export const fieldsTwo = () => {}

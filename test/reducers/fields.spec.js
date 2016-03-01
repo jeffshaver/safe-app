@@ -1,3 +1,5 @@
+/* global describe, it */
+
 import expect from 'expect'
 import {
   FETCH_SOURCE_FIELDS_REQUEST,
@@ -28,27 +30,25 @@ describe('fields reducer', () => {
     }
 
     expect(reducer(undefined, {
-      type: FETCH_SOURCE_FIELDS_REQUEST,
-
+      type: FETCH_SOURCE_FIELDS_REQUEST
     })).toEqual(expectedValue)
   })
 
   it('should handle FETCH_SOURCE_FIELDS_SUCCESS', () => {
-    const date = Date.now()
     const newDataSourceFields = ['DataSourceFieldA', 'DataSourceFieldB']
+    const actualValue = reducer(undefined, {
+      data: newDataSourceFields,
+      didInvalidate: false,
+      isFetching: false,
+      type: FETCH_SOURCE_FIELDS_SUCCESS
+    })
     const expectedValue = {
       data: newDataSourceFields,
       didInvalidate: false,
       isFetching: false,
-      lastUpdated: date
+      lastUpdated: actualValue.lastUpdated
     }
 
-    expect(reducer(undefined, {
-      data: newDataSourceFields,
-      didInvalidate: false,
-      isFetching: false,
-      lastUpdated: date,
-      type: FETCH_SOURCE_FIELDS_SUCCESS,
-    }))
+    expect(actualValue).toEqual(expectedValue)
   })
 })

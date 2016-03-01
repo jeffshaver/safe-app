@@ -4,12 +4,14 @@ import {
   FETCH_SOURCES_SUCCESS
 } from '../actionTypes'
 
-export const sources = (state = {
+const initialState = {
   data: [],
   didInvalidate: false,
   isFetching: false,
   lastUpdated: null
-}, action) => {
+}
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case FETCH_SOURCES_SUCCESS:
       return {

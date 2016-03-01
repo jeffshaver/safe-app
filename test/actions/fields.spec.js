@@ -11,7 +11,7 @@ import {
   fetchSourceFields,
   fetchSourceFieldsRequest
 } from '../../src/js/actions'
-import {domain, port} from '../../config.js'
+import {domain, port, protocol} from '../../config.js'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -35,7 +35,7 @@ describe('fields actions', () => {
     })
 
     it('creates FETCH_SOURCE_FIELDS_SUCCESS action when fetching datasouces has been done', (done) => {
-      nock(`https://${domain}${port ? ':' + port : ''}`)
+      nock(`${protocol}://${domain}${port ? ':' + port : ''}`)
         .get(`/sources/${source}/fields`)
         .reply(200, {fields: ['SourceFieldA', 'SourceFieldB']})
 

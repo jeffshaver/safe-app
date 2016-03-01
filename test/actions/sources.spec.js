@@ -11,7 +11,7 @@ import {
   fetchSources,
   fetchSourcesRequest
 } from '../../src/js/actions'
-import {domain, port} from '../../config.js'
+import {domain, port, protocol} from '../../config.js'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -33,7 +33,7 @@ describe('datasources actions', () => {
     })
 
     it('creates FETCH_SOURCES_SUCCESS action when fetching datasouces has been done', (done) => {
-      nock(`https://${domain}${port ? ':' + port : ''}`)
+      nock(`${protocol}://${domain}${port ? ':' + port : ''}`)
         .get('/sources')
         .reply(200, {sources: ['DataSourceA', 'DataSourceB']})
 

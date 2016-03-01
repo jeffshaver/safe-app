@@ -1,3 +1,4 @@
+/* globals describe, it */
 import expect from 'expect'
 import {
   FETCH_SOURCES_REQUEST,
@@ -33,21 +34,20 @@ describe('sources reducer', () => {
   })
 
   it('should handle FETCH_SOURCES_SUCCESS', () => {
-    const date = Date.now()
     const newDataSources = ['DataSourceA', 'DataSourceB']
+    const actualValue = reducer(undefined, {
+      data: newDataSources,
+      didInvalidate: false,
+      isFetching: false,
+      type: FETCH_SOURCES_SUCCESS
+    })
     const expectedValue = {
       data: newDataSources,
       didInvalidate: false,
       isFetching: false,
-      lastUpdated: date
+      lastUpdated: actualValue.lastUpdated
     }
 
-    expect(reducer(undefined, {
-      data: newDataSources,
-      didInvalidate: false,
-      isFetching: false,
-      lastUpdated: date,
-      type: FETCH_SOURCES_REQUEST,
-    }))
+    expect(actualValue).toEqual(expectedValue)
   })
 })
