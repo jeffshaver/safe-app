@@ -10,6 +10,9 @@ addons:
     packages:
       - clang-3.6
       - g++-4.8
+cache:
+  directories:
+    - node_modules
 node_js:
   - "5.7.0"
 before_script:
