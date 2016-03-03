@@ -8,6 +8,7 @@ class FilterCriteria extends Component {
     fields: PropTypes.object.isRequired,
     filters: PropTypes.array.isRequired,
     style: PropTypes.object,
+    wrapperStyle: PropTypes.object,
     onAdd: PropTypes.func.isRequired,
     onChangeField: PropTypes.func.isRequired,
     onChangeOperator: PropTypes.func.isRequired,
@@ -15,7 +16,8 @@ class FilterCriteria extends Component {
   }
 
   static defaultProps = {
-    style: {}
+    style: {},
+    wrapperStyle: {}
   }
 
   render () {
@@ -23,6 +25,7 @@ class FilterCriteria extends Component {
       fields,
       filters,
       style,
+      wrapperStyle,
       onAdd,
       onChangeField,
       onChangeOperator,
@@ -30,7 +33,7 @@ class FilterCriteria extends Component {
     } = this.props
 
     return (
-      <div>
+      <div style={wrapperStyle}>
         <h3>Select filter criteria (optional)</h3>
         {
           filters.map((filter, i) => (
@@ -38,7 +41,7 @@ class FilterCriteria extends Component {
               <SelectField
                 floatingLabelText='Select a field'
                 hintText='Select a field'
-                style={style.verticalTop}
+                style={style}
                 value={filter.field}
                 onChange={(ev, index, value) => onChangeField(i, value)}
               >
@@ -55,7 +58,7 @@ class FilterCriteria extends Component {
               <SelectField
                 floatingLabelText='Select an operator'
                 hintText='Select an operator'
-                style={style.verticalTop}
+                style={style}
                 value={filter.operator}
                 onChange={(ev, index, value) => onChangeOperator(i, value)}
               >
@@ -83,7 +86,7 @@ class FilterCriteria extends Component {
               <TextField
                 floatingLabelText='Filter Criteria'
                 hintText='Filter Criteria'
-                style={style.verticalTop}
+                style={style}
                 value={filter.value}
                 onChange={(ev) => onChangeValue(i, ev.target.value)}
               />

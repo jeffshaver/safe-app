@@ -6,34 +6,38 @@ class AnalyticSelect extends Component {
   static propTypes = {
     analytic: PropTypes.string.isRequired,
     analytics: PropTypes.object.isRequired,
+    style: PropTypes.object,
     onChange: PropTypes.func.isRequired
+  }
+
+  static defaultProps = {
+    style: {}
   }
 
   render () {
     const {
       analytic,
       analytics,
+      style,
       onChange
     } = this.props
 
     return (
-      <div>
-        <h3>Select an analytic</h3>
-        <SelectField
-          floatingLabelText='Select an analytic'
-          hintText='Select an analytic'
-          value={analytic}
-          onChange={onChange}
-        >
-          {analytics.data.map((analytic) => (
-            <MenuItem
-              key={analytic}
-              primaryText={analytic}
-              value={analytic}
-            />
-          ))}
-        </SelectField>
-      </div>
+      <SelectField
+        floatingLabelText='Select an analytic'
+        hintText='Select an analytic'
+        style={style}
+        value={analytic}
+        onChange={onChange}
+      >
+        {analytics.data.map((analytic) => (
+          <MenuItem
+            key={analytic}
+            primaryText={analytic}
+            value={analytic}
+          />
+        ))}
+      </SelectField>
     )
   }
 }

@@ -17,6 +17,9 @@ import {
 } from '../actions'
 
 const style = {
+  hidden: {
+    display: 'none'
+  },
   verticalTop: {
     verticalAlign: 'top'
   }
@@ -24,7 +27,9 @@ const style = {
 
 class Analytics extends Component {
   static propTypes = {
-    dispatch: PropTypes.func.isRequired
+    analytic: PropTypes.string.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    source: PropTypes.string.isRequired
   }
 
   constructor (props) {
@@ -89,28 +94,56 @@ class Analytics extends Component {
   }
 
   render () {
+    const {source, analytic} = this.props
+    const analyticStyle = source === ''
+      ? style.hidden
+      : {}
+    const filterStyle = source === ''
+      ? style.hidden
+      : {}
+    const visualizationStyle = source === '' || analytic === ''
+      ? style.hidden
+      : {}
+
     return (
       <div>
         <h2>Analytics</h2>
         <SourceSelect
+          style={style.verticalTop}
           onChange={::this.onChangeSource}
         />
+        <AnalyticSelect
+          style={{
+            ...style.verticalTop,
+            ...analyticStyle
+          }}
+          onChange={::this.onChangeAnalytic}
+        />
+        <VisualizationSelect
+          style={{
+            ...style.verticalTop,
+            ...visualizationStyle
+          }}
+          onChange={::this.onChangeVisualization}
+        />
         <FilterCriteria
-          style={style}
+          style={{
+            ...style.verticalTop
+          }}
+          wrapperStyle={{
+            ...filterStyle
+          }}
           onAdd={::this.onAddFilter}
           onChangeField={::this.onChangeField}
           onChangeOperator={::this.onChangeOperator}
           onChangeValue={::this.onChangeValue}
-        />
-        <AnalyticSelect
-          onChange={::this.onChangeAnalytic}
-        />
-        <VisualizationSelect
-          onChange={::this.onChangeVisualization}
         />
       </div>
     )
   }
 }
 
-export default connect()(Analytics)
+export default connect((state) => ({
+  analytic: state.analytic,
+  source: state.source
+}))(Analytics)
