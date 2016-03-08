@@ -28,7 +28,7 @@ const style = {
 class App extends Component {
   static propTypes = {
     children: PropTypes.node
-  };
+  }
 
   render () {
     const {children} = this.props
@@ -41,6 +41,9 @@ class App extends Component {
           },
           'body *': {
             fontFamily: 'inherit'
+          },
+          'h1, h2, h3, h4': {
+            fontWeight: '400'
           }
         }}/>
         <AppBar
