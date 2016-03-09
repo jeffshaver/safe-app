@@ -9,7 +9,7 @@
     "test": "mocha --compilers js:babel-register test/index",
     "test:watch": "npm test -- --watch",
     "build": "webpack",
-    "dev-server": "webpack && node server.js"
+    "dev-server": "node server.js"
   },
   "author": "Jeff Shaver <jeff.e.shaver@gmail.com> (http://jeffshaver.me)",
   "license": "MIT",
