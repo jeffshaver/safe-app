@@ -16,7 +16,6 @@ cache:
 node_js:
   - "5.7.0"
 before_script:
-  - "npm -g install babel-register babel-eslint eslint eslint-config-standard eslint-plugin-promise eslint-plugin-react eslint-plugin-standard mocha"
   - "npm install"
   - "npm run create-default-config"
 script:
