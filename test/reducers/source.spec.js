@@ -10,17 +10,18 @@ import {
 
 describe('source reducer', () => {
   it('should return the initial state', () => {
-    const expectedValue = ''
+    const stateAfter = ''
 
-    expect(reducer(undefined, {})).toEqual(expectedValue)
+    expect(reducer(undefined, {})).toEqual(stateAfter)
   })
 
   it('should handle SET_SOURCE', () => {
-    const newSource = 'SourceA'
-
-    expect(reducer(undefined, {
+    const stateAfter = 'SourceA'
+    const action = {
       type: SET_SOURCE,
-      value: newSource
-    })).toEqual(newSource)
+      value: stateAfter
+    }
+
+    expect(reducer(undefined, action)).toEqual(stateAfter)
   })
 })

@@ -38,6 +38,14 @@ class Analytics extends Component {
     const {dispatch} = props
 
     dispatch(fetchSources())
+
+    this.onAddFilter = ::this.onAddFilter
+    this.onChangeAnalytic = ::this.onChangeAnalytic
+    this.onChangeField = ::this.onChangeField
+    this.onChangeOperator = ::this.onChangeOperator
+    this.onChangeSource = ::this.onChangeSource
+    this.onChangeValue = ::this.onChangeValue
+    this.onChangeVisualization = ::this.onChangeVisualization
   }
 
   onAddFilter (ev) {
@@ -110,21 +118,21 @@ class Analytics extends Component {
         <h2>Analytics</h2>
         <SourceSelect
           style={style.verticalTop}
-          onChange={::this.onChangeSource}
+          onChange={this.onChangeSource}
         />
         <AnalyticSelect
           style={{
             ...style.verticalTop,
             ...analyticStyle
           }}
-          onChange={::this.onChangeAnalytic}
+          onChange={this.onChangeAnalytic}
         />
         <VisualizationSelect
           style={{
             ...style.verticalTop,
             ...visualizationStyle
           }}
-          onChange={::this.onChangeVisualization}
+          onChange={this.onChangeVisualization}
         />
         <FilterCriteria
           style={{
@@ -133,10 +141,10 @@ class Analytics extends Component {
           wrapperStyle={{
             ...filterStyle
           }}
-          onAdd={::this.onAddFilter}
-          onChangeField={::this.onChangeField}
-          onChangeOperator={::this.onChangeOperator}
-          onChangeValue={::this.onChangeValue}
+          onAdd={this.onAddFilter}
+          onChangeField={this.onChangeField}
+          onChangeOperator={this.onChangeOperator}
+          onChangeValue={this.onChangeValue}
         />
       </div>
     )

@@ -10,17 +10,18 @@ import {
 
 describe('analytic reducer', () => {
   it('should return the initial state', () => {
-    const expectedValue = ''
+    const stateAfter = ''
 
-    expect(reducer(undefined, {})).toEqual(expectedValue)
+    expect(reducer(undefined, {})).toEqual(stateAfter)
   })
 
   it('should handle SET_ANALYTIC', () => {
-    const expectedValue = 'AnalyticA'
-
-    expect(reducer(undefined, {
+    const stateAfter = 'AnalyticA'
+    const action = {
       type: SET_ANALYTIC,
-      value: expectedValue
-    })).toEqual(expectedValue)
+      value: stateAfter
+    }
+
+    expect(reducer(undefined, action)).toEqual(stateAfter)
   })
 })

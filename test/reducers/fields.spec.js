@@ -11,44 +11,46 @@ import {
 
 describe('fields reducer', () => {
   it('should return the initial state', () => {
-    const expectedValue = {
+    const stateAfter = {
       data: [],
       didInvalidate: false,
       isFetching: false,
       lastUpdated: null
     }
 
-    expect(reducer(undefined, {})).toEqual(expectedValue)
+    expect(reducer(undefined, {})).toEqual(stateAfter)
   })
 
   it('should handle REQUEST_DATA_SOURCE_FIELDS', () => {
-    const expectedValue = {
+    const action = {
+      type: FETCH_SOURCE_FIELDS_REQUEST
+    }
+    const stateAfter = {
       data: [],
       didInvalidate: false,
       isFetching: true,
       lastUpdated: null
     }
 
-    expect(reducer(undefined, {
-      type: FETCH_SOURCE_FIELDS_REQUEST
-    })).toEqual(expectedValue)
+    expect(reducer(undefined, action)).toEqual(stateAfter)
   })
 
   it('should handle FETCH_SOURCE_FIELDS_SUCCESS', () => {
-    const newSourceFields = ['SourceFieldA', 'SourceFieldB']
-    const actualValue = reducer(undefined, {
-      data: newSourceFields,
+    const data = ['SourceFieldA', 'SourceFieldB']
+    const action = {
+      data,
       didInvalidate: false,
       isFetching: false,
       type: FETCH_SOURCE_FIELDS_SUCCESS
-    })
-    const expectedValue = {
-      data: newSourceFields,
+    }
+    const result = reducer(undefined, action)
+    const stateAfter = {
+      data,
       didInvalidate: false,
       isFetching: false,
-      lastUpdated: actualValue.lastUpdated
+      lastUpdated: result.lastUpdated
     }
 
-    expect(actualValue).toEqual(expectedValue)
+    expect(result).toEqual(stateAfter)
   })
 })

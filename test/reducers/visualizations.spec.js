@@ -11,44 +11,46 @@ import {
 
 describe('visualizations reducer', () => {
   it('should return the initial state', () => {
-    const expectedValue = {
+    const stateAfter = {
       data: [],
       didInvalidate: false,
       isFetching: false,
       lastUpdated: null
     }
 
-    expect(reducer(undefined, {})).toEqual(expectedValue)
+    expect(reducer(undefined, {})).toEqual(stateAfter)
   })
 
   it('should handle FETCH_VISUALIZATIONS_REQUEST', () => {
-    const expectedValue = {
+    const action = {
+      type: FETCH_VISUALIZATIONS_REQUEST
+    }
+    const stateAfter = {
       data: [],
       didInvalidate: false,
       isFetching: true,
       lastUpdated: null
     }
 
-    expect(reducer(undefined, {
-      type: FETCH_VISUALIZATIONS_REQUEST
-    })).toEqual(expectedValue)
+    expect(reducer(undefined, action)).toEqual(stateAfter)
   })
 
   it('should handle FETCH_VISUALIZATIONS_SUCCESS', () => {
-    const newVisualizations = ['VisualizationA', 'VisualizationB']
-    const actualValue = reducer(undefined, {
-      data: newVisualizations,
+    const data = ['VisualizationA', 'VisualizationB']
+    const action = {
+      data,
       didInvalidate: false,
       isFetching: false,
       type: FETCH_VISUALIZATIONS_SUCCESS
-    })
-    const expectedValue = {
-      data: newVisualizations,
+    }
+    const result = reducer(undefined, action)
+    const stateAfter = {
+      data,
       didInvalidate: false,
       isFetching: false,
-      lastUpdated: actualValue.lastUpdated
+      lastUpdated: result.lastUpdated
     }
 
-    expect(actualValue).toEqual(expectedValue)
+    expect(result).toEqual(stateAfter)
   })
 })

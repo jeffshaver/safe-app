@@ -1,6 +1,6 @@
 /* globals afterEach, describe, it */
 
-import configureMockStore from 'redux-mock-store'
+import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import nock from 'nock'
 import expect from 'expect'
@@ -15,7 +15,7 @@ import {
 import {domain, port, protocol} from '../../config.js'
 
 const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const mockStore = configureStore(middlewares)
 const source = 'SourceA'
 
 describe('fields actions', () => {
@@ -40,31 +40,37 @@ describe('fields actions', () => {
         .get(`/sources/${source}/fields`)
         .reply(200, {fields: ['SourceFieldA', 'SourceFieldB']})
 
+      const initialState = {
+        fields: []
+      }
       const requestAction = {
         type: FETCH_SOURCE_FIELDS_REQUEST,
         source: source
       }
-      const recieveAction = (action) => {
-        const expectedAction = {
-          type: FETCH_SOURCE_FIELDS_SUCCESS,
-          data: [
-            'SourceFieldA',
-            'SourceFieldB'
-          ],
-          didInvalidate: false,
-          isFetching: false,
-          recievedAt: action.recievedAt
-        }
-
-        expect(action).toEqual(expectedAction)
+      const recieveAction = {
+        type: FETCH_SOURCE_FIELDS_SUCCESS,
+        data: [
+          'SourceFieldA',
+          'SourceFieldB'
+        ],
+        didInvalidate: false,
+        isFetching: false,
+        recievedAt: null
       }
-
-      const expectedActions = [
-        requestAction,
-        recieveAction
-      ]
-      const store = mockStore({sources: []}, expectedActions, done)
+      const store = mockStore(initialState)
       store.dispatch(fetchSourceFields(source))
+        .then(() => {
+          const actions = store.getActions()
+          const expectedActions = [
+            requestAction,
+            recieveAction
+          ]
+
+          expectedActions[1].recievedAt = actions[1].recievedAt
+
+          expect(actions).toEqual(expectedActions)
+          done()
+        })
     })
   })
 })

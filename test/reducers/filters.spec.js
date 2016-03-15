@@ -1,6 +1,7 @@
 /* globals describe, it */
 
 import expect from 'expect'
+import deepFreeze from 'deep-freeze'
 import {
   ADD_FILTER,
   EDIT_FILTER,
@@ -13,32 +14,38 @@ import {
 
 describe('filters reducer', () => {
   it('should return the initial state', () => {
-    const expectedValue = [{
+    const stateAfter = [{
       id: 0,
       field: '',
       operator: '',
       value: ''
     }]
 
-    expect(reducer(undefined, {})).toEqual(expectedValue)
+    expect(reducer(undefined, {})).toEqual(stateAfter)
   })
 
   it('should handle ADD_FILTER', () => {
+    const stateBefore = []
     const filter = {
       id: 0,
       field: 'fieldA',
       operator: '=',
       value: 'fieldAValue'
     }
-
-    expect(reducer([], {
+    const action = {
       type: ADD_FILTER,
       value: filter
-    })).toEqual([filter])
+    }
+    const stateAfter = [filter]
+
+    deepFreeze(stateBefore)
+    deepFreeze(action)
+
+    expect(reducer(stateBefore, action)).toEqual(stateAfter)
   })
 
   it('should handle EDIT_FILTER', () => {
-    const existingFilters = [{
+    const stateBefore = [{
       id: 0,
       field: 'fieldA',
       operator: '=',
@@ -49,8 +56,12 @@ describe('filters reducer', () => {
       operator: '<=',
       value: 'fieldBValue'
     }]
-
-    const expectedFilters = [{
+    const action = {
+      type: EDIT_FILTER,
+      value: {operator: '>='},
+      index: 0
+    }
+    const stateAfter = [{
       id: 0,
       field: 'fieldA',
       operator: '>=',
@@ -62,18 +73,14 @@ describe('filters reducer', () => {
       value: 'fieldBValue'
     }]
 
-    const index = 0
-    const operator = '>='
+    deepFreeze(stateBefore)
+    deepFreeze(action)
 
-    expect(reducer(existingFilters, {
-      type: EDIT_FILTER,
-      value: {operator},
-      index
-    })).toEqual(expectedFilters)
+    expect(reducer(stateBefore, action)).toEqual(stateAfter)
   })
 
   it('should handle REMOVE_FILTER', () => {
-    const existingFilters = [{
+    const stateBefore = [{
       id: 0,
       field: 'fieldA',
       operator: '=',
@@ -84,21 +91,25 @@ describe('filters reducer', () => {
       operator: '<=',
       value: 'fieldBValue'
     }]
-    const expectedFilters = [{
+    const action = {
+      type: REMOVE_FILTER,
+      index: 0
+    }
+    const stateAfter = [{
       id: 1,
       field: 'fieldB',
       operator: '<=',
       value: 'fieldBValue'
     }]
 
-    expect(reducer(existingFilters, {
-      type: REMOVE_FILTER,
-      index: 0
-    })).toEqual(expectedFilters)
+    deepFreeze(stateBefore)
+    deepFreeze(action)
+
+    expect(reducer(stateBefore, action)).toEqual(stateAfter)
   })
 
   it('should handle RESET_FILTERS', () => {
-    const existingFilters = [{
+    const stateBefore = [{
       id: 0,
       field: 'fieldA',
       operator: '=',
@@ -109,9 +120,14 @@ describe('filters reducer', () => {
       operator: '<=',
       value: 'fieldBValue'
     }]
-
-    expect(reducer(existingFilters, {
+    const action = {
       type: RESET_FILTERS
-    })).toEqual([])
+    }
+    const stateAfter = []
+
+    deepFreeze(stateBefore)
+    deepFreeze(action)
+
+    expect(reducer(stateBefore, action)).toEqual(stateAfter)
   })
 })

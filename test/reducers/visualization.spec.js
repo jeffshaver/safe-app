@@ -10,17 +10,18 @@ import {
 
 describe('visualization reducer', () => {
   it('should return the initial state', () => {
-    const expectedValue = ''
+    const stateAfter = ''
 
-    expect(reducer(undefined, {})).toEqual(expectedValue)
+    expect(reducer(undefined, {})).toEqual(stateAfter)
   })
 
   it('should handle SET_VISUALIZATION', () => {
-    const expectedValue = 'VisualizationA'
-
-    expect(reducer(undefined, {
+    const stateAfter = 'VisualizationA'
+    const action = {
       type: SET_VISUALIZATION,
-      value: expectedValue
-    })).toEqual(expectedValue)
+      value: stateAfter
+    }
+
+    expect(reducer(undefined, action)).toEqual(stateAfter)
   })
 })

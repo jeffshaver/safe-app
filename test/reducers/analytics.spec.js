@@ -11,44 +11,46 @@ import {
 
 describe('analytics reducer', () => {
   it('should return the initial state', () => {
-    const expectedValue = {
+    const stateAfter = {
       data: [],
       didInvalidate: false,
       isFetching: false,
       lastUpdated: null
     }
 
-    expect(reducer(undefined, {})).toEqual(expectedValue)
+    expect(reducer(undefined, {})).toEqual(stateAfter)
   })
 
   it('should handle FETCH_ANALYTICS_REQUEST', () => {
-    const expectedValue = {
+    const action = {
+      type: FETCH_ANALYTICS_REQUEST
+    }
+    const stateAfter = {
       data: [],
       didInvalidate: false,
       isFetching: true,
       lastUpdated: null
     }
 
-    expect(reducer(undefined, {
-      type: FETCH_ANALYTICS_REQUEST
-    })).toEqual(expectedValue)
+    expect(reducer(undefined, action)).toEqual(stateAfter)
   })
 
   it('should handle FETCH_ANALYTICS_SUCCESS', () => {
-    const newAnalytics = ['AnalyticA', 'AnalyticB']
-    const actualValue = reducer(undefined, {
-      data: newAnalytics,
+    const data = ['AnalyticA', 'AnalyticB']
+    const action = {
+      data,
       didInvalidate: false,
       isFetching: false,
       type: FETCH_ANALYTICS_SUCCESS
-    })
+    }
+    const result = reducer(undefined, action)
     const expectedValue = {
-      data: newAnalytics,
+      data,
       didInvalidate: false,
       isFetching: false,
-      lastUpdated: actualValue.lastUpdated
+      lastUpdated: result.lastUpdated
     }
 
-    expect(actualValue).toEqual(expectedValue)
+    expect(result).toEqual(expectedValue)
   })
 })

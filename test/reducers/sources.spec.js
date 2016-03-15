@@ -11,44 +11,46 @@ import {
 
 describe('sources reducer', () => {
   it('should return the initial state', () => {
-    const expectedValue = {
+    const stateAfter = {
       data: [],
       didInvalidate: false,
       isFetching: false,
       lastUpdated: null
     }
 
-    expect(reducer(undefined, {})).toEqual(expectedValue)
+    expect(reducer(undefined, {})).toEqual(stateAfter)
   })
 
   it('should handle FETCH_SOURCES_REQUEST', () => {
-    const expectedValue = {
+    const action = {
+      type: FETCH_SOURCES_REQUEST
+    }
+    const stateAfter = {
       data: [],
       didInvalidate: false,
       isFetching: true,
       lastUpdated: null
     }
 
-    expect(reducer(undefined, {
-      type: FETCH_SOURCES_REQUEST
-    })).toEqual(expectedValue)
+    expect(reducer(undefined, action)).toEqual(stateAfter)
   })
 
   it('should handle FETCH_SOURCES_SUCCESS', () => {
-    const newSources = ['SourceA', 'SourceB']
-    const actualValue = reducer(undefined, {
-      data: newSources,
+    const data = ['SourceA', 'SourceB']
+    const action = {
+      data,
       didInvalidate: false,
       isFetching: false,
       type: FETCH_SOURCES_SUCCESS
-    })
+    }
+    const result = reducer(undefined, action)
     const expectedValue = {
-      data: newSources,
+      data,
       didInvalidate: false,
       isFetching: false,
-      lastUpdated: actualValue.lastUpdated
+      lastUpdated: result.lastUpdated
     }
 
-    expect(actualValue).toEqual(expectedValue)
+    expect(result).toEqual(expectedValue)
   })
 })

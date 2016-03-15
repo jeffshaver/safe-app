@@ -1,6 +1,6 @@
 /* globals afterEach, describe, it */
 
-import configureMockStore from 'redux-mock-store'
+import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import nock from 'nock'
 import expect from 'expect'
@@ -15,7 +15,7 @@ import {
 import {domain, port, protocol} from '../../config.js'
 
 const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const mockStore = configureStore(middlewares)
 const source = 'SourceA'
 
 describe('analytics actions', () => {
@@ -39,30 +39,37 @@ describe('analytics actions', () => {
         .get(`/sources/${source}/analytics`)
         .reply(200, {analytics: ['AnalyticA', 'AnalyticB']})
 
+      const initialState = {
+        analytics: []
+      }
+
       const requestAction = {
         type: FETCH_ANALYTICS_REQUEST
       }
-      const recieveAction = (action) => {
-        const expectedAction = {
-          type: FETCH_ANALYTICS_SUCCESS,
-          data: [
-            'AnalyticA',
-            'AnalyticB'
-          ],
-          didInvalidate: false,
-          isFetching: false,
-          recievedAt: action.recievedAt
-        }
-
-        expect(action).toEqual(expectedAction)
+      const recieveAction = {
+        type: FETCH_ANALYTICS_SUCCESS,
+        data: [
+          'AnalyticA',
+          'AnalyticB'
+        ],
+        didInvalidate: false,
+        isFetching: false,
+        recievedAt: null
       }
-
-      const expectedActions = [
-        requestAction,
-        recieveAction
-      ]
-      const store = mockStore({analytics: []}, expectedActions, done)
+      const store = mockStore(initialState)
       store.dispatch(fetchAnalytics(source))
+        .then(() => {
+          const actions = store.getActions()
+          const expectedActions = [
+            requestAction,
+            recieveAction
+          ]
+
+          expectedActions[1].recievedAt = actions[1].recievedAt
+
+          expect(actions).toEqual(expectedActions)
+          done()
+        })
     })
   })
 })

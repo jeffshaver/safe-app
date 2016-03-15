@@ -1,8 +1,9 @@
 parser: babel-eslint
 globals:
   $: false
-ecmaFeatures:
-  jsx: true
+parserOptions:
+  ecmaFeatures:
+    jsx: true
 extends: standard
 plugins:
   - react
@@ -33,10 +34,6 @@ rules:
     - ignoreCase: true
   react/jsx-no-undef: 2
   react/jsx-pascal-case: 2
-  react/jsx-sort-prop-types:
-    - 2
-    - ignoreCase: true
-      callbacksLast: true
   react/jsx-sort-props:
     - 2
     - ignoreCase: true
@@ -50,4 +47,8 @@ rules:
   react/prefer-es6-class: 2
   react/prop-types: 2
   react/self-closing-comp: 2
+  react/sort-prop-types:
+    - 2
+    - ignoreCase: true
+      callbacksLast: true
   react/wrap-multilines: 2
