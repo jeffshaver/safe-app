@@ -12,7 +12,7 @@ import {
   fetchAnalytics,
   fetchAnalyticsRequest
 } from '../../src/js/actions'
-import {domain, port, protocol} from '../../config.js'
+import {apiUri} from '../../config.js'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
@@ -35,7 +35,7 @@ describe('analytics actions', () => {
     })
 
     it('creates FETCH_ANALYTICS_SUCCESS action when fetching datasouces has been done', (done) => {
-      nock(`${protocol}://${domain}${port ? ':' + port : ''}`)
+      nock(apiUri)
         .get(`/sources/${source}/analytics`)
         .reply(200, {analytics: ['AnalyticA', 'AnalyticB']})
 

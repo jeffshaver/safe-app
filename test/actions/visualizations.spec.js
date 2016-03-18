@@ -12,7 +12,7 @@ import {
   fetchVisualizations,
   fetchVisualizationsRequest
 } from '../../src/js/actions'
-import {domain, port, protocol} from '../../config.js'
+import {apiUri} from '../../config.js'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
@@ -35,7 +35,7 @@ describe('visualizations actions', () => {
     })
 
     it('creates FETCH_VISUALIZATIONS_SUCCESS action when fetching datasouces has been done', (done) => {
-      nock(`${protocol}://${domain}${port ? ':' + port : ''}`)
+      nock(apiUri)
         .get(`/analytics/${analytic}/visualizations`)
         .reply(200, {visualizations: ['VisualizationA', 'VisualizationB']})
 

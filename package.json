@@ -4,7 +4,7 @@
   "description": "Safe App",
   "repository": "https://github.com/jeffshaver/safe-app",
   "scripts": {
-    "create-default-config": "echo \"module.exports = {\n  hotModuleReloadUri: 'localhost',\n  domain: 'localhost',\n  port: 80,\n  protocol: 'http'\n}\\c\" > config.js",
+    "create-default-config": "echo \"module.exports = {\n  apiUri: 'http://localhost/api',\n  hotModuleReloadUri: 'localhost',\n  domain: 'localhost',\n  port: 80,\n  protocol: 'http'\n}\\c\" > config.js",
     "lint": "eslint --ext .js,.jsx src/ test/ ./*.js",
     "test": "mocha --compilers js:babel-register test/index",
     "test:watch": "npm test -- --watch",

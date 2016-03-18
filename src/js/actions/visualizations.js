@@ -3,7 +3,7 @@ import {
   FETCH_VISUALIZATIONS_REQUEST,
   FETCH_VISUALIZATIONS_SUCCESS
 } from '../actionTypes'
-import {domain, port, protocol} from '../../../config'
+import {apiUri} from '../../../config'
 
 export const fetchVisualizationsSuccess = (json) => ({
   data: json.visualizations,
@@ -20,7 +20,7 @@ export const fetchVisualizationsRequest = () => ({
 export const fetchVisualizations = (analytic) =>
   (dispatch) => {
     dispatch(fetchVisualizationsRequest())
-    return fetch(`${protocol}://${domain}${port ? ':' + port : ''}/analytics/${analytic}/visualizations`)
+    return fetch(`${apiUri}/analytics/${analytic}/visualizations`)
       .then((response) => response.json(), (err) => console.log(err))
       .then((json) => dispatch(fetchVisualizationsSuccess(json)))
   }

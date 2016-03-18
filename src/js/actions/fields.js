@@ -4,7 +4,7 @@ import {
   FETCH_SOURCE_FIELDS_REQUEST,
   FETCH_SOURCE_FIELDS_SUCCESS
 } from '../actionTypes'
-import {domain, port, protocol} from '../../../config'
+import {apiUri} from '../../../config'
 
 export const fetchSourceFieldsSuccess = (json) => ({
   data: json.fields,
@@ -22,7 +22,7 @@ export const fetchSourceFieldsRequest = (source) => ({
 export const fetchSourceFields = (source) => {
   return (dispatch) => {
     dispatch(fetchSourceFieldsRequest(source))
-    return fetch(`${protocol}://${domain}${port ? ':' + port : ''}/sources/${source}/fields`)
+    return fetch(`${apiUri}/sources/${source}/fields`)
       .then((response) => response.json())
       .then((json) => dispatch(fetchSourceFieldsSuccess(json)))
   }

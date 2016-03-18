@@ -12,7 +12,7 @@ import {
   fetchSources,
   fetchSourcesRequest
 } from '../../src/js/actions'
-import {domain, port, protocol} from '../../config.js'
+import {apiUri} from '../../config.js'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
@@ -34,7 +34,7 @@ describe('sources actions', () => {
     })
 
     it('creates FETCH_SOURCES_SUCCESS action when fetching souces has been done', (done) => {
-      nock(`${protocol}://${domain}${port ? ':' + port : ''}`)
+      nock(apiUri)
         .get('/sources')
         .reply(200, {sources: ['SourceA', 'SourceB']})
 

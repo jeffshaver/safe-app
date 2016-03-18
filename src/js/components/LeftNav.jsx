@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Avatar, LeftNav as MULeftNav, ListItem} from 'material-ui'
+import {browserHistory} from 'react-router'
 // SVG
 import ActionAssessment from 'material-ui/lib/svg-icons/action/assessment'
 import ActionHome from 'material-ui/lib/svg-icons/action/home'
@@ -30,7 +31,7 @@ export class LeftNav extends Component {
             />
           }
           primaryText='&nbsp;'
-          onTouchTap={() => (window.location = '#/home')}
+          onTouchTap={() => (browserHistory.push('/home'))}
         />
         <ListItem
           key={2}
@@ -40,7 +41,7 @@ export class LeftNav extends Component {
             />
           }
           primaryText='&nbsp;'
-          onTouchTap={() => (window.location = '#/search')}
+          onTouchTap={() => (browserHistory.push('/search'))}
         />
         <ListItem
           key={3}
@@ -50,7 +51,7 @@ export class LeftNav extends Component {
             />
           }
           primaryText='&nbsp;'
-          onTouchTap={() => (window.location = '#/analytics')}
+          onTouchTap={() => (browserHistory.push('/analytics'))}
         />
         <ListItem
           key={1}
@@ -60,7 +61,7 @@ export class LeftNav extends Component {
             />
           }
           primaryText='&nbsp;'
-          onTouchTap={() => (window.location = '#/data')}
+          onTouchTap={() => (browserHistory.push('/data'))}
         />
         <ListItem
           key={4}
@@ -70,7 +71,7 @@ export class LeftNav extends Component {
             />
           }
           primaryText='&nbsp;'
-          onTouchTap={() => (window.location = '#/settings')}
+          onTouchTap={() => (browserHistory.push('/settings'))}
         />
       </MULeftNav>
     )

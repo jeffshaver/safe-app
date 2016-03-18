@@ -3,7 +3,7 @@ import {
   FETCH_SOURCES_REQUEST,
   FETCH_SOURCES_SUCCESS
 } from '../actionTypes'
-import {domain, port, protocol} from '../../../config'
+import {apiUri} from '../../../config'
 
 export const fetchSourcesSuccess = (json) => ({
   data: json.sources,
@@ -20,7 +20,7 @@ export const fetchSourcesRequest = () => ({
 export const fetchSources = () =>
   (dispatch) => {
     dispatch(fetchSourcesRequest())
-    return fetch(`${protocol}://${domain}${port ? ':' + port : ''}/sources`)
+    return fetch(`${apiUri}/sources`)
       .then((response) => response.json(), (err) => console.log(err))
       .then((json) => dispatch(fetchSourcesSuccess(json)))
   }
