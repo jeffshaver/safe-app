@@ -32,9 +32,9 @@ class AnalyticSelect extends Component {
       >
         {analytics.data.map((analytic) => (
           <MenuItem
-            key={analytic}
-            primaryText={analytic}
-            value={analytic}
+            key={analytic._id}
+            primaryText={analytic.name}
+            value={analytic._id}
           />
         ))}
       </SelectField>

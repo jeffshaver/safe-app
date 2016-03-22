@@ -32,9 +32,9 @@ class VisualizationSelect extends Component {
       >
         {visualizations.data.map((visualization) => (
           <MenuItem
-            key={visualization}
-            primaryText={visualization}
-            value={visualization}
+            key={visualization._id}
+            primaryText={visualization.name}
+            value={visualization._id}
           />
         ))}
       </SelectField>

@@ -37,7 +37,7 @@ describe('visualizations actions', () => {
     it('creates FETCH_VISUALIZATIONS_SUCCESS action when fetching datasouces has been done', (done) => {
       nock(apiUri)
         .get(`/analytics/${analytic}/visualizations`)
-        .reply(200, {visualizations: ['VisualizationA', 'VisualizationB']})
+        .reply(200, [{_id: '1', name: 'VisualizationA'}, {_id: '2', name: 'VisualizationB'}])
 
       const initialState = {
         visualizations: []
@@ -48,8 +48,8 @@ describe('visualizations actions', () => {
       const recieveAction = {
         type: FETCH_VISUALIZATIONS_SUCCESS,
         data: [
-          'VisualizationA',
-          'VisualizationB'
+          {_id: '1', name: 'VisualizationA'},
+          {_id: '2', name: 'VisualizationB'}
         ],
         didInvalidate: false,
         isFetching: false,

@@ -7,7 +7,7 @@ import {
 import {apiUri} from '../../../config'
 
 export const fetchSourceFieldsSuccess = (json) => ({
-  data: json.fields,
+  data: json,
   didInvalidate: false,
   isFetching: false,
   recievedAt: Date.now(),

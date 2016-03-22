@@ -37,7 +37,7 @@ describe('analytics actions', () => {
     it('creates FETCH_ANALYTICS_SUCCESS action when fetching datasouces has been done', (done) => {
       nock(apiUri)
         .get(`/sources/${source}/analytics`)
-        .reply(200, {analytics: ['AnalyticA', 'AnalyticB']})
+        .reply(200, [{_id: '1', name: 'AnalyticA'}, {_id: '2', name: 'AnalyticB'}])
 
       const initialState = {
         analytics: []
@@ -49,8 +49,8 @@ describe('analytics actions', () => {
       const recieveAction = {
         type: FETCH_ANALYTICS_SUCCESS,
         data: [
-          'AnalyticA',
-          'AnalyticB'
+          {_id: '1', name: 'AnalyticA'},
+          {_id: '2', name: 'AnalyticB'}
         ],
         didInvalidate: false,
         isFetching: false,

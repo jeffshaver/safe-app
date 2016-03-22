@@ -36,7 +36,7 @@ describe('sources actions', () => {
     it('creates FETCH_SOURCES_SUCCESS action when fetching souces has been done', (done) => {
       nock(apiUri)
         .get('/sources')
-        .reply(200, {sources: ['SourceA', 'SourceB']})
+        .reply(200, [{_id: '1', name: 'SourceA'}, {_id: '2', name: 'SourceB'}])
 
       const initialState = {
         sources: []
@@ -47,8 +47,8 @@ describe('sources actions', () => {
       const recieveAction = {
         type: FETCH_SOURCES_SUCCESS,
         data: [
-          'SourceA',
-          'SourceB'
+          {_id: '1', name: 'SourceA'},
+          {_id: '2', name: 'SourceB'}
         ],
         didInvalidate: false,
         isFetching: false,

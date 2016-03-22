@@ -32,9 +32,9 @@ class SourceSelect extends Component {
       >
         {sources.data.map((source) => (
           <MenuItem
-            key={source}
-            primaryText={source}
-            value={source}
+            key={source._id}
+            primaryText={source.name}
+            value={source._id}
           />
         ))}
       </SelectField>

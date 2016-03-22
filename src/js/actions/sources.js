@@ -6,7 +6,7 @@ import {
 import {apiUri} from '../../../config'
 
 export const fetchSourcesSuccess = (json) => ({
-  data: json.sources,
+  data: json,
   didInvalidate: false,
   isFetching: false,
   recievedAt: Date.now(),

@@ -6,7 +6,7 @@ import {
 import {apiUri} from '../../../config'
 
 export const fetchAnalyticsSuccess = (json) => ({
-  data: json.analytics,
+  data: json,
   didInvalidate: false,
   isFetching: false,
   recievedAt: Date.now(),

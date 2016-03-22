@@ -6,7 +6,7 @@ import {
 import {apiUri} from '../../../config'
 
 export const fetchVisualizationsSuccess = (json) => ({
-  data: json.visualizations,
+  data: json,
   didInvalidate: false,
   isFetching: false,
   recievedAt: Date.now(),

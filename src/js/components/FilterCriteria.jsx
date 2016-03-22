@@ -48,9 +48,9 @@ class FilterCriteria extends Component {
                 {
                   fields.data.map((field) => (
                     <MenuItem
-                      key={field}
-                      primaryText={field}
-                      value={field}
+                      key={field._id}
+                      primaryText={field.name}
+                      value={field._id}
                     />
                   ))
                 }

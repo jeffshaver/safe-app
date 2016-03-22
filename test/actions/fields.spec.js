@@ -38,7 +38,7 @@ describe('fields actions', () => {
     it('creates FETCH_SOURCE_FIELDS_SUCCESS action when fetching datasouces has been done', (done) => {
       nock(apiUri)
         .get(`/sources/${source}/fields`)
-        .reply(200, {fields: ['SourceFieldA', 'SourceFieldB']})
+        .reply(200, [{_id: '1', name: 'SourceFieldA'}, {_id: '2', name: 'SourceFieldB'}])
 
       const initialState = {
         fields: []
@@ -50,8 +50,8 @@ describe('fields actions', () => {
       const recieveAction = {
         type: FETCH_SOURCE_FIELDS_SUCCESS,
         data: [
-          'SourceFieldA',
-          'SourceFieldB'
+          {_id: '1', name: 'SourceFieldA'},
+          {_id: '2', name: 'SourceFieldB'}
         ],
         didInvalidate: false,
         isFetching: false,

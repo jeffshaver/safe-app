@@ -1,93 +1,81 @@
 var exports = module.exports = {}
 
 // SPECIFIC CHARTS FOR AN ANALYTIC
-var analyticVisualizations = exports.analyticVisualizations = {
-  visualizations: [
-    'Area',
-    'Bar',
-    'Column',
-    'Line',
-    'Pie',
-    'Table'
-  ]
-}
+var analyticVisualizations = exports.analyticVisualizations = [
+  {_id: '1', name: 'Area'},
+  {_id: '2', name: 'Bar'},
+  {_id: '3', name: 'Column'},
+  {_id: '4', name: 'Line'},
+  {_id: '5', name: 'Pie'},
+  {_id: '6', name: 'Table'}
+]
 
 // SPECIFIC PARAMS FOR AN ANALYTIC
-var analyticParams = exports.analyticParams = {
-  params: [
-    'X',
-    'Mean',
-    'Standard Deviation',
-    'Cumulative'
-  ]
-}
+var analyticParams = exports.analyticParams = [
+  {_id: '1', name: 'X'},
+  {_id: '2', name: 'Mean'},
+  {_id: '3', name: 'Standard Deviation'},
+  {_id: '4', name: 'Cumulative'}
+]
 
 // SPECIFIC PARAMS FOR A CHART
-var visualizationParams = exports.visualizationParams = {
-  params: [
-    'Title',
-    'Subtitle',
-    'X axis',
-    'Y axis',
-    'Tooltip',
-    'Legend',
-    'Series'
-  ]
-}
+var visualizationParams = exports.visualizationParams = [
+  {_id: '1', name: 'Title'},
+  {_id: '2', name: 'Subtitle'},
+  {_id: '3', name: 'X axis'},
+  {_id: '4', name: 'Y axis'},
+  {_id: '5', name: 'Tooltip'},
+  {_id: '6', name: 'Legend'},
+  {_id: '7', name: 'Series'}
+]
 
 // SPECIFIC DATA SOURCE
-var sourceAnalytics = exports.sourceAnalytics = {
-  analytics: [
-    'Average',
-    'Count',
-    'Frequency',
-    'Maximum',
-    'Median',
-    'Minimum',
-    'Mode',
-    'Sum',
-    'Variance'
-  ]
-}
+var sourceAnalytics = exports.sourceAnalytics = [
+  {_id: '1', name: 'Average'},
+  {_id: '2', name: 'Count'},
+  {_id: '3', name: 'Frequency'},
+  {_id: '4', name: 'Maximum'},
+  {_id: '5', name: 'Median'},
+  {_id: '6', name: 'Minimum'},
+  {_id: '7', name: 'Mode'},
+  {_id: '8', name: 'Sum'},
+  {_id: '9', name: 'Variance'}
+]
 
 // SPECIFIC DATA SOURCE
-var sourceFields = exports.sourceFields = {
-  fields: [
-    'Age',
-    'County',
-    'Height',
-    'Latitude',
-    'Longitude',
-    'Street Address',
-    'Weight'
-  ]
-}
+var sourceFields = exports.sourceFields = [
+  {_id: '1', name: 'Age'},
+  {_id: '2', name: 'County'},
+  {_id: '3', name: 'Height'},
+  {_id: '4', name: 'Latitude'},
+  {_id: '5', name: 'Longitude'},
+  {_id: '6', name: 'Street Address'},
+  {_id: '7', name: 'Weight'}
+]
 
 // ALL ANALYTICS
-exports.analytics = {
-  analytics: [
-    'Average',
-    'Binomial Distribution',
-    'Chi-Squared Distribution',
-    'Confidence',
-    'Count',
-    'Covariance',
-    'Forecast',
-    'Frequency',
-    'Maximum',
-    'Median',
-    'Minimum',
-    'Mode',
-    'Normal Distribution',
-    'Percentile',
-    'Permutations',
-    'Poisson Distribution',
-    'Skew',
-    'Standard Deviation',
-    'Sum',
-    'Variance'
-  ]
-}
+exports.analytics = [
+  {_id: '1', name: 'Average'},
+  {_id: '2', name: 'Binomial Distribution'},
+  {_id: '3', name: 'Chi-Squared Distribution'},
+  {_id: '4', name: 'Confidence'},
+  {_id: '5', name: 'Count'},
+  {_id: '6', name: 'Covariance'},
+  {_id: '7', name: 'Forecast'},
+  {_id: '8', name: 'Frequency'},
+  {_id: '9', name: 'Maximum'},
+  {_id: '10', name: 'Median'},
+  {_id: '11', name: 'Minimum'},
+  {_id: '12', name: 'Mode'},
+  {_id: '13', name: 'Normal Distribution'},
+  {_id: '14', name: 'Percentile'},
+  {_id: '15', name: 'Permutations'},
+  {_id: '16', name: 'Poisson Distribution'},
+  {_id: '17', name: 'Skew'},
+  {_id: '18', name: 'Standard Deviation'},
+  {_id: '19', name: 'Sum'},
+  {_id: '20', name: 'Variance'}
+]
 
 // AREA
 exports.areaSeries = [{
@@ -115,16 +103,14 @@ exports.areaSeries = [{
 }]
 
 // ALL CHARTS
-exports.visualizations = {
-  visualizations: [
-    'Area',
-    'Bar',
-    'Column',
-    'Line',
-    'Pie',
-    'Table'
-  ]
-}
+exports.visualizations = [
+  {_id: '1', name: 'Area'},
+  {_id: '2', name: 'Bar'},
+  {_id: '3', name: 'Column'},
+  {_id: '4', name: 'Line'},
+  {_id: '5', name: 'Pie'},
+  {_id: '6', name: 'Table'}
+]
 
 // COLUMN
 exports.columnDrilldown = {
@@ -467,13 +453,11 @@ exports.pieSeries = [{
 }]
 
 // ALL DATA SOURCES
-exports.sources = {
-  sources: [
-    'CSV_20160122',
-    'CSV_20160121',
-    'CSV_20160101'
-  ]
-}
+exports.sources = [
+  {_id: '1', name: 'CSV_20160122'},
+  {_id: '2', name: 'CSV_20160121'},
+  {_id: '3', name: 'CSV_20160101'}
+]
 
 // DATATABLE
 exports.tableColumns = [
