@@ -4,6 +4,9 @@
   "description": "Safe App",
   "repository": "https://github.com/jeffshaver/safe-app",
   "scripts": {
+    "bump-major": "node ./bin/bump.js major --commit --tag",
+    "bump-minor": "node ./bin/bump.js minor --commit --tag",
+    "bump-patch": "node ./bin/bump.js patch --commit --tag",
     "create-default-config": "echo \"module.exports = {\n  apiUri: 'http://localhost/api',\n  hotModuleReloadUri: 'localhost',\n  domain: 'localhost',\n  port: 80,\n  protocol: 'http'\n}\\c\" > config.js",
     "lint": "eslint --ext .js,.jsx src/ test/ ./*.js",
     "test": "mocha --compilers js:babel-register test/index",
@@ -35,6 +38,7 @@
     "eslint-plugin-react": "^4.2.2",
     "eslint-plugin-standard": "^1.3.2",
     "expect": "^1.15.2",
+    "json-file-plus": "^3.3.0",
     "mocha": "^2.4.5",
     "nock": "^7.2.2",
     "react-transform-hmr": "^1.0.4",
