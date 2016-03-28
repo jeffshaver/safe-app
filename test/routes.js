@@ -1,6 +1,17 @@
 var fixtures = require('./fixtures.js')
 
 module.exports = function (app) {
+  // authentication
+  app.get('/api/authenticate', function (req, res) {
+    // Simulate some lag
+    setTimeout(() => {
+      res.status(200).json({
+        authenticated: true,
+        username: 'unknown'
+      })
+    }, 1000)
+  })
+
   // LIST OF ALL ANALYTICS
   app.get('/api/analytics', function (req, res) {
     console.log(req)

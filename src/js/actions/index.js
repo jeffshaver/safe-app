@@ -26,6 +26,11 @@ import {
   fetchSourcesSuccess
 } from './sources'
 import {
+  fetchUser,
+  fetchUserRequest,
+  fetchUserSuccess
+} from './user'
+import {
   setVisualization
 } from './visualization'
 import {
@@ -49,6 +54,9 @@ export {setSource}
 export {fetchSources}
 export {fetchSourcesRequest}
 export {fetchSourcesSuccess}
+export {fetchUser}
+export {fetchUserRequest}
+export {fetchUserSuccess}
 export {setVisualization}
 export {fetchVisualizations}
 export {fetchVisualizationsRequest}

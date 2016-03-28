@@ -28,6 +28,11 @@ require('./reducers/fields.spec')
 require('./actions/sources.spec')
 require('./reducers/sources.spec')
 
+// user
+
+require('./actions/user.spec')
+require('./reducers/user.spec')
+
 // visualization
 
 require('./actions/visualization.spec')

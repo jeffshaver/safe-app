@@ -6,6 +6,7 @@ import fields from './fields'
 import filters from './filters'
 import source from './source'
 import sources from './sources'
+import user from './user'
 import visualization from './visualization'
 import visualizations from './visualizations'
 
@@ -15,6 +16,7 @@ export {fields}
 export {filters}
 export {source}
 export {sources}
+export {user}
 export {visualization}
 export {visualizations}
 
@@ -25,6 +27,7 @@ export const rootReducer = combineReducers({
   filters,
   source,
   sources,
+  user,
   visualization,
   visualizations,
 
