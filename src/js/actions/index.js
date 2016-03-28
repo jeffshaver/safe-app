@@ -7,6 +7,9 @@ import {
   fetchAnalyticsSuccess
 } from './analytics'
 import {
+  setDialogOpen
+} from './dialog'
+import {
   fetchSourceFields,
   fetchSourceFieldsRequest,
   fetchSourceFieldsSuccess
@@ -31,6 +34,11 @@ import {
   fetchSourcesSuccess
 } from './sources'
 import {
+  clearUploadDataTypes,
+  setUploadDataTypeByHeaderName,
+  setUploadDataTypes
+} from './upload'
+import {
   fetchUser,
   fetchUserRequest,
   fetchUserSuccess
@@ -51,6 +59,10 @@ export {fetchAnalyticsSuccess}
 export {fetchSearchResults}
 export {fetchSearchResultsRequest}
 export {fetchSearchResultsSuccess}
+export {setDialogOpen}
+export {clearUploadDataTypes}
+export {setUploadDataTypeByHeaderName}
+export {setUploadDataTypes}
 export {fetchSourceFields}
 export {fetchSourceFieldsRequest}
 export {fetchSourceFieldsSuccess}

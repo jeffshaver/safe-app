@@ -8,6 +8,10 @@ require('./reducers/analytic.spec')
 require('./actions/analytics.spec')
 require('./reducers/analytics.spec')
 
+// dialog
+require('./actions/dialog.spec')
+require('./reducers/dialog.spec')
+
 // filters
 
 require('./actions/filters.spec')
@@ -32,6 +36,10 @@ require('./reducers/searchResults.spec')
 
 require('./actions/sources.spec')
 require('./reducers/sources.spec')
+
+// upload
+require('./actions/upload.spec')
+require('./reducers/upload.spec')
 
 // user
 

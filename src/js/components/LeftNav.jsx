@@ -51,9 +51,9 @@ export class LeftNav extends Component {
               icon={<FileFolder />}
             />
           }
-          onTouchTap={() => (browserHistory.push('/data'))}
+          onTouchTap={() => (browserHistory.push('/upload'))}
         >
-          Data
+          Upload
         </ListItem>
         <ListItem
           key={4}

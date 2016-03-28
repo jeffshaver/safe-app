@@ -5,12 +5,12 @@ import {syncHistoryWithStore} from 'react-router-redux'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import {Provider} from 'react-redux'
 import {configureStore} from './configureStore'
+import Analytics from './components/Analytics'
 import App from './components/App'
 import Home from './components/Home'
 import Search from './components/Search'
-import Data from './components/Data'
-import Analytics from './components/Analytics'
 import Settings from './components/Settings'
+import Upload from './components/Upload'
 
 injectTapEventPlugin()
 
@@ -30,8 +30,8 @@ ReactDOM.render((
           path='analytics'
         />
         <Route
-          component={Data}
-          path='data'
+          component={Home}
+          path='home'
         />
         <Route
           component={Search}
@@ -40,6 +40,10 @@ ReactDOM.render((
         <Route
           component={Settings}
           path='settings'
+        />
+        <Route
+          component={Upload}
+          path='upload'
         />
       </Route>
       <Route
