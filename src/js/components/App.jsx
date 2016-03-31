@@ -29,10 +29,8 @@ class App extends Component {
     user: PropTypes.object.isRequired
   }
 
-  constructor (props) {
-    super(props)
-
-    const {dispatch} = props
+  componentWillMount () {
+    const {dispatch} = this.props
 
     dispatch(fetchUser())
   }
@@ -40,8 +38,6 @@ class App extends Component {
   render () {
     const {children, user} = this.props
     let content
-
-    console.log(user.isFetching)
 
     if (user.isFetching) {
       content = (

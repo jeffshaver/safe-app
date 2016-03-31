@@ -35,10 +35,6 @@ class Analytics extends Component {
   constructor (props) {
     super(props)
 
-    const {dispatch} = props
-
-    dispatch(fetchSources())
-
     this.onAddFilter = ::this.onAddFilter
     this.onChangeAnalytic = ::this.onChangeAnalytic
     this.onChangeField = ::this.onChangeField
@@ -46,6 +42,12 @@ class Analytics extends Component {
     this.onChangeSource = ::this.onChangeSource
     this.onChangeValue = ::this.onChangeValue
     this.onChangeVisualization = ::this.onChangeVisualization
+  }
+
+  componentWillMount () {
+    const {dispatch} = this.props
+
+    dispatch(fetchSources())
   }
 
   onAddFilter (ev) {
