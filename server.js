@@ -9,7 +9,7 @@ const errorHandler = require('errorhandler')
 const serveStatic = require('serve-static')
 const config = require('./config')
 
-var app = express()
+const app = express()
 
 app.use(morgan('dev'))
 app.use(errorHandler())
@@ -19,11 +19,11 @@ app.use(serveStatic(path.join(__dirname, 'fonts')))
 app.use(serveStatic(path.join(__dirname, 'node_modules')))
 
 if (app.get('env') === 'development') {
-  var webpack = require('webpack')
-  var webpackDevMiddleware = require('webpack-dev-middleware')
-  var webpackHotMiddleware = require('webpack-hot-middleware')
-  var webpackConfig = require('./webpack.config')
-  var compiler = webpack(webpackConfig)
+  const webpack = require('webpack')
+  const webpackDevMiddleware = require('webpack-dev-middleware')
+  const webpackHotMiddleware = require('webpack-hot-middleware')
+  const webpackConfig = require('./webpack.config')
+  const compiler = webpack(webpackConfig)
 
   app.use(webpackDevMiddleware(compiler, {
     noInfo: true,
