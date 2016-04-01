@@ -9,6 +9,7 @@ import Analytics from './components/Analytics'
 import App from './components/App'
 import Home from './components/Home'
 import Search from './components/Search'
+import Dashboards from './components/Dashboards'
 import Settings from './components/Settings'
 import Upload from './components/Upload'
 
@@ -29,8 +30,8 @@ ReactDOM.render((
           path='analytics'
         />
         <Route
-          component={Home}
-          path='home'
+          component={Dashboards}
+          path='dashboards'
         />
         <Route
           component={Search}

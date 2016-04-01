@@ -6,5 +6,5 @@ export const header = {
 }
 
 export const main = {
-  paddingLeft: '1.25em'
+  padding: '0 1.25em'
 }

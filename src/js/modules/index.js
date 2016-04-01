@@ -6,6 +6,7 @@ import analytic, {
 } from './analytic'
 import analytics from './analytics'
 import dialog from './dialog'
+import dashboards from './dashboards'
 import fields from './fields'
 import filters, {
   HYDRATE as HYDRATE_FILTERS,
@@ -37,6 +38,7 @@ export const rootReducer = combineReducers({
   analytic: hydrateable(analytic, HYDRATE_ANALYTIC),
   analytics,
   dialog,
+  dashboards,
   fields,
   filters: hydrateable(filters, HYDRATE_FILTERS),
   searchResults,

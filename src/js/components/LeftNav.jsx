@@ -4,6 +4,7 @@ import Divider from 'material-ui/lib/divider'
 import {browserHistory} from 'react-router'
 // SVG
 import ActionAssessment from 'material-ui/lib/svg-icons/action/assessment'
+import ActionDashboard from 'material-ui/lib/svg-icons/action/dashboard'
 import ActionSearch from 'material-ui/lib/svg-icons/action/search'
 import ActionSettings from 'material-ui/lib/svg-icons/action/settings'
 import FileFolder from 'material-ui/lib/svg-icons/file/folder'
@@ -16,7 +17,7 @@ export class LeftNav extends Component {
         width={175}
       >
         <ListItem
-          key={6}
+          key={0}
           onTouchTap={() => (browserHistory.push('/'))}
         >
           <h1>SAFE</h1>
@@ -24,6 +25,17 @@ export class LeftNav extends Component {
         <Divider />
         <ListItem
           key={1}
+          leftAvatar={
+            <Avatar
+              icon={<ActionDashboard />}
+            />
+          }
+          onTouchTap={() => (browserHistory.push('/dashboards'))}
+        >
+          Dashboards
+        </ListItem>
+        <ListItem
+          key={2}
           leftAvatar={
             <Avatar
               icon={<ActionSearch />}
@@ -34,7 +46,7 @@ export class LeftNav extends Component {
           Search
         </ListItem>
         <ListItem
-          key={2}
+          key={3}
           leftAvatar={
             <Avatar
               icon={<ActionAssessment />}
@@ -45,7 +57,7 @@ export class LeftNav extends Component {
           Analytics
         </ListItem>
         <ListItem
-          key={3}
+          key={4}
           leftAvatar={
             <Avatar
               icon={<FileFolder />}
@@ -56,7 +68,7 @@ export class LeftNav extends Component {
           Upload
         </ListItem>
         <ListItem
-          key={4}
+          key={5}
           leftAvatar={
             <Avatar
               icon={<ActionSettings />}

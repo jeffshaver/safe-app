@@ -9,9 +9,9 @@ export const fetchAnalyticsRequest = () => ({
 })
 
 export const fetchAnalyticsSuccess = (data) => ({
-  payload: {data},
   didInvalidate: false,
   isFetching: false,
+  payload: {data},
   recievedAt: Date.now(),
   type: SUCCESS
 })
