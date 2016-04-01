@@ -1,11 +1,16 @@
 import React, {Component} from 'react'
+import {header, main} from '../styles/common'
 
 class Settings extends Component {
   render () {
     return (
       <div>
-        <h2>Settings</h2>
-        <h3>Admin</h3>
+        <header style={header}>
+          <h1>Settings</h1>
+        </header>
+        <main style={main}>
+          <h3>Admin</h3>
+        </main>
       </div>
     )
   }

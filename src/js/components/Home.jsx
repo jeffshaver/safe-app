@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
+import {header} from '../styles/common'
 
 class Home extends Component {
   render () {
     return (
       <div>
-        <h2>Home</h2>
-        <h3>Dashboards</h3>
+        <header style={header}>
+          <h1>Home</h1>
+        </header>
       </div>
     )
   }

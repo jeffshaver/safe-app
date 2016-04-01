@@ -1,8 +1,7 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import Radium, {StyleRoot} from 'radium'
-import {AppBar, AppCanvas, CircularProgress} from 'material-ui'
-// import {DefaultAreaChart, DefaultColumnChart, DefaultLineChart} from 'safe-framework'
+import {AppCanvas, CircularProgress} from 'material-ui'
 import {Wrapper} from './Wrapper'
 import {GlobalStyles} from './GlobalStyles'
 import {LeftNav} from './LeftNav'
@@ -53,11 +52,6 @@ class App extends Component {
     } else {
       content = (
         <div>
-          <AppBar
-            showMenuIconButton = {false}
-            title = 'SAFE'
-            zDepth = {1}
-          />
           <LeftNav />
           <Wrapper>
             {children}

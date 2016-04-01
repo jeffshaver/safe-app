@@ -15,6 +15,7 @@ import {
   setSource,
   setVisualization
 } from '../actions'
+import {header, main} from '../styles/common'
 
 const style = {
   hidden: {
@@ -117,37 +118,41 @@ class Analytics extends Component {
 
     return (
       <div>
-        <h2>Analytics</h2>
-        <SourceSelect
-          style={style.verticalTop}
-          onChange={this.onChangeSource}
-        />
-        <AnalyticSelect
-          style={{
-            ...style.verticalTop,
-            ...analyticStyle
-          }}
-          onChange={this.onChangeAnalytic}
-        />
-        <VisualizationSelect
-          style={{
-            ...style.verticalTop,
-            ...visualizationStyle
-          }}
-          onChange={this.onChangeVisualization}
-        />
-        <FilterCriteria
-          style={{
-            ...style.verticalTop
-          }}
-          wrapperStyle={{
-            ...filterStyle
-          }}
-          onAdd={this.onAddFilter}
-          onChangeField={this.onChangeField}
-          onChangeOperator={this.onChangeOperator}
-          onChangeValue={this.onChangeValue}
-        />
+        <header style={header}>
+          <h1>Analytics</h1>
+        </header>
+        <main style={main}>
+          <SourceSelect
+            style={style.verticalTop}
+            onChange={this.onChangeSource}
+          />
+          <AnalyticSelect
+            style={{
+              ...style.verticalTop,
+              ...analyticStyle
+            }}
+            onChange={this.onChangeAnalytic}
+          />
+          <VisualizationSelect
+            style={{
+              ...style.verticalTop,
+              ...visualizationStyle
+            }}
+            onChange={this.onChangeVisualization}
+          />
+          <FilterCriteria
+            style={{
+              ...style.verticalTop
+            }}
+            wrapperStyle={{
+              ...filterStyle
+            }}
+            onAdd={this.onAddFilter}
+            onChangeField={this.onChangeField}
+            onChangeOperator={this.onChangeOperator}
+            onChangeValue={this.onChangeValue}
+          />
+        </main>
       </div>
     )
   }

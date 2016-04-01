@@ -3,9 +3,9 @@ import Radium from 'radium'
 import {large} from '../styles/mediaQueries'
 
 const style = {
-  padding: '64px 0 0 100px',
+  padding: '0 0 0 175px',
   [large]: {
-    padding: '64px 0 0 100px'
+    padding: '0 0 0 175px'
   }
 }
 
