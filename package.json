@@ -4,15 +4,16 @@
   "description": "Safe App",
   "repository": "https://github.com/jeffshaver/safe-app",
   "scripts": {
+    "build": "webpack",
     "bump-major": "node ./bin/bump.js major --commit --tag",
     "bump-minor": "node ./bin/bump.js minor --commit --tag",
     "bump-patch": "node ./bin/bump.js patch --commit --tag",
-    "create-default-config": "echo \"module.exports = {\n  apiUri: 'http://localhost/api',\n  hotModuleReloadUri: 'localhost',\n  domain: 'localhost',\n  port: 80,\n  protocol: 'http'\n}\\c\" > config.js",
+    "create-default-config": "echo -n \"module.exports = {\n  apiUri: 'http://localhost/api',\n  hotModuleReloadUri: 'localhost',\n  domain: 'localhost',\n  port: 80,\n  protocol: 'http'\n}\" > config.js",
+    "dev-server": "node server.js",
     "lint": "eslint --ext .js,.jsx src/ test/ ./*.js",
+    "prepublish": "npm run lint && npm test",
     "test": "mocha --compilers js:babel-register test/index",
-    "test:watch": "npm test -- --watch",
-    "build": "webpack",
-    "dev-server": "node server.js"
+    "test:watch": "npm test -- --watch"
   },
   "author": "Jeff Shaver <jeff.e.shaver@gmail.com> (http://jeffshaver.me)",
   "license": "MIT",
