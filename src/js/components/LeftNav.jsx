@@ -31,7 +31,7 @@ export class LeftNav extends Component {
             />
           }
           primaryText='&nbsp;'
-          onTouchTap={() => (browserHistory.push('/home'))}
+          onTouchTap={() => (browserHistory.push('/'))}
         />
         <ListItem
           key={2}

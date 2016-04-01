@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {Router, Route, browserHistory} from 'react-router'
+import {IndexRoute, Router, Route, browserHistory} from 'react-router'
 import {syncHistoryWithStore} from 'react-router-redux'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import {Provider} from 'react-redux'
@@ -24,6 +24,7 @@ ReactDOM.render((
         component={App}
         path='/'
       >
+        <IndexRoute component={Home} />
         <Route
           component={Analytics}
           path='analytics'
@@ -31,10 +32,6 @@ ReactDOM.render((
         <Route
           component={Data}
           path='data'
-        />
-        <Route
-          component={Home}
-          path='home'
         />
         <Route
           component={Search}
