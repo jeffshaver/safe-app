@@ -40,13 +40,6 @@ if (app.get('env') === 'development') {
   exec('webpack --watch')
 }
 
-// FIXTURE ROUTES FOR TESTING
-require('./test/routes')(app)
-
-app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, '/src/html/index.html'))
-})
-
 if (config.mongoUri) {
   const session = require('express-session')
   const connectMongo = require('connect-mongo')
@@ -94,3 +87,10 @@ if (config.mongoUri) {
     console.log(`server listning on port ${config.port}`)
   })
 }
+
+// FIXTURE ROUTES FOR TESTING
+require('./test/routes')(app)
+
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, '/src/html/index.html'))
+})
