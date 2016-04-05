@@ -23,6 +23,11 @@ require('./reducers/source.spec')
 require('./actions/fields.spec')
 require('./reducers/fields.spec')
 
+// search results
+
+require('./actions/searchResults.spec')
+require('./reducers/searchResults.spec')
+
 // sources
 
 require('./actions/sources.spec')

@@ -4,6 +4,7 @@ import analytic from './analytic'
 import analytics from './analytics'
 import fields from './fields'
 import filters from './filters'
+import searchResults from './searchResults'
 import source from './source'
 import sources from './sources'
 import user from './user'
@@ -14,6 +15,7 @@ export {analytic}
 export {analytics}
 export {fields}
 export {filters}
+export {searchResults}
 export {source}
 export {sources}
 export {user}
@@ -25,6 +27,7 @@ export const rootReducer = combineReducers({
   analytics,
   fields,
   filters,
+  searchResults,
   source,
   sources,
   user,

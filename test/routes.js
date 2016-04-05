@@ -67,7 +67,11 @@ module.exports = function (app) {
     console.log(req)
     res.send(fixtures.sourceFields)
   })
-
+  // SEARCH A SPECIFIC DATA SOURCE
+  app.post('/api/search/:source', function (req, res) {
+    console.log(req)
+    res.send(fixtures.searchResults)
+  })
   // TO DO *****************************
   // LIST OF FILTERS ENABLED FOR A SPECIFIC DATA SOURCE
   // app.get('/api/sources/:source/filters', function (req, res) {
@@ -79,7 +83,6 @@ module.exports = function (app) {
   //   console.log(req)
   //   res.send(fixtures.sources)
   // })
-  // Search data sources
   // app.post('/search', function (req, res) {
   //   console.log(req)
   //   res.send(fixtures.search)
