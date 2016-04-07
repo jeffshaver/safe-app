@@ -5,8 +5,8 @@ import {
 } from '../action-types'
 import {apiUri} from '../../../config'
 
-export const fetchVisualizationsSuccess = (json) => ({
-  data: json,
+export const fetchVisualizationsSuccess = (data) => ({
+  payload: {data},
   didInvalidate: false,
   isFetching: false,
   recievedAt: Date.now(),

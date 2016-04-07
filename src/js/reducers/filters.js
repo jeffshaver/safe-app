@@ -14,25 +14,27 @@ const initialState = [{
 }]
 
 export default (state = initialState, action) => {
+  const {filter, index, value} = action.payload || {}
+
   switch (action.type) {
     case ADD_FILTER:
       return [
         ...state,
-        action.value
+        filter
       ]
     case EDIT_FILTER:
       return [
-        ...state.slice(0, action.index),
+        ...state.slice(0, index),
         {
-          ...state[action.index],
-          ...action.value
+          ...state[index],
+          ...value
         },
-        ...state.slice(action.index + 1)
+        ...state.slice(index + 1)
       ]
     case REMOVE_FILTER:
       return [
-        ...state.slice(0, action.index),
-        ...state.slice(action.index + 1)
+        ...state.slice(0, index),
+        ...state.slice(index + 1)
       ]
     case RESET_FILTERS:
       return []

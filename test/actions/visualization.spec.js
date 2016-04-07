@@ -10,12 +10,12 @@ import {
 
 describe('visualization actions', () => {
   it('setVisualization should create an SET_VISUALIZATION action', () => {
-    const source = 'AnalyticA'
+    const visualization = 'VisualizationA'
     const expectedAction = {
       type: SET_VISUALIZATION,
-      value: source
+      payload: {visualization}
     }
 
-    expect(setVisualization(source)).toEqual(expectedAction)
+    expect(setVisualization(visualization)).toEqual(expectedAction)
   })
 })

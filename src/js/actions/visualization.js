@@ -4,5 +4,5 @@ import {
 
 export const setVisualization = (visualization) => ({
   type: SET_VISUALIZATION,
-  value: visualization
+  payload: {visualization}
 })

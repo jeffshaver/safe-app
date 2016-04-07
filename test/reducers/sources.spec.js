@@ -38,9 +38,10 @@ describe('sources reducer', () => {
   it('should handle FETCH_SOURCES_SUCCESS', () => {
     const data = ['SourceA', 'SourceB']
     const action = {
-      data,
+      payload: {data},
       didInvalidate: false,
       isFetching: false,
+      recievedAt: Date.now(),
       type: FETCH_SOURCES_SUCCESS
     }
     const result = reducer(undefined, action)

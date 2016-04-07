@@ -13,7 +13,7 @@ describe('source actions', () => {
     const source = 'SourceA'
     const expectedAction = {
       type: SET_SOURCE,
-      value: source
+      payload: {source}
     }
 
     expect(setSource(source)).toEqual(expectedAction)

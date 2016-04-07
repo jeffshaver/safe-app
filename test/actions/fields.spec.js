@@ -23,7 +23,7 @@ describe('fields actions', () => {
     it('fetchSourceFieldsRequest should create a FETCH_SOURCE_FIELDS_REQUEST action', () => {
       const expectedAction = {
         type: FETCH_SOURCE_FIELDS_REQUEST,
-        source: source
+        payload: {source}
       }
 
       expect(fetchSourceFieldsRequest(source)).toEqual(expectedAction)
@@ -45,14 +45,16 @@ describe('fields actions', () => {
       }
       const requestAction = {
         type: FETCH_SOURCE_FIELDS_REQUEST,
-        source: source
+        payload: {source}
       }
       const recieveAction = {
         type: FETCH_SOURCE_FIELDS_SUCCESS,
-        data: [
-          {_id: '1', name: 'SourceFieldA'},
-          {_id: '2', name: 'SourceFieldB'}
-        ],
+        payload: {
+          data: [
+            {_id: '1', name: 'SourceFieldA'},
+            {_id: '2', name: 'SourceFieldB'}
+          ]
+        },
         didInvalidate: false,
         isFetching: false,
         recievedAt: null

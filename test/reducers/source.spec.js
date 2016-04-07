@@ -19,7 +19,7 @@ describe('source reducer', () => {
     const stateAfter = 'SourceA'
     const action = {
       type: SET_SOURCE,
-      value: stateAfter
+      payload: {source: stateAfter}
     }
 
     expect(reducer(undefined, action)).toEqual(stateAfter)

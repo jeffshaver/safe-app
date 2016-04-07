@@ -10,12 +10,12 @@ import {
 
 describe('analytic actions', () => {
   it('setAnalytic should create an SET_ANALYTIC action', () => {
-    const source = 'AnalyticA'
+    const analytic = 'AnalyticA'
     const expectedAction = {
       type: SET_ANALYTIC,
-      value: source
+      payload: {analytic}
     }
 
-    expect(setAnalytic(source)).toEqual(expectedAction)
+    expect(setAnalytic(analytic)).toEqual(expectedAction)
   })
 })

@@ -34,7 +34,7 @@ describe('filters reducer', () => {
     }
     const action = {
       type: ADD_FILTER,
-      value: filter
+      payload: {filter}
     }
     const stateAfter = [filter]
 
@@ -58,8 +58,10 @@ describe('filters reducer', () => {
     }]
     const action = {
       type: EDIT_FILTER,
-      value: {operator: '>='},
-      index: 0
+      payload: {
+        value: {operator: '>='},
+        index: 0
+      }
     }
     const stateAfter = [{
       id: 0,
@@ -93,7 +95,9 @@ describe('filters reducer', () => {
     }]
     const action = {
       type: REMOVE_FILTER,
-      index: 0
+      payload: {
+        index: 0
+      }
     }
     const stateAfter = [{
       id: 1,

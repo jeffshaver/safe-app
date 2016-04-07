@@ -24,7 +24,7 @@ describe('filter actions', () => {
     }
     const expectedAction = {
       type: ADD_FILTER,
-      value: filter
+      payload: {filter}
     }
 
     expect(addFilter(filter)).toEqual(expectedAction)
@@ -35,8 +35,7 @@ describe('filter actions', () => {
     const value = 'value'
     const expectedAction = {
       type: EDIT_FILTER,
-      index,
-      value
+      payload: {index, value}
     }
 
     expect(editFilter(index, value)).toEqual(expectedAction)
@@ -46,7 +45,7 @@ describe('filter actions', () => {
     const index = 0
     const expectedAction = {
       type: REMOVE_FILTER,
-      index
+      payload: {index}
     }
 
     expect(removeFilter(index)).toEqual(expectedAction)

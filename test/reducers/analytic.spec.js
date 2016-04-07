@@ -19,7 +19,7 @@ describe('analytic reducer', () => {
     const stateAfter = 'AnalyticA'
     const action = {
       type: SET_ANALYTIC,
-      value: stateAfter
+      payload: {analytic: stateAfter}
     }
 
     expect(reducer(undefined, action)).toEqual(stateAfter)

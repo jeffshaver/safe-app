@@ -38,10 +38,12 @@ describe('user reducer', () => {
   it('should handle FETCH_USER_SUCCESS', () => {
     const data = {authenticated: true, username: 'unknown'}
     const action = {
-      data,
+      payload: {data},
       didInvalidate: false,
       isFetching: false,
+      recievedAt: Date.now(),
       type: FETCH_USER_SUCCESS
+
     }
     const result = reducer(undefined, action)
     const expectedValue = {

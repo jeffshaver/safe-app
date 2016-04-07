@@ -4,5 +4,5 @@ import {
 
 export const setAnalytic = (analytic) => ({
   type: SET_ANALYTIC,
-  value: analytic
+  payload: {analytic}
 })

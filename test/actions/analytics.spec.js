@@ -48,10 +48,12 @@ describe('analytics actions', () => {
       }
       const recieveAction = {
         type: FETCH_ANALYTICS_SUCCESS,
-        data: [
-          {_id: '1', name: 'AnalyticA'},
-          {_id: '2', name: 'AnalyticB'}
-        ],
+        payload: {
+          data: [
+            {_id: '1', name: 'AnalyticA'},
+            {_id: '2', name: 'AnalyticB'}
+          ]
+        },
         didInvalidate: false,
         isFetching: false,
         recievedAt: null

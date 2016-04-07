@@ -6,8 +6,8 @@ import {
 } from '../action-types'
 import {apiUri} from '../../../config'
 
-export const fetchSourceFieldsSuccess = (json) => ({
-  data: json,
+export const fetchSourceFieldsSuccess = (data) => ({
+  payload: {data},
   didInvalidate: false,
   isFetching: false,
   recievedAt: Date.now(),
@@ -16,7 +16,7 @@ export const fetchSourceFieldsSuccess = (json) => ({
 
 export const fetchSourceFieldsRequest = (source) => ({
   type: FETCH_SOURCE_FIELDS_REQUEST,
-  source: source
+  payload: {source}
 })
 
 export const fetchSourceFields = (source) => {

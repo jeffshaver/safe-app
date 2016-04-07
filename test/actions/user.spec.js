@@ -47,15 +47,18 @@ describe('user actions', () => {
       }
       const recieveAction = {
         type: FETCH_USER_SUCCESS,
-        data: {
-          authenticated: true,
-          username: 'unknown'
+        payload: {
+          data: {
+            authenticated: true,
+            username: 'unknown'
+          }
         },
         didInvalidate: false,
         isFetching: false,
         recievedAt: null
       }
       const store = mockStore(initialState)
+
       store.dispatch(fetchUser())
         .then(() => {
           const actions = store.getActions()

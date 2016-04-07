@@ -47,16 +47,18 @@ describe('visualizations actions', () => {
       }
       const recieveAction = {
         type: FETCH_VISUALIZATIONS_SUCCESS,
-        data: [
-          {_id: '1', name: 'VisualizationA'},
-          {_id: '2', name: 'VisualizationB'}
-        ],
+        payload: {
+          data: [
+            {_id: '1', name: 'VisualizationA'},
+            {_id: '2', name: 'VisualizationB'}
+          ]
+        },
         didInvalidate: false,
         isFetching: false,
         recievedAt: null
       }
-
       const store = mockStore(initialState)
+
       store.dispatch(fetchVisualizations(analytic))
         .then(() => {
           const actions = store.getActions()

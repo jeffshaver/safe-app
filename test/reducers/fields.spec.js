@@ -38,9 +38,10 @@ describe('fields reducer', () => {
   it('should handle FETCH_SOURCE_FIELDS_SUCCESS', () => {
     const data = ['SourceFieldA', 'SourceFieldB']
     const action = {
-      data,
+      payload: {data},
       didInvalidate: false,
       isFetching: false,
+      recievedAt: Date.now(),
       type: FETCH_SOURCE_FIELDS_SUCCESS
     }
     const result = reducer(undefined, action)

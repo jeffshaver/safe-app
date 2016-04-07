@@ -19,7 +19,7 @@ describe('visualization reducer', () => {
     const stateAfter = 'VisualizationA'
     const action = {
       type: SET_VISUALIZATION,
-      value: stateAfter
+      payload: {visualization: stateAfter}
     }
 
     expect(reducer(undefined, action)).toEqual(stateAfter)

@@ -5,20 +5,19 @@ import {
   RESET_FILTERS
 } from '../action-types'
 
-export const addFilter = (filters) => ({
+export const addFilter = (filter) => ({
   type: ADD_FILTER,
-  value: filters
+  payload: {filter}
 })
 
-export const editFilter = (index, field) => ({
+export const editFilter = (index, value) => ({
   type: EDIT_FILTER,
-  index,
-  value: field
+  payload: {index, value}
 })
 
 export const removeFilter = (index) => ({
   type: REMOVE_FILTER,
-  index
+  payload: {index}
 })
 
 export const resetFilters = () => ({

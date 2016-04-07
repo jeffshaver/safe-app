@@ -38,9 +38,10 @@ describe('analytics reducer', () => {
   it('should handle FETCH_ANALYTICS_SUCCESS', () => {
     const data = ['AnalyticA', 'AnalyticB']
     const action = {
-      data,
+      payload: {data},
       didInvalidate: false,
       isFetching: false,
+      recievedAt: Date.now(),
       type: FETCH_ANALYTICS_SUCCESS
     }
     const result = reducer(undefined, action)

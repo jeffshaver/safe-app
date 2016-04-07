@@ -46,10 +46,12 @@ describe('sources actions', () => {
       }
       const recieveAction = {
         type: FETCH_SOURCES_SUCCESS,
-        data: [
-          {_id: '1', name: 'SourceA'},
-          {_id: '2', name: 'SourceB'}
-        ],
+        payload: {
+          data: [
+            {_id: '1', name: 'SourceA'},
+            {_id: '2', name: 'SourceB'}
+          ]
+        },
         didInvalidate: false,
         isFetching: false,
         recievedAt: null

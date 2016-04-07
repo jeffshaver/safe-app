@@ -4,5 +4,5 @@ import {
 
 export const setSource = (source) => ({
   type: SET_SOURCE,
-  value: source
+  payload: {source}
 })
