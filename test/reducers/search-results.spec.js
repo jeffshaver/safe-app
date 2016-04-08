@@ -36,13 +36,15 @@ describe('searchResults reducer', () => {
   })
 
   it('should handle FETCH_SEARCH_RESULTS_SUCCESS', () => {
-    const data = [{_id: 1, name: 'John', age: 25, county: 'Howard'},
-                  {_id: 4, name: 'Bob', age: 40, county: 'Howard'}
-                 ]
+    const data = [
+      {_id: 1, name: 'John', age: 25, county: 'Howard'},
+      {_id: 4, name: 'Bob', age: 40, county: 'Howard'}
+    ]
     const action = {
-      data,
+      payload: {data},
       didInvalidate: false,
       isFetching: false,
+      recievedAt: Date.now(),
       type: FETCH_SEARCH_RESULTS_SUCCESS
     }
     const result = reducer(undefined, action)

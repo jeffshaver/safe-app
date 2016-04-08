@@ -24,8 +24,7 @@ describe('searchResults actions', () => {
     it('fetchSearchResults should create a FETCH_SEARCH_RESULTS_REQUEST action', () => {
       const expectedAction = {
         type: FETCH_SEARCH_RESULTS_REQUEST,
-        source: source,
-        filters: filters
+        payload: {filters, source}
       }
 
       expect(fetchSearchResultsRequest(source, filters)).toEqual(expectedAction)
@@ -45,23 +44,24 @@ describe('searchResults actions', () => {
       const initialState = {
         searchResults: []
       }
-
       const requestAction = {
         type: FETCH_SEARCH_RESULTS_REQUEST,
-        source: source,
-        filters: filters
+        payload: {filters, source}
       }
       const recieveAction = {
         type: FETCH_SEARCH_RESULTS_SUCCESS,
-        data: [
-          {_id: 1, name: 'John', age: '25', county: 'Howard'},
-          {_id: 4, name: 'Bob', age: '40', county: 'Howard'}
-        ],
+        payload: {
+          data: [
+            {_id: 1, name: 'John', age: '25', county: 'Howard'},
+            {_id: 4, name: 'Bob', age: '40', county: 'Howard'}
+          ]
+        },
         didInvalidate: false,
         isFetching: false,
         recievedAt: null
       }
       const store = mockStore(initialState)
+
       store.dispatch(fetchSearchResults(source, filters))
         .then(() => {
           const actions = store.getActions()

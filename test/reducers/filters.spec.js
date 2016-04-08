@@ -27,7 +27,6 @@ describe('filters reducer', () => {
   it('should handle ADD_FILTER', () => {
     const stateBefore = []
     const filter = {
-      id: 0,
       field: 'fieldA',
       operator: '=',
       value: 'fieldAValue'
@@ -36,7 +35,10 @@ describe('filters reducer', () => {
       type: ADD_FILTER,
       payload: {filter}
     }
-    const stateAfter = [filter]
+    const stateAfter = [{
+      ...filter,
+      id: 1
+    }]
 
     deepFreeze(stateBefore)
     deepFreeze(action)

@@ -81,7 +81,7 @@ class Upload extends Component {
   handleDataTypeChange (header, value) {
     const {dispatch} = this.props
 
-    dispatch(setUploadDataTypeByHeaderName({header, value}))
+    dispatch(setUploadDataTypeByHeaderName(header, value))
   }
 
   renderColumnMenu (header, value) {

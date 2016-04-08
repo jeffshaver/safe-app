@@ -5,8 +5,8 @@ import {
 } from '../action-types'
 import {apiUri} from '../../../config'
 
-export const fetchSearchResultsSuccess = (json) => ({
-  data: json,
+export const fetchSearchResultsSuccess = (data) => ({
+  payload: {data},
   didInvalidate: false,
   isFetching: false,
   recievedAt: Date.now(),
@@ -15,8 +15,7 @@ export const fetchSearchResultsSuccess = (json) => ({
 
 export const fetchSearchResultsRequest = (source, filters) => ({
   type: FETCH_SEARCH_RESULTS_REQUEST,
-  source,
-  filters
+  payload: {filters, source}
 })
 
 export const fetchSearchResults = (source, filters) =>

@@ -23,7 +23,7 @@ describe('upload reducer', () => {
       columnName2: 'type2'
     }
     const action = {
-      payload: uploadDataTypes,
+      payload: {uploadDataTypes},
       type: SET_UPLOAD_DATA_TYPES
     }
     const result = reducer(undefined, action)

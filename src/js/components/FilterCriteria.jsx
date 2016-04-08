@@ -50,7 +50,7 @@ class FilterCriteria extends Component {
                     <MenuItem
                       key={field._id}
                       primaryText={field.name}
-                      value={field._id}
+                      value={field.name}
                     />
                   ))
                 }

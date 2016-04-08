@@ -5,15 +5,16 @@ import {
 } from '../action-types'
 
 export default (state = {}, action) => {
+  const {header, uploadDataTypes, value} = action.payload || {}
+
   switch (action.type) {
     case RESET_UPLOAD_DATA_TYPES:
       return {}
     case SET_UPLOAD_DATA_TYPES:
       return {
-        ...action.payload
+        ...uploadDataTypes
       }
     case SET_UPLOAD_DATA_TYPE_BY_HEADER_NAME:
-      const {header, value} = action.payload
       return {
         ...state,
         [header]: value

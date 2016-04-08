@@ -39,7 +39,7 @@ require('./reducers/sources.spec')
 
 // upload
 require('./actions/upload.spec')
-require('./reducers/upload.spec')
+require('./reducers/upload-data-types.spec')
 
 // user
 

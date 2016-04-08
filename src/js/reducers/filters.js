@@ -20,7 +20,10 @@ export default (state = initialState, action) => {
     case ADD_FILTER:
       return [
         ...state,
-        filter
+        {
+          ...filter,
+          id: ++nextFilterId
+        }
       ]
     case EDIT_FILTER:
       return [

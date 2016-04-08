@@ -19,7 +19,7 @@ describe('dialog reducer', () => {
     const stateAfter = true
 
     const action = {
-      payload: true,
+      payload: {value: stateAfter},
       type: SET_DIALOG_OPEN
     }
 

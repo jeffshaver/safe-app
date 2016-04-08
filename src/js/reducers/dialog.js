@@ -3,9 +3,11 @@ import {
 } from '../action-types'
 
 export default (state = false, action) => {
+  const {value} = action.payload || {}
+
   switch (action.type) {
     case SET_DIALOG_OPEN:
-      return action.payload
+      return value
     default:
       return state
   }

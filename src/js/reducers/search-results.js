@@ -12,12 +12,14 @@ const initialState = {
 }
 
 export default (state = initialState, action) => {
+  const {data} = action.payload || {}
+
   switch (action.type) {
     case FETCH_SEARCH_RESULTS_SUCCESS:
       return {
         ...state,
+        data,
         didInvalidate: false,
-        data: action.data,
         isFetching: false,
         lastUpdated: action.recievedAt
       }

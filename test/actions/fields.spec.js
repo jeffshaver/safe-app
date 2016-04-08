@@ -60,6 +60,7 @@ describe('fields actions', () => {
         recievedAt: null
       }
       const store = mockStore(initialState)
+
       store.dispatch(fetchSourceFields(source))
         .then(() => {
           const actions = store.getActions()

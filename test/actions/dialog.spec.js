@@ -10,11 +10,12 @@ import {
 
 describe('dialog actions', () => {
   it('setDialogOpen should create a SET_DIALOG_OPEN action', () => {
+    const value = true
     const expectedAction = {
-      payload: true,
+      payload: {value},
       type: SET_DIALOG_OPEN
     }
 
-    expect(setDialogOpen(true)).toEqual(expectedAction)
+    expect(setDialogOpen(value)).toEqual(expectedAction)
   })
 })
