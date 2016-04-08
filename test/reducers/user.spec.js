@@ -1,5 +1,6 @@
 /* globals describe, it */
 
+import {Map} from 'immutable'
 import expect from 'expect'
 import {
   FETCH_USER_REQUEST,
@@ -11,12 +12,12 @@ import {
 
 describe('user reducer', () => {
   it('should return the initial state', () => {
-    const stateAfter = {
-      data: {},
+    const stateAfter = Map({
+      data: Map(),
       didInvalidate: false,
       isFetching: false,
       lastUpdated: null
-    }
+    })
 
     expect(reducer(undefined, {})).toEqual(stateAfter)
   })
@@ -25,12 +26,12 @@ describe('user reducer', () => {
     const action = {
       type: FETCH_USER_REQUEST
     }
-    const stateAfter = {
-      data: {},
+    const stateAfter = Map({
+      data: Map(),
       didInvalidate: false,
       isFetching: true,
       lastUpdated: null
-    }
+    })
 
     expect(reducer(undefined, action)).toEqual(stateAfter)
   })
@@ -46,12 +47,12 @@ describe('user reducer', () => {
 
     }
     const result = reducer(undefined, action)
-    const expectedValue = {
-      data,
+    const expectedValue = Map({
+      data: Map(data),
       didInvalidate: false,
       isFetching: false,
-      lastUpdated: result.lastUpdated
-    }
+      lastUpdated: result.get('lastUpdated')
+    })
 
     expect(result).toEqual(expectedValue)
   })

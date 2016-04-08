@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react'
+import {Map} from 'immutable'
 import {connect} from 'react-redux'
 import {MenuItem, SelectField} from 'material-ui'
 
@@ -6,7 +7,7 @@ class VisualizationSelect extends Component {
   static propTypes = {
     style: PropTypes.object,
     visualization: PropTypes.string.isRequired,
-    visualizations: PropTypes.object.isRequired,
+    visualizations: PropTypes.instanceOf(Map).isRequired,
     onChange: PropTypes.func.isRequired
   }
 
@@ -30,11 +31,11 @@ class VisualizationSelect extends Component {
         value={visualization}
         onChange={onChange}
       >
-        {visualizations.data.map((visualization) => (
+        {visualizations.get('data').map((visualization) => (
           <MenuItem
-            key={visualization._id}
-            primaryText={visualization.name}
-            value={visualization._id}
+            key={visualization.get('_id')}
+            primaryText={visualization.get('name')}
+            value={visualization.get('_id')}
           />
         ))}
       </SelectField>

@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react'
+import {List, Map} from 'immutable'
 import {connect} from 'react-redux'
 import FilterCriteria from './FilterCriteria'
 import SourceSelect from './SourceSelect'
@@ -34,8 +35,8 @@ const style = {
 class Search extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    filters: PropTypes.array.isRequired,
-    searchResults: PropTypes.object.isRequired,
+    filters: PropTypes.instanceOf(List),
+    searchResults: PropTypes.instanceOf(Map),
     source: PropTypes.string.isRequired
   }
 
@@ -134,22 +135,27 @@ class Search extends Component {
             onTouchTap={this.onClick}
           />
           {(() => {
-            if (searchResults.data && searchResults.data.length > 0) {
-              const columns = Object.keys(searchResults.data[0]).map((data) => ({
-                title: data.toUpperCase(),
-                data
-              }))
-
-              return (
-                <div>
-                  <h2>Results</h2>
-                  <DataTable
-                    columns={columns}
-                    data={searchResults.data}
-                  />
-                </div>
-              )
+            if (searchResults.get('data').size === 0) {
+              return
             }
+
+            const data = searchResults.get('data').toJS()
+            const columns = Object.keys(data[0]).map((column) => ({
+              title: column.toUpperCase(),
+              data: column
+            }))
+
+            console.log(data)
+
+            return (
+              <div>
+                <h2>Results</h2>
+                <DataTable
+                  columns={columns}
+                  data={data}
+                />
+              </div>
+            )
           })()}
         </main>
       </div>

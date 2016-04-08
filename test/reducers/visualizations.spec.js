@@ -1,5 +1,6 @@
 /* globals describe, it */
 
+import {List, Map} from 'immutable'
 import expect from 'expect'
 import {
   FETCH_VISUALIZATIONS_REQUEST,
@@ -11,12 +12,12 @@ import {
 
 describe('visualizations reducer', () => {
   it('should return the initial state', () => {
-    const stateAfter = {
-      data: [],
+    const stateAfter = Map({
+      data: List(),
       didInvalidate: false,
       isFetching: false,
       lastUpdated: null
-    }
+    })
 
     expect(reducer(undefined, {})).toEqual(stateAfter)
   })
@@ -25,12 +26,12 @@ describe('visualizations reducer', () => {
     const action = {
       type: FETCH_VISUALIZATIONS_REQUEST
     }
-    const stateAfter = {
-      data: [],
+    const stateAfter = Map({
+      data: List(),
       didInvalidate: false,
       isFetching: true,
       lastUpdated: null
-    }
+    })
 
     expect(reducer(undefined, action)).toEqual(stateAfter)
   })
@@ -45,12 +46,12 @@ describe('visualizations reducer', () => {
       type: FETCH_VISUALIZATIONS_SUCCESS
     }
     const result = reducer(undefined, action)
-    const stateAfter = {
-      data,
+    const stateAfter = Map({
+      data: List(data),
       didInvalidate: false,
       isFetching: false,
-      lastUpdated: result.lastUpdated
-    }
+      lastUpdated: result.get('lastUpdated')
+    })
 
     expect(result).toEqual(stateAfter)
   })

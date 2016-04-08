@@ -1,5 +1,6 @@
 /* global describe, it */
 
+import {Map} from 'immutable'
 import expect from 'expect'
 import {
   RESET_UPLOAD_DATA_TYPES,
@@ -10,9 +11,9 @@ import {
   uploadDataTypes as reducer
 } from '../../src/js/reducers'
 
-describe('upload reducer', () => {
+describe('upload-data-type reducer', () => {
   it('should return the initial state', () => {
-    const stateAfter = {}
+    const stateAfter = Map()
 
     expect(reducer(undefined, {})).toEqual(stateAfter)
   })
@@ -27,19 +28,19 @@ describe('upload reducer', () => {
       type: SET_UPLOAD_DATA_TYPES
     }
     const result = reducer(undefined, action)
-    const stateAfter = uploadDataTypes
+    const stateAfter = Map(uploadDataTypes)
     expect(result).toEqual(stateAfter)
   })
 
   it('should update state for SET_UPLOAD_DATA_TYPE_BY_HEADER_NAME', () => {
-    const stateBefore = {
+    const stateBefore = Map({
       columnName1: 'type1',
       columnName2: 'type2'
-    }
-    const stateAfter = {
+    })
+    const stateAfter = Map({
       columnName1: 'type1',
       columnName2: 'type3'
-    }
+    })
     const action = {
       payload: {header: 'columnName2', value: 'type3'},
       type: SET_UPLOAD_DATA_TYPE_BY_HEADER_NAME
@@ -51,16 +52,16 @@ describe('upload reducer', () => {
   })
 
   it('should reset upload data types from RESET_UPLOAD_DATA_TYPES', () => {
-    const stateBefore = {
+    const stateBefore = Map({
       columnName1: 'type1',
       columnName2: 'type2'
-    }
+    })
     const action = {
       type: RESET_UPLOAD_DATA_TYPES
     }
 
     const result = reducer(stateBefore, action)
 
-    expect(result).toEqual({})
+    expect(result).toEqual(Map())
   })
 })

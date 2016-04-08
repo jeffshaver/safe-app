@@ -1,3 +1,4 @@
+import {List, Map} from 'immutable'
 import {
   ADD_FILTER,
   EDIT_FILTER,
@@ -6,41 +7,30 @@ import {
 } from '../action-types'
 
 let nextFilterId = 0
-const initialState = [{
-  id: nextFilterId,
+const initialState = List([Map({
   field: '',
+  id: nextFilterId,
   operator: '',
   value: ''
-}]
+})])
 
 export default (state = initialState, action) => {
   const {filter, index, value} = action.payload || {}
 
   switch (action.type) {
     case ADD_FILTER:
-      return [
-        ...state,
-        {
-          ...filter,
-          id: ++nextFilterId
-        }
-      ]
+      return state.push(Map({
+        field: filter.field,
+        id: ++nextFilterId,
+        operator: filter.operator,
+        value: filter.value
+      }))
     case EDIT_FILTER:
-      return [
-        ...state.slice(0, index),
-        {
-          ...state[index],
-          ...value
-        },
-        ...state.slice(index + 1)
-      ]
+      return state.update(index, (oldValue) => oldValue.merge(value))
     case REMOVE_FILTER:
-      return [
-        ...state.slice(0, index),
-        ...state.slice(index + 1)
-      ]
+      return state.delete(index)
     case RESET_FILTERS:
-      return []
+      return initialState
     default:
       return state
   }

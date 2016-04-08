@@ -111,13 +111,9 @@ class Upload extends Component {
 
   renderResults () {
     const {uploadDataTypes} = this.props
-    const headers = Object.keys(uploadDataTypes)
+    const headers = uploadDataTypes.keySeq()
 
-    if (headers.length === 0) {
-      return
-    }
-
-    return headers.map((header) => this.renderColumnMenu(header, uploadDataTypes[header]))
+    return headers.map((header) => this.renderColumnMenu(header, uploadDataTypes.get(header)))
   }
 
   handleNonCsvDialogClose = () => {

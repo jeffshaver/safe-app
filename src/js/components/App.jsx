@@ -38,14 +38,14 @@ class App extends Component {
     const {children, user} = this.props
     let content
 
-    if (user.isFetching) {
+    if (user.get('isFetching')) {
       content = (
         <div style={[style.loading.wrapper]}>
           <CircularProgress />
           <h1>Fetching User Data</h1>
         </div>
       )
-    } else if (!user.data.authenticated) {
+    } else if (!user.getIn(['data', 'authenticated'])) {
       content = (
         <h1>{'You aren\'t authenticated'}</h1>
       )

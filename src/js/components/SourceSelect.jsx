@@ -1,11 +1,12 @@
 import React, {Component, PropTypes} from 'react'
+import {Map} from 'immutable'
 import {connect} from 'react-redux'
 import {MenuItem, SelectField} from 'material-ui'
 
 class SourceSelect extends Component {
   static propTypes = {
     source: PropTypes.string.isRequired,
-    sources: PropTypes.object.isRequired,
+    sources: PropTypes.instanceOf(Map).isRequired,
     style: PropTypes.object,
     onChange: PropTypes.func.isRequired
   }
@@ -30,11 +31,11 @@ class SourceSelect extends Component {
         value={source}
         onChange={onChange}
       >
-        {sources.data.map((source) => (
+        {sources.get('data').map((source) => (
           <MenuItem
-            key={source._id}
-            primaryText={source.name}
-            value={source._id}
+            key={source.get('_id')}
+            primaryText={source.get('name')}
+            value={source.get('_id')}
           />
         ))}
       </SelectField>

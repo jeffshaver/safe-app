@@ -1,5 +1,6 @@
 /* global describe, it */
 
+import {fromJS, List, Map} from 'immutable'
 import expect from 'expect'
 import {
   FETCH_SEARCH_RESULTS_REQUEST,
@@ -11,12 +12,12 @@ import {
 
 describe('searchResults reducer', () => {
   it('should return the initial state', () => {
-    const stateAfter = {
-      data: [],
+    const stateAfter = Map({
+      data: List(),
       didInvalidate: false,
       isFetching: false,
       lastUpdated: null
-    }
+    })
 
     expect(reducer(undefined, {})).toEqual(stateAfter)
   })
@@ -25,21 +26,28 @@ describe('searchResults reducer', () => {
     const action = {
       type: FETCH_SEARCH_RESULTS_REQUEST
     }
-    const stateAfter = {
-      data: [],
+    const stateAfter = Map({
+      data: List(),
       didInvalidate: false,
       isFetching: true,
       lastUpdated: null
-    }
+    })
 
     expect(reducer(undefined, action)).toEqual(stateAfter)
   })
 
   it('should handle FETCH_SEARCH_RESULTS_SUCCESS', () => {
-    const data = [
-      {_id: 1, name: 'John', age: 25, county: 'Howard'},
-      {_id: 4, name: 'Bob', age: 40, county: 'Howard'}
-    ]
+    const data = [{
+      _id: 1,
+      name: 'John',
+      age: 25,
+      county: 'Howard'
+    }, {
+      _id: 4,
+      name: 'Bob',
+      age: 40,
+      county: 'Howard'
+    }]
     const action = {
       payload: {data},
       didInvalidate: false,
@@ -48,12 +56,12 @@ describe('searchResults reducer', () => {
       type: FETCH_SEARCH_RESULTS_SUCCESS
     }
     const result = reducer(undefined, action)
-    const stateAfter = {
-      data,
+    const stateAfter = Map({
+      data: fromJS(data),
       didInvalidate: false,
       isFetching: false,
-      lastUpdated: result.lastUpdated
-    }
+      lastUpdated: result.get('lastUpdated')
+    })
 
     expect(result).toEqual(stateAfter)
   })

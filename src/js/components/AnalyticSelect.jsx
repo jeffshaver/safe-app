@@ -1,11 +1,12 @@
 import React, {Component, PropTypes} from 'react'
+import {Map} from 'immutable'
 import {connect} from 'react-redux'
 import {MenuItem, SelectField} from 'material-ui'
 
 class AnalyticSelect extends Component {
   static propTypes = {
     analytic: PropTypes.string.isRequired,
-    analytics: PropTypes.object.isRequired,
+    analytics: PropTypes.instanceOf(Map),
     style: PropTypes.object,
     onChange: PropTypes.func.isRequired
   }
@@ -30,11 +31,11 @@ class AnalyticSelect extends Component {
         value={analytic}
         onChange={onChange}
       >
-        {analytics.data.map((analytic) => (
+        {analytics.get('data').map((analytic) => (
           <MenuItem
-            key={analytic._id}
-            primaryText={analytic.name}
-            value={analytic._id}
+            key={analytic.get('_id')}
+            primaryText={analytic.get('name')}
+            value={analytic.get('_id')}
           />
         ))}
       </SelectField>

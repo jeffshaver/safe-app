@@ -1,5 +1,6 @@
 /* global describe, it */
 
+import {List, Map} from 'immutable'
 import expect from 'expect'
 import {
   FETCH_SOURCE_FIELDS_REQUEST,
@@ -11,12 +12,12 @@ import {
 
 describe('fields reducer', () => {
   it('should return the initial state', () => {
-    const stateAfter = {
-      data: [],
+    const stateAfter = Map({
+      data: List(),
       didInvalidate: false,
       isFetching: false,
       lastUpdated: null
-    }
+    })
 
     expect(reducer(undefined, {})).toEqual(stateAfter)
   })
@@ -25,12 +26,12 @@ describe('fields reducer', () => {
     const action = {
       type: FETCH_SOURCE_FIELDS_REQUEST
     }
-    const stateAfter = {
-      data: [],
+    const stateAfter = Map({
+      data: List(),
       didInvalidate: false,
       isFetching: true,
       lastUpdated: null
-    }
+    })
 
     expect(reducer(undefined, action)).toEqual(stateAfter)
   })
@@ -45,12 +46,12 @@ describe('fields reducer', () => {
       type: FETCH_SOURCE_FIELDS_SUCCESS
     }
     const result = reducer(undefined, action)
-    const stateAfter = {
-      data,
+    const stateAfter = Map({
+      data: List(data),
       didInvalidate: false,
       isFetching: false,
-      lastUpdated: result.lastUpdated
-    }
+      lastUpdated: result.get('lastUpdated')
+    })
 
     expect(result).toEqual(stateAfter)
   })

@@ -1,35 +1,33 @@
+import {Map} from 'immutable'
 import {
   // FETCH_USER_FAILURE,
   FETCH_USER_REQUEST,
   FETCH_USER_SUCCESS
 } from '../action-types'
 
-const initialState = {
-  data: {},
+const initialState = Map({
+  data: Map(),
   didInvalidate: false,
   isFetching: false,
   lastUpdated: null
-}
+})
 
 export default (state = initialState, action) => {
   const {data} = action.payload || {}
 
   switch (action.type) {
     case FETCH_USER_SUCCESS:
-      return {
-        ...state,
-        didInvalidate: false,
+      return state.merge({
         data,
+        didInvalidate: false,
         isFetching: false,
         lastUpdated: action.recievedAt
-      }
+      })
     case FETCH_USER_REQUEST:
-      return {
-        ...state,
+      return state.merge({
         didInvalidate: false,
         isFetching: true
-
-      }
+      })
     default:
       return state
   }
