@@ -4,7 +4,7 @@ import expect from 'expect'
 import {
   FETCH_SOURCE_FIELDS_REQUEST,
   FETCH_SOURCE_FIELDS_SUCCESS
-} from '../../src/js/actionTypes'
+} from '../../src/js/action-types'
 import {
   fields as reducer
 } from '../../src/js/reducers'

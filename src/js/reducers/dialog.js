@@ -1,6 +1,6 @@
 import {
     SET_DIALOG_OPEN
-} from '../actionTypes'
+} from '../action-types'
 
 export default (state = false, action) => {
   switch (action.type) {

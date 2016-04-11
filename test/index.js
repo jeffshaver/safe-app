@@ -29,8 +29,8 @@ require('./reducers/fields.spec')
 
 // search results
 
-require('./actions/searchResults.spec')
-require('./reducers/searchResults.spec')
+require('./actions/search-results.spec')
+require('./reducers/search-results.spec')
 
 // sources
 

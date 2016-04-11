@@ -3,7 +3,7 @@
 import expect from 'expect'
 import {
   SET_ANALYTIC
-} from '../../src/js/actionTypes'
+} from '../../src/js/action-types'
 import {
   analytic as reducer
 } from '../../src/js/reducers'

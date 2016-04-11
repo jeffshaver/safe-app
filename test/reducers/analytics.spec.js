@@ -4,7 +4,7 @@ import expect from 'expect'
 import {
   FETCH_ANALYTICS_REQUEST,
   FETCH_ANALYTICS_SUCCESS
-} from '../../src/js/actionTypes'
+} from '../../src/js/action-types'
 import {
   analytics as reducer
 } from '../../src/js/reducers'

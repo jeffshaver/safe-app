@@ -2,7 +2,7 @@ import {
   // FETCH_SOURCES_FAILURE,
   FETCH_SOURCES_REQUEST,
   FETCH_SOURCES_SUCCESS
-} from '../actionTypes'
+} from '../action-types'
 
 const initialState = {
   data: [],

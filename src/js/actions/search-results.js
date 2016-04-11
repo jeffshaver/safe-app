@@ -2,7 +2,7 @@ import fetch from 'isomorphic-fetch'
 import {
   FETCH_SEARCH_RESULTS_REQUEST,
   FETCH_SEARCH_RESULTS_SUCCESS
-} from '../actionTypes'
+} from '../action-types'
 import {apiUri} from '../../../config'
 
 export const fetchSearchResultsSuccess = (json) => ({

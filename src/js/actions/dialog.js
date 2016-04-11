@@ -1,6 +1,6 @@
 import {
     SET_DIALOG_OPEN
-} from '../actionTypes'
+} from '../action-types'
 
 export const setDialogOpen = (payload) => ({
   type: SET_DIALOG_OPEN,

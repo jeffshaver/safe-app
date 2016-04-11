@@ -4,7 +4,7 @@ import expect from 'expect'
 import {
   FETCH_SEARCH_RESULTS_REQUEST,
   FETCH_SEARCH_RESULTS_SUCCESS
-} from '../../src/js/actionTypes'
+} from '../../src/js/action-types'
 import {
   searchResults as reducer
 } from '../../src/js/reducers'

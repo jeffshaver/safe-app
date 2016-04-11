@@ -3,7 +3,7 @@
 import expect from 'expect'
 import {
   SET_DIALOG_OPEN
-} from '../../src/js/actionTypes'
+} from '../../src/js/action-types'
 import {
   setDialogOpen
 } from '../../src/js/actions'

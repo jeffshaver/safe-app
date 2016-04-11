@@ -1,6 +1,6 @@
 import {
   SET_ANALYTIC
-} from '../actionTypes'
+} from '../action-types'
 
 export default (state = '', action) => {
   switch (action.type) {

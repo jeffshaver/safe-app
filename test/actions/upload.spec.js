@@ -5,7 +5,7 @@ import {
   RESET_UPLOAD_DATA_TYPES,
   SET_UPLOAD_DATA_TYPE_BY_HEADER_NAME,
   SET_UPLOAD_DATA_TYPES
-} from '../../src/js/actionTypes'
+} from '../../src/js/action-types'
 import {
   resetUploadDataTypes,
   setUploadDataTypeByHeaderName,

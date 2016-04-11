@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import Radium from 'radium'
-import {large} from '../styles/mediaQueries'
+import {large} from '../styles/media-queries'
 
 const style = {
   padding: '0 0 0 175px',

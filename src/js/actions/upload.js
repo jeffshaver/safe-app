@@ -2,7 +2,7 @@ import {
   RESET_UPLOAD_DATA_TYPES,
   SET_UPLOAD_DATA_TYPE_BY_HEADER_NAME,
   SET_UPLOAD_DATA_TYPES
-} from '../actionTypes'
+} from '../action-types'
 
 export const resetUploadDataTypes = () => ({
   type: RESET_UPLOAD_DATA_TYPES

@@ -3,7 +3,7 @@ import {
   // FETCH_SOURCE_FIELDS_FAILURE,
   FETCH_SOURCE_FIELDS_REQUEST,
   FETCH_SOURCE_FIELDS_SUCCESS
-} from '../actionTypes'
+} from '../action-types'
 import {apiUri} from '../../../config'
 
 export const fetchSourceFieldsSuccess = (json) => ({

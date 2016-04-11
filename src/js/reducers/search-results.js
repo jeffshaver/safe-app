@@ -2,7 +2,7 @@ import {
   // FETCH_SEARCH_RESULTS_FAILURE,
   FETCH_SEARCH_RESULTS_REQUEST,
   FETCH_SEARCH_RESULTS_SUCCESS
-} from '../actionTypes'
+} from '../action-types'
 
 const initialState = {
   data: [],

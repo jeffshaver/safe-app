@@ -3,7 +3,7 @@
 import expect from 'expect'
 import {
   SET_SOURCE
-} from '../../src/js/actionTypes'
+} from '../../src/js/action-types'
 import {
   source as reducer
 } from '../../src/js/reducers'

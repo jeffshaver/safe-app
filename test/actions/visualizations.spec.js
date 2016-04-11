@@ -7,7 +7,7 @@ import expect from 'expect'
 import {
   FETCH_VISUALIZATIONS_REQUEST,
   FETCH_VISUALIZATIONS_SUCCESS
-} from '../../src/js/actionTypes'
+} from '../../src/js/action-types'
 import {
   fetchVisualizations,
   fetchVisualizationsRequest

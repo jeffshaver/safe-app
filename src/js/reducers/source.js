@@ -1,6 +1,6 @@
 import {
   SET_SOURCE
-} from '../actionTypes'
+} from '../action-types'
 
 export default (state = '', action) => {
   switch (action.type) {

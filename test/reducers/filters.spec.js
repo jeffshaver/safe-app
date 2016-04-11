@@ -7,7 +7,7 @@ import {
   EDIT_FILTER,
   REMOVE_FILTER,
   RESET_FILTERS
-} from '../../src/js/actionTypes'
+} from '../../src/js/action-types'
 import {
   filters as reducer
 } from '../../src/js/reducers'

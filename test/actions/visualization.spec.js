@@ -3,7 +3,7 @@
 import expect from 'expect'
 import {
   SET_VISUALIZATION
-} from '../../src/js/actionTypes'
+} from '../../src/js/action-types'
 import {
   setVisualization
 } from '../../src/js/actions'

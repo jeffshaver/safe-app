@@ -2,7 +2,7 @@ import fetch from 'isomorphic-fetch'
 import {
   FETCH_VISUALIZATIONS_REQUEST,
   FETCH_VISUALIZATIONS_SUCCESS
-} from '../actionTypes'
+} from '../action-types'
 import {apiUri} from '../../../config'
 
 export const fetchVisualizationsSuccess = (json) => ({

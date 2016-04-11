@@ -1,6 +1,6 @@
 import {
   SET_VISUALIZATION
-} from '../actionTypes'
+} from '../action-types'
 
 export default (state = '', action) => {
   switch (action.type) {

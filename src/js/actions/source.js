@@ -1,6 +1,6 @@
 import {
   SET_SOURCE
-} from '../actionTypes'
+} from '../action-types'
 
 export const setSource = (source) => ({
   type: SET_SOURCE,

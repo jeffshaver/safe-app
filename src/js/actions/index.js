@@ -24,7 +24,7 @@ import {
   fetchSearchResults,
   fetchSearchResultsRequest,
   fetchSearchResultsSuccess
-} from './searchResults'
+} from './search-results'
 import {
   setSource
 } from './source'

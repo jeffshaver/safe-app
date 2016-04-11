@@ -1,6 +1,6 @@
 import {
   SET_VISUALIZATION
-} from '../actionTypes'
+} from '../action-types'
 
 export const setVisualization = (visualization) => ({
   type: SET_VISUALIZATION,

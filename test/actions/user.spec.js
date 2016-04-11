@@ -7,7 +7,7 @@ import expect from 'expect'
 import {
   FETCH_USER_REQUEST,
   FETCH_USER_SUCCESS
-} from '../../src/js/actionTypes'
+} from '../../src/js/action-types'
 import {
   fetchUser,
   fetchUserRequest

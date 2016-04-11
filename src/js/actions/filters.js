@@ -3,7 +3,7 @@ import {
   EDIT_FILTER,
   REMOVE_FILTER,
   RESET_FILTERS
-} from '../actionTypes'
+} from '../action-types'
 
 export const addFilter = (filters) => ({
   type: ADD_FILTER,

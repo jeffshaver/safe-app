@@ -3,7 +3,7 @@ import {
   EDIT_FILTER,
   REMOVE_FILTER,
   RESET_FILTERS
-} from '../actionTypes'
+} from '../action-types'
 
 let nextFilterId = 0
 const initialState = [{
