@@ -17,6 +17,10 @@ require('./reducers/dialog.spec')
 require('./actions/filters.spec')
 require('./reducers/filters.spec')
 
+// hydrateable
+
+require('./reducers/hydrateable.spec')
+
 // source
 
 require('./actions/source.spec')

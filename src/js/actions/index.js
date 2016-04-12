@@ -1,4 +1,5 @@
 import {
+  hydrateAnalytic,
   setAnalytic
 } from './analytic'
 import {
@@ -17,6 +18,7 @@ import {
 import {
   addFilter,
   editFilter,
+  hydrateFilters,
   removeFilter,
   resetFilters
 } from './filters'
@@ -26,6 +28,7 @@ import {
   fetchSearchResultsSuccess
 } from './search-results'
 import {
+  hydrateSource,
   setSource
 } from './source'
 import {
@@ -44,6 +47,7 @@ import {
   fetchUserSuccess
 } from './user'
 import {
+  hydrateVisualization,
   setVisualization
 } from './visualization'
 import {
@@ -59,6 +63,7 @@ export {fetchAnalyticsSuccess}
 export {fetchSearchResults}
 export {fetchSearchResultsRequest}
 export {fetchSearchResultsSuccess}
+export {hydrateAnalytic}
 export {setDialogOpen}
 export {resetUploadDataTypes}
 export {setUploadDataTypeByHeaderName}
@@ -68,15 +73,18 @@ export {fetchSourceFieldsRequest}
 export {fetchSourceFieldsSuccess}
 export {addFilter}
 export {editFilter}
+export {hydrateFilters}
 export {removeFilter}
 export {resetFilters}
 export {setSource}
 export {fetchSources}
 export {fetchSourcesRequest}
 export {fetchSourcesSuccess}
+export {hydrateSource}
 export {fetchUser}
 export {fetchUserRequest}
 export {fetchUserSuccess}
+export {hydrateVisualization}
 export {setVisualization}
 export {fetchVisualizations}
 export {fetchVisualizationsRequest}

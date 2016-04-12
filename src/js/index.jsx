@@ -4,7 +4,7 @@ import {IndexRoute, Router, Route, browserHistory} from 'react-router'
 import {syncHistoryWithStore} from 'react-router-redux'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import {Provider} from 'react-redux'
-import {configureStore} from './configure-store'
+import {store} from './store'
 import Analytics from './components/Analytics'
 import App from './components/App'
 import Home from './components/Home'
@@ -14,7 +14,6 @@ import Upload from './components/Upload'
 
 injectTapEventPlugin()
 
-const store = configureStore()
 const history = syncHistoryWithStore(browserHistory, store)
 
 ReactDOM.render((

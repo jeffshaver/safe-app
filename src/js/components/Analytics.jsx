@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
+import {Hydrateable} from '../decorators'
 import AnalyticSelect from './AnalyticSelect'
 import FilterCriteria from './FilterCriteria'
 import SourceSelect from './SourceSelect'
@@ -27,15 +28,20 @@ const style = {
   }
 }
 
+@Hydrateable('Analytics', ['analytic', 'filters', 'source', 'visualization'])
 class Analytics extends Component {
   static propTypes = {
     analytic: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    source: PropTypes.string.isRequired
+    filters: PropTypes.array.isRequired,
+    source: PropTypes.string.isRequired,
+    visualization: PropTypes.string.isRequired
   }
 
   constructor (props) {
     super(props)
+
+    this.displayName = 'Analytics'
 
     this.onAddFilter = ::this.onAddFilter
     this.onChangeAnalytic = ::this.onChangeAnalytic
@@ -170,5 +176,7 @@ class Analytics extends Component {
 
 export default connect((state) => ({
   analytic: state.analytic,
-  source: state.source
+  filters: state.filters,
+  source: state.source,
+  visualization: state.visualization
 }))(Analytics)

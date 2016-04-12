@@ -1,10 +1,10 @@
 import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
+import {Hydrateable} from '../decorators'
 import FilterCriteria from './FilterCriteria'
 import SourceSelect from './SourceSelect'
 import {BasicDataTable} from 'safe-framework'
 import {RaisedButton} from 'material-ui'
-
 import {
   addFilter,
   editFilter,
@@ -14,7 +14,6 @@ import {
   removeFilter,
   setSource
 } from '../actions'
-
 import {header, main} from '../styles/common'
 
 const style = {
@@ -32,6 +31,7 @@ const style = {
   }
 }
 
+@Hydrateable('Search', ['filters', 'source'])
 class Search extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -42,6 +42,8 @@ class Search extends Component {
 
   constructor (props) {
     super(props)
+
+    this.displayName = 'Search'
 
     this.onAddFilter = ::this.onAddFilter
     this.onChangeField = ::this.onChangeField
