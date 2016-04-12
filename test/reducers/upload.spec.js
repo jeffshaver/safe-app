@@ -2,7 +2,7 @@
 
 import expect from 'expect'
 import {
-  CLEAR_UPLOAD_DATA_TYPES,
+  RESET_UPLOAD_DATA_TYPES,
   SET_UPLOAD_DATA_TYPE_BY_HEADER_NAME,
   SET_UPLOAD_DATA_TYPES
 } from '../../src/js/actionTypes'
@@ -49,18 +49,18 @@ describe('upload reducer', () => {
 
     expect(result).toEqual(stateAfter)
   })
-  
-  it('should clear upload data types from CLEAR_UPLOAD_DATA_TYPES', () => {
+
+  it('should reset upload data types from RESET_UPLOAD_DATA_TYPES', () => {
     const stateBefore = {
       columnName1: 'type1',
       columnName2: 'type2'
     }
     const action = {
-      type: CLEAR_UPLOAD_DATA_TYPES
+      type: RESET_UPLOAD_DATA_TYPES
     }
-    
+
     const result = reducer(stateBefore, action)
-    
+
     expect(result).toEqual({})
   })
 })

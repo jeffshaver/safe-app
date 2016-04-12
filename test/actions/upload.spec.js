@@ -2,12 +2,12 @@
 
 import expect from 'expect'
 import {
-  CLEAR_UPLOAD_DATA_TYPES,
+  RESET_UPLOAD_DATA_TYPES,
   SET_UPLOAD_DATA_TYPE_BY_HEADER_NAME,
   SET_UPLOAD_DATA_TYPES
 } from '../../src/js/actionTypes'
 import {
-  clearUploadDataTypes,
+  resetUploadDataTypes,
   setUploadDataTypeByHeaderName,
   setUploadDataTypes
 } from '../../src/js/actions'
@@ -39,12 +39,12 @@ describe('upload actions', () => {
 
     expect(setUploadDataTypeByHeaderName(payload)).toEqual(expectedAction)
   })
-  
-  it('creates a CLEAR_UPLOAD_DATA_TYPES action', () => {
+
+  it('creates a RESET_UPLOAD_DATA_TYPES action', () => {
     const expectedAction = {
-      type: CLEAR_UPLOAD_DATA_TYPES
+      type: RESET_UPLOAD_DATA_TYPES
     }
-    
-    expect(clearUploadDataTypes()).toEqual(expectedAction)
+
+    expect(resetUploadDataTypes()).toEqual(expectedAction)
   })
 })

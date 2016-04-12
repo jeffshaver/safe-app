@@ -34,7 +34,7 @@ import {
   fetchSourcesSuccess
 } from './sources'
 import {
-  clearUploadDataTypes,
+  resetUploadDataTypes,
   setUploadDataTypeByHeaderName,
   setUploadDataTypes
 } from './upload'
@@ -60,7 +60,7 @@ export {fetchSearchResults}
 export {fetchSearchResultsRequest}
 export {fetchSearchResultsSuccess}
 export {setDialogOpen}
-export {clearUploadDataTypes}
+export {resetUploadDataTypes}
 export {setUploadDataTypeByHeaderName}
 export {setUploadDataTypes}
 export {fetchSourceFields}

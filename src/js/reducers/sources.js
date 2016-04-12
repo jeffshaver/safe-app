@@ -26,7 +26,6 @@ export default (state = initialState, action) => {
         ...state,
         didInvalidate: false,
         isFetching: true
-
       }
     default:
       return state

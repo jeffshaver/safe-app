@@ -1,11 +1,11 @@
 import {
-  CLEAR_UPLOAD_DATA_TYPES,
+  RESET_UPLOAD_DATA_TYPES,
   SET_UPLOAD_DATA_TYPE_BY_HEADER_NAME,
   SET_UPLOAD_DATA_TYPES
 } from '../actionTypes'
 
-export const clearUploadDataTypes = () => ({
-  type: CLEAR_UPLOAD_DATA_TYPES
+export const resetUploadDataTypes = () => ({
+  type: RESET_UPLOAD_DATA_TYPES
 })
 
 export const setUploadDataTypeByHeaderName = (payload) => ({

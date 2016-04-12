@@ -4,7 +4,7 @@ import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import Papa from 'papaparse'
 import {FileInput} from 'safe-framework'
-import {clearUploadDataTypes, setDialogOpen, setUploadDataTypes, setUploadDataTypeByHeaderName} from '../actions'
+import {resetUploadDataTypes, setDialogOpen, setUploadDataTypes, setUploadDataTypeByHeaderName} from '../actions'
 import {Dialog, DropDownMenu, FlatButton, MenuItem} from 'material-ui'
 import {header, main} from '../styles/common'
 
@@ -24,21 +24,33 @@ class Upload extends Component {
   constructor (props) {
     super(props)
 
-    this.checkAndParseFile = ::this.checkAndParseFile
     this.parseComplete = ::this.parseComplete
     this.parseError = ::this.parseError
+    this.shouldRejectFile = ::this.shouldRejectFile
+    this.onFileChange = ::this.onFileChange
+    this.onFileReject = ::this.onFileReject
+
     this.state = {open: false}
   }
 
-  checkAndParseFile (file) {
+  componentWillUnmount () {
     const {dispatch} = this.props
-    if (getFileExtension(file.name) !== 'csv') {
-      this.parseError(new Error('Only CSV files are supported'), file)
-      dispatch(clearUploadDataTypes())
 
-      return dispatch(setDialogOpen(true))
-    }
+    dispatch(resetUploadDataTypes())
+  }
 
+  shouldRejectFile (file) {
+    return getFileExtension(file.name) !== 'csv'
+  }
+
+  onFileReject (file) {
+    const {dispatch} = this.props
+
+    dispatch(resetUploadDataTypes())
+    dispatch(setDialogOpen(true))
+  }
+
+  onFileChange (file) {
     Papa.parse(file, {
       complete: this.parseComplete,
       dynamicTyping: true,
@@ -65,12 +77,13 @@ class Upload extends Component {
   parseError (error, file) {
     console.log(`Error while trying to parse file: ${file.name}`, error)
   }
-  
+
   handleDataTypeChange (header, value) {
     const {dispatch} = this.props
+
     dispatch(setUploadDataTypeByHeaderName({header, value}))
   }
-  
+
   renderColumnMenu (header, value) {
     return (
       <div key={header}>{header}
@@ -86,7 +99,7 @@ class Upload extends Component {
       </div>
     )
   }
-  
+
   renderMenuItem (value) {
     return (
       <MenuItem
@@ -95,22 +108,24 @@ class Upload extends Component {
       />
     )
   }
-  
+
   renderResults () {
     const {uploadDataTypes} = this.props
-    
-    if (Object.keys(uploadDataTypes).length !== 0) {
-      return (
-        Object.keys(uploadDataTypes).map((header) => this.renderColumnMenu(header, uploadDataTypes[header]))
-      )
+    const headers = Object.keys(uploadDataTypes)
+
+    if (headers.length === 0) {
+      return
     }
+
+    return headers.map((header) => this.renderColumnMenu(header, uploadDataTypes[header]))
   }
 
   handleNonCsvDialogClose = () => {
     const {dispatch} = this.props
+
     dispatch(setDialogOpen(false))
   }
-  
+
   render () {
     const actions = [
       <FlatButton
@@ -129,7 +144,12 @@ class Upload extends Component {
         </header>
         <main style={main}>
           <h3>Upload a Dataset</h3>
-          <FileInput onChange={this.checkAndParseFile} />
+          <FileInput
+            accept={'.csv'}
+            shouldReject={this.shouldRejectFile}
+            onChange={this.onFileChange}
+            onReject={this.onFileReject}
+          />
           {this.renderResults()}
         </main>
         <Dialog
