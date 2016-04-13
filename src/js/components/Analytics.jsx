@@ -11,6 +11,7 @@ import {
   fetchSourceFields,
   fetchSources,
   fetchVisualizations,
+  removeFilter,
   setAnalytic,
   setSource,
   setVisualization
@@ -43,6 +44,7 @@ class Analytics extends Component {
     this.onChangeSource = ::this.onChangeSource
     this.onChangeValue = ::this.onChangeValue
     this.onChangeVisualization = ::this.onChangeVisualization
+    this.onRemoveFilter = ::this.onRemoveFilter
   }
 
   componentWillMount () {
@@ -104,6 +106,13 @@ class Analytics extends Component {
     dispatch(setVisualization(visualization))
   }
 
+  onRemoveFilter (ev, index) {
+    const {dispatch} = this.props
+
+    ev.preventDefault()
+    dispatch(removeFilter(index))
+  }
+
   render () {
     const {source, analytic} = this.props
     const analyticStyle = source === ''
@@ -151,6 +160,7 @@ class Analytics extends Component {
             onChangeField={this.onChangeField}
             onChangeOperator={this.onChangeOperator}
             onChangeValue={this.onChangeValue}
+            onRemove={this.onRemoveFilter}
           />
         </main>
       </div>

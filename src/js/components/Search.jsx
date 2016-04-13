@@ -11,6 +11,7 @@ import {
   fetchSearchResults,
   fetchSourceFields,
   fetchSources,
+  removeFilter,
   setSource
 } from '../actions'
 
@@ -48,6 +49,7 @@ class Search extends Component {
     this.onChangeSource = ::this.onChangeSource
     this.onChangeValue = ::this.onChangeValue
     this.onClick = ::this.onClick
+    this.onRemoveFilter = ::this.onRemoveFilter
   }
 
   componentWillMount () {
@@ -99,6 +101,13 @@ class Search extends Component {
     dispatch(fetchSearchResults(source, filters))
   }
 
+  onRemoveFilter (ev, index) {
+    const {dispatch} = this.props
+
+    ev.preventDefault()
+    dispatch(removeFilter(index))
+  }
+
   render () {
     const {source, searchResults} = this.props
     const filterStyle = source === ''
@@ -125,6 +134,7 @@ class Search extends Component {
             onChangeField={this.onChangeField}
             onChangeOperator={this.onChangeOperator}
             onChangeValue={this.onChangeValue}
+            onRemove={this.onRemoveFilter}
           />
           <RaisedButton
             disabled={!source}

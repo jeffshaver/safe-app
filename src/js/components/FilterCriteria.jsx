@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {FloatingActionButton, MenuItem, SelectField, TextField} from 'material-ui'
 import ContentAdd from 'material-ui/lib/svg-icons/content/add'
+import ContentRemove from 'material-ui/lib/svg-icons/content/remove'
 
 class FilterCriteria extends Component {
   static propTypes = {
@@ -12,7 +13,8 @@ class FilterCriteria extends Component {
     onAdd: PropTypes.func.isRequired,
     onChangeField: PropTypes.func.isRequired,
     onChangeOperator: PropTypes.func.isRequired,
-    onChangeValue: PropTypes.func.isRequired
+    onChangeValue: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired
   }
 
   static defaultProps = {
@@ -29,7 +31,8 @@ class FilterCriteria extends Component {
       onAdd,
       onChangeField,
       onChangeOperator,
-      onChangeValue
+      onChangeValue,
+      onRemove
     } = this.props
 
     return (
@@ -91,11 +94,32 @@ class FilterCriteria extends Component {
                 onChange={(ev) => onChangeValue(i, ev.target.value)}
               />
               {(() => {
+                if (filters.length !== 1) {
+                  return (
+                    <FloatingActionButton
+                      mini={true}
+                      primary={true}
+                      style={{
+                        ...style,
+                        margin: '1em 0 0 1em'
+                      }}
+                      onTouchTap={(ev) => onRemove(ev, i)}
+                    >
+                      <ContentRemove />
+                    </FloatingActionButton>
+                  )
+                }
+              })()}
+              {(() => {
                 if (i === filters.length - 1) {
                   return (
                     <FloatingActionButton
                       mini={true}
                       secondary={true}
+                      style={{
+                        ...style,
+                        margin: '1em 0 0 1em'
+                      }}
                       onTouchTap={onAdd}
                     >
                       <ContentAdd />
