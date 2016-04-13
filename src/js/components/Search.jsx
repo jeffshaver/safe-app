@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import FilterCriteria from './FilterCriteria'
 import SourceSelect from './SourceSelect'
-import {DataTable} from 'safe-framework'
+import {BasicDataTable} from 'safe-framework'
 import {RaisedButton} from 'material-ui'
 
 import {
@@ -143,7 +143,7 @@ class Search extends Component {
               return (
                 <div>
                   <h2>Results</h2>
-                  <DataTable
+                  <BasicDataTable
                     columns={columns}
                     data={searchResults.data}
                   />
