@@ -5,7 +5,7 @@ import {AppCanvas, CircularProgress} from 'material-ui'
 import {Wrapper} from './Wrapper'
 import {GlobalStyles} from './GlobalStyles'
 import {LeftNav} from './LeftNav'
-import {fetchUser} from '../actions'
+import {fetchUser} from '../modules/user'
 
 const style = {
   loading: {

@@ -2,7 +2,7 @@
 
 import {compose, createStore, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
-import {rootReducer} from './reducers'
+import {rootReducer} from './modules'
 
 const enhancer = compose(
   applyMiddleware(thunk),
@@ -13,8 +13,8 @@ export const configureStore = (initialState) => {
   const store = createStore(rootReducer, initialState, enhancer)
 
   if (module.hot) {
-    module.hot.accept('./reducers', () => {
-      const nextReducer = require('./reducers').rootReducer
+    module.hot.accept('./modules', () => {
+      const nextReducer = require('./modules').rootReducer
 
       store.replaceReducer(nextReducer)
     })

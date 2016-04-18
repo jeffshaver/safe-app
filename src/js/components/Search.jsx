@@ -5,15 +5,11 @@ import FilterCriteria from './FilterCriteria'
 import SourceSelect from './SourceSelect'
 import {BasicDataTable} from 'safe-framework'
 import {RaisedButton} from 'material-ui'
-import {
-  addFilter,
-  editFilter,
-  fetchSearchResults,
-  fetchSourceFields,
-  fetchSources,
-  removeFilter,
-  setSource
-} from '../actions'
+import {fetchFields} from '../modules/fields'
+import {addFilter, editFilter, removeFilter} from '../modules/filters'
+import {fetchSearchResults} from '../modules/search-results'
+import {setSource} from '../modules/source'
+import {fetchSources} from '../modules/sources'
 import {header, main} from '../styles/common'
 
 const style = {
@@ -88,7 +84,7 @@ class Search extends Component {
 
     ev.preventDefault()
     dispatch(setSource(source))
-    dispatch(fetchSourceFields(source))
+    dispatch(fetchFields(source))
   }
 
   onChangeValue (index, value) {

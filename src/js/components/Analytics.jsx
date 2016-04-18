@@ -5,18 +5,14 @@ import AnalyticSelect from './AnalyticSelect'
 import FilterCriteria from './FilterCriteria'
 import SourceSelect from './SourceSelect'
 import VisualizationSelect from './VisualizationSelect'
-import {
-  addFilter,
-  editFilter,
-  fetchAnalytics,
-  fetchSourceFields,
-  fetchSources,
-  fetchVisualizations,
-  removeFilter,
-  setAnalytic,
-  setSource,
-  setVisualization
-} from '../actions'
+import {setAnalytic} from '../modules/analytic'
+import {fetchAnalytics} from '../modules/analytics'
+import {fetchFields} from '../modules/fields'
+import {addFilter, editFilter, removeFilter} from '../modules/filters'
+import {setSource} from '../modules/source'
+import {fetchSources} from '../modules/sources'
+import {setVisualization} from '../modules/visualization'
+import {fetchVisualizations} from '../modules/visualizations'
 import {header, main} from '../styles/common'
 
 const style = {
@@ -95,7 +91,7 @@ class Analytics extends Component {
 
     ev.preventDefault()
     dispatch(setSource(source))
-    dispatch(fetchSourceFields(source))
+    dispatch(fetchFields(source))
     dispatch(fetchAnalytics(source))
   }
 

@@ -4,7 +4,12 @@ import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import Papa from 'papaparse'
 import {FileInput} from 'safe-framework'
-import {resetUploadDataTypes, setDialogOpen, setUploadDataTypes, setUploadDataTypeByHeaderName} from '../actions'
+import {toggleDialog} from '../modules/dialog'
+import {
+  resetUploadDataTypes,
+  setUploadDataTypeByHeaderName,
+  setUploadDataTypes
+} from '../modules/upload'
 import {Dialog, DropDownMenu, FlatButton, MenuItem} from 'material-ui'
 import {header, main} from '../styles/common'
 
@@ -47,7 +52,7 @@ class Upload extends Component {
     const {dispatch} = this.props
 
     dispatch(resetUploadDataTypes())
-    dispatch(setDialogOpen(true))
+    dispatch(toggleDialog(true))
   }
 
   onFileChange (file) {
@@ -123,7 +128,7 @@ class Upload extends Component {
   handleNonCsvDialogClose = () => {
     const {dispatch} = this.props
 
-    dispatch(setDialogOpen(false))
+    dispatch(toggleDialog(false))
   }
 
   render () {
