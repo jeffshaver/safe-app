@@ -254,7 +254,7 @@ class Dashboards extends Component {
           <SelectField
             floatingLabelText='Select a Dashboard'
             fullWidth={true}
-            value={dashboards.selecteDashboardId}
+            value={dashboards.selectedDashboardId}
             onChange={this.dashboardSelectChange}
           >
             {dashboards.dashboards.data.map(function (result) {
