@@ -67,7 +67,7 @@
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
     "react-highcharts": "^8.1.1",
-    "react-leaflet": "^0.11.0",
+    "react-leaflet": "^0.10.1",
     "react-redux": "^4.4.4",
     "react-router": "^2.1.1",
     "react-router-redux": "^4.0.2",

@@ -470,12 +470,12 @@ exports.tableColumns = [
 
 // SEARCH
 exports.searchResults = [
-  {_id: '1', name: 'John', age: 25, county: 'Howard'},
-  {_id: '2', name: 'Jane', age: 30, county: 'Cecil'},
-  {_id: '3', name: 'Mary', age: 35, county: 'Anne Arundel'},
-  {_id: '4', name: 'Bob', age: 40, county: 'Howard'},
-  {_id: '5', name: 'Betty', age: 45, county: 'Cecil'},
-  {_id: '6', name: 'Mark', age: 50, county: 'Anne Arundel'}
+  {_id: '1', name: 'John', age: 25, city: 'Littleton', state: 'Colorado', latitude: 39.61, longitude: -105.02},
+  {_id: '2', name: 'Jane', age: 30, city: 'Denver', state: 'Colorado', latitude: 39.74, longitude: -104.99},
+  {_id: '3', name: 'Mary', age: 35, city: 'Aurora', state: 'Colorado', latitude: 39.73, longitude: -104.81},
+  {_id: '4', name: 'Bob', age: 40, city: 'Golden', state: 'Colorado', latitude: 39.77, longitude: -105.23},
+  {_id: '5', name: 'Betty', age: 45, city: 'Littleton', state: 'Colorado', latitude: 39.61, longitude: -105.02},
+  {_id: '6', name: 'Mark', age: 50, city: 'Denver', state: 'Colorado', latitude: 39.74, longitude: -104.99}
 ]
 
 // SPECIFIC ANALYTIC

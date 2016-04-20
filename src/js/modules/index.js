@@ -5,6 +5,7 @@ import analytic, {
   hydrateAnalytic
 } from './analytic'
 import analytics from './analytics'
+import category from './category'
 import dialog from './dialog'
 import dashboards from './dashboards'
 import fields from './fields'
@@ -13,6 +14,10 @@ import filters, {
   hydrateFilters
 } from './filters'
 import hydrateable from './hydrateable'
+import label from './label'
+import latitude from './latitude'
+import longitude from './longitude'
+import mapResults from './map-results'
 import searchResults from './search-results'
 import source, {
   HYDRATE as HYDRATE_SOURCE,
@@ -37,10 +42,15 @@ export const actions = {
 export const rootReducer = combineReducers({
   analytic: hydrateable(analytic, HYDRATE_ANALYTIC),
   analytics,
+  category,
   dialog,
   dashboards,
   fields,
   filters: hydrateable(filters, HYDRATE_FILTERS),
+  label,
+  latitude,
+  longitude,
+  mapResults,
   searchResults,
   source: hydrateable(source, HYDRATE_SOURCE),
   sources,
