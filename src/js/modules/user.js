@@ -1,5 +1,5 @@
-import fetch from 'isomorphic-fetch'
 import {apiUri} from '../../../config'
+import fetch from 'isomorphic-fetch'
 
 export const REQUEST = 'safe-app/user/REQUEST'
 export const SUCCESS = 'safe-app/user/SUCCESS'
@@ -19,8 +19,9 @@ export const fetchUserSuccess = (data) => ({
 export const fetchUser = () =>
   (dispatch) => {
     dispatch(fetchUserRequest())
+
     return fetch(`${apiUri}/authenticate`)
-      .then((response) => response.json(), (err) => console.log(err))
+      .then((response) => response.json(), (err) => console.error(err))
       .then((json) => dispatch(fetchUserSuccess(json)))
   }
 

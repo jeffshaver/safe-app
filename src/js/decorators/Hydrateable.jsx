@@ -14,9 +14,9 @@
  * }
  */
 
-import React, {Component, PropTypes} from 'react'
-import {connect} from 'react-redux'
 import {actions} from '../modules/'
+import {connect} from 'react-redux'
+import React, {Component, PropTypes} from 'react'
 
 const localState = {}
 

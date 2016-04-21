@@ -1,6 +1,4 @@
-import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {header, main} from '../styles/common'
 import Dialog from 'material-ui/lib/dialog'
 import FlatButton from 'material-ui/lib/flat-button'
 import MenuItem from 'material-ui/lib/menus/menu-item'
@@ -19,10 +17,12 @@ import {
   setCreateDialogTitle,
   setCreateDialogVisibility,
   setDeleteDialogVisibility,
-  setEditDialogVisibility,
   setEditDialogSubtitle,
-  setEditDialogTitle
+  setEditDialogTitle,
+  setEditDialogVisibility
 } from '../modules/dashboards'
+import {header, main} from '../styles/common'
+import React, {Component, PropTypes} from 'react'
 
 const style = {
   width: '400px'

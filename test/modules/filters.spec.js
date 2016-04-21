@@ -5,11 +5,11 @@ import expect from 'expect'
 import {
   ADD,
   addFilter,
-  default as reducer,
   EDIT,
   editFilter,
   HYDRATE,
   hydrateFilters,
+  default as reducer,
   REMOVE,
   removeFilter,
   RESET,

@@ -1,6 +1,6 @@
-import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {MenuItem, SelectField} from 'material-ui'
+import React, {Component, PropTypes} from 'react'
 
 class VisualizationSelect extends Component {
   static propTypes = {

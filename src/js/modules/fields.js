@@ -1,5 +1,5 @@
-import fetch from 'isomorphic-fetch'
 import {apiUri} from '../../../config'
+import fetch from 'isomorphic-fetch'
 
 export const REQUEST = 'safe-app/fields/REQUEST'
 export const SUCCESS = 'safe-app/fields/SUCCESS'
@@ -20,6 +20,7 @@ export const fetchFieldsSuccess = (data) => ({
 export const fetchFields = (source) => {
   return (dispatch) => {
     dispatch(fetchFieldsRequest(source))
+
     return fetch(`${apiUri}/sources/${source}/fields`)
       .then((response) => response.json())
       .then((json) => dispatch(fetchFieldsSuccess(json)))

@@ -1,18 +1,18 @@
 /* globals afterEach, describe, it */
 
+import {apiUri} from '../../config.js'
 import configureStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import nock from 'nock'
 import expect from 'expect'
+import nock from 'nock'
+import thunk from 'redux-thunk'
 import {
-  default as reducer,
   fetchAnalytics,
   fetchAnalyticsRequest,
   fetchAnalyticsSuccess,
+  default as reducer,
   REQUEST,
   SUCCESS
 } from '../../src/js/modules/analytics'
-import {apiUri} from '../../config.js'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
@@ -74,6 +74,7 @@ describe('analytics actions', () => {
         recievedAt: null
       }
       const store = mockStore(initialState)
+
       store.dispatch(fetchAnalytics(source))
         .then(() => {
           const actions = store.getActions()

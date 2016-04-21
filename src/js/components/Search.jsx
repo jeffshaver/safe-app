@@ -1,22 +1,22 @@
-import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {Hydrateable} from '../decorators'
-import FilterCriteria from './FilterCriteria'
-import {SelectField} from './SelectField'
-import SourceSelect from './SourceSelect'
-import {BarChart, BasicDataTable, Map} from 'safe-framework'
-import {RaisedButton, Tabs, Tab} from 'material-ui'
 import {fetchFields} from '../modules/fields'
-import {addFilter, editFilter, removeFilter} from '../modules/filters'
 import {fetchSearchResults} from '../modules/search-results'
-import {setSource} from '../modules/source'
 import {fetchSources} from '../modules/sources'
+import FilterCriteria from './FilterCriteria'
+import {Hydrateable} from '../decorators'
+import {SelectField} from './SelectField'
 import {setCategory} from '../modules/category'
 import {setLabel} from '../modules/label'
 import {setLatitude} from '../modules/latitude'
 import {setLongitude} from '../modules/longitude'
 import {setMapResults} from '../modules/map-results'
+import {setSource} from '../modules/source'
+import SourceSelect from './SourceSelect'
+import {addFilter, editFilter, removeFilter} from '../modules/filters'
+import {BarChart, BasicDataTable, Map} from 'safe-framework'
 import {header, main} from '../styles/common'
+import {RaisedButton, Tab, Tabs} from 'material-ui'
+import React, {Component, PropTypes} from 'react'
 
 const style = {
   hidden: {
@@ -161,7 +161,7 @@ class Search extends Component {
   }
 
   onClickDashboard () {
-    console.log('Add to Dashboard clicked')
+    // console.log('Add to Dashboard clicked')
   }
 
   onClickPlot () {

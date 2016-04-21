@@ -5,14 +5,12 @@
  */
 
 import expect from 'expect'
+import {default as hydrateable} from '../../src/js/modules/hydrateable'
 import {
   default as analyticReducer,
   HYDRATE,
   SET
 } from '../../src/js/modules/analytic'
-import {
-  default as hydrateable
-} from '../../src/js/modules/hydrateable'
 
 const reducer = hydrateable(analyticReducer, HYDRATE)
 

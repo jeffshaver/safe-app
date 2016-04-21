@@ -1,18 +1,18 @@
 /* globals afterEach, describe, it */
 
+import {apiUri} from '../../config.js'
 import configureStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import nock from 'nock'
 import expect from 'expect'
+import nock from 'nock'
+import thunk from 'redux-thunk'
 import {
-  default as reducer,
   fetchVisualizations,
   fetchVisualizationsRequest,
   fetchVisualizationsSuccess,
+  default as reducer,
   REQUEST,
   SUCCESS
 } from '../../src/js/modules/visualizations'
-import {apiUri} from '../../config.js'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)

@@ -8,8 +8,8 @@ const cookieParser = require('cookie-parser')
 const errorHandler = require('errorhandler')
 const serveStatic = require('serve-static')
 const config = require('./config')
-
 const app = express()
+const log = (msg) => (process.stdout.write(`${msg}\n`))
 
 app.use(morgan('dev'))
 app.use(errorHandler())
@@ -31,7 +31,7 @@ if (app.get('env') === 'development') {
   }))
 
   app.use(webpackHotMiddleware(compiler, {
-    log: console.log,
+    log: log,
     path: '/__webpack_hmr',
     heartbeat: 10 * 1000
   }))
@@ -66,7 +66,7 @@ if (config.mongoUri) {
       throw new Error(error)
     }
 
-    console.log('Connected to Mongo')
+    log('Connected to Mongo')
 
     app.set('db', database)
 
@@ -79,12 +79,12 @@ if (config.mongoUri) {
     }
 
     https.createServer(serverOptions, app).listen(config.port, () => {
-      console.log(`server listning on port ${config.port}`)
+      log(`server listning on port ${config.port}`)
     })
   })
 } else {
   app.listen(config.port, process.env.IP, () => {
-    console.log(`server listning on port ${config.port}`)
+    log(`server listning on port ${config.port}`)
   })
 }
 

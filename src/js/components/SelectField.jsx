@@ -1,5 +1,5 @@
+import {SelectField as MaterialSelectField, MenuItem} from 'material-ui'
 import React, {Component, PropTypes} from 'react'
-import {MenuItem, SelectField as MaterialSelectField} from 'material-ui'
 
 export class SelectField extends Component {
   static propTypes = {

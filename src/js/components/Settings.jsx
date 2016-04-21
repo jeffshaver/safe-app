@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
 import {header, main} from '../styles/common'
+import React, {Component} from 'react'
 
 class Settings extends Component {
   render () {

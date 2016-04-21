@@ -1,11 +1,11 @@
-import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import Radium, {StyleRoot} from 'radium'
-import {AppCanvas, CircularProgress} from 'material-ui'
-import {Wrapper} from './Wrapper'
+import {fetchUser} from '../modules/user'
 import {GlobalStyles} from './GlobalStyles'
 import {LeftNav} from './LeftNav'
-import {fetchUser} from '../modules/user'
+import {Wrapper} from './Wrapper'
+import {AppCanvas, CircularProgress} from 'material-ui'
+import Radium, {StyleRoot} from 'radium'
+import React, {Component, PropTypes} from 'react'
 
 const style = {
   loading: {

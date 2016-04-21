@@ -11,16 +11,41 @@ rules:
   array-bracket-spacing:
     - 2
     - "never"
+  eol-last: 0
+  newline-before-return: 2
+  newline-after-var:
+    - 2
+    - "always"
+  no-console:
+    - 1
+    - allow:
+      - "error"
+  no-lonely-if: 2
   no-trailing-spaces:
     - 2
     - skipBlankLines: true
+  no-var: 2
   object-curly-spacing:
     - 2
     - "never"
   padded-blocks:
     - 2
     - "never"
-  eol-last: 0
+  prefer-const:
+    - 2
+    - destructuring: "any"
+  prefer-rest-params: 2
+  sort-imports:
+    - 2
+    - ignoreCase: true
+      memberSyntaxSortOrder:
+        - "none"
+        - "all"
+        - "single"
+        - "multiple"
+  sort-vars:
+    - 2
+    - ignoreCase: true
   react/jsx-curly-spacing: 2
   react/jsx-indent-props:
     - 2

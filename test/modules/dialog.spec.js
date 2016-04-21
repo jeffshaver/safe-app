@@ -3,8 +3,8 @@
 import expect from 'expect'
 import {
   default as reducer,
-  toggleDialog,
-  TOGGLE
+  TOGGLE,
+  toggleDialog
 } from '../../src/js/modules/dialog'
 
 describe('dialog actions', () => {

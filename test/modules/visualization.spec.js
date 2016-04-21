@@ -2,9 +2,9 @@
 
 import expect from 'expect'
 import {
-  default as reducer,
   HYDRATE,
   hydrateVisualization,
+  default as reducer,
   SET,
   setVisualization
 } from '../../src/js/modules/visualization'

@@ -1,5 +1,5 @@
-import fetch from 'isomorphic-fetch'
 import {apiUri} from '../../../config'
+import fetch from 'isomorphic-fetch'
 
 export const REQUEST = 'safe-app/analytics/REQUEST'
 export const SUCCESS = 'safe-app/analytics/SUCCESS'
@@ -19,8 +19,9 @@ export const fetchAnalyticsSuccess = (data) => ({
 export const fetchAnalytics = (source) =>
   (dispatch) => {
     dispatch(fetchAnalyticsRequest())
+
     return fetch(`${apiUri}/sources/${source}/analytics`)
-      .then((response) => response.json(), (err) => console.log(err))
+      .then((response) => response.json(), (err) => console.error(err))
       .then((json) => dispatch(fetchAnalyticsSuccess(json)))
   }
 

@@ -1,6 +1,6 @@
-var path = require('path')
-var webpack = require('webpack')
-var config = require('./config')
+const path = require('path')
+const webpack = require('webpack')
+const config = require('./config')
 
 module.exports = {
   context: __dirname,

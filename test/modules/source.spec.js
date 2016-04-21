@@ -2,9 +2,9 @@
 
 import expect from 'expect'
 import {
-  default as reducer,
   HYDRATE,
   hydrateSource,
+  default as reducer,
   SET,
   setSource
 } from '../../src/js/modules/source'

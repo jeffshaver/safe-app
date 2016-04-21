@@ -1,7 +1,7 @@
-var exports = module.exports = {}
+exports = module.exports = {}
 
 // SPECIFIC CHARTS FOR AN ANALYTIC
-var analyticVisualizations = exports.analyticVisualizations = [
+const analyticVisualizations = exports.analyticVisualizations = [
   {_id: '1', name: 'Area'},
   {_id: '2', name: 'Bar'},
   {_id: '3', name: 'Column'},
@@ -11,7 +11,7 @@ var analyticVisualizations = exports.analyticVisualizations = [
 ]
 
 // SPECIFIC PARAMS FOR AN ANALYTIC
-var analyticParams = exports.analyticParams = [
+const analyticParams = exports.analyticParams = [
   {_id: '1', name: 'X'},
   {_id: '2', name: 'Mean'},
   {_id: '3', name: 'Standard Deviation'},
@@ -19,7 +19,7 @@ var analyticParams = exports.analyticParams = [
 ]
 
 // SPECIFIC PARAMS FOR A CHART
-var visualizationParams = exports.visualizationParams = [
+const visualizationParams = exports.visualizationParams = [
   {_id: '1', name: 'Title'},
   {_id: '2', name: 'Subtitle'},
   {_id: '3', name: 'X axis'},
@@ -30,7 +30,7 @@ var visualizationParams = exports.visualizationParams = [
 ]
 
 // SPECIFIC DATA SOURCE
-var sourceAnalytics = exports.sourceAnalytics = [
+const sourceAnalytics = exports.sourceAnalytics = [
   {_id: '1', name: 'Average'},
   {_id: '2', name: 'Count'},
   {_id: '3', name: 'Frequency'},
@@ -43,7 +43,7 @@ var sourceAnalytics = exports.sourceAnalytics = [
 ]
 
 // SPECIFIC DATA SOURCE
-var sourceFields = exports.sourceFields = [
+const sourceFields = exports.sourceFields = [
   {_id: '1', name: 'Age'},
   {_id: '2', name: 'County'},
   {_id: '3', name: 'Height'},

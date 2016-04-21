@@ -2,9 +2,9 @@
 
 import expect from 'expect'
 import {
-  default as reducer,
   HYDRATE,
   hydrateAnalytic,
+  default as reducer,
   SET,
   setAnalytic
 } from '../../src/js/modules/analytic'

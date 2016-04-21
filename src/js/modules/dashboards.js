@@ -1,5 +1,5 @@
-import fetch from 'isomorphic-fetch'
 import {apiUri} from '../../../config'
+import fetch from 'isomorphic-fetch'
 
 // HELPER FUNCTIONS
 
@@ -71,7 +71,7 @@ export const createDashboard = (payload) =>
       },
       body: JSON.stringify(payload)
     })
-    .then((response) => response.json(), (err) => console.log(err))
+    .then((response) => response.json(), (err) => console.error(err))
     .then((json) => {
       dispatch(createDashboardSuccess(json))
       // FUTURE: OPTIMISTIC UPDATE INSTEAD
@@ -107,7 +107,7 @@ export const deleteDashboard = (id) =>
         'Content-Type': 'application/json'
       }
     })
-    .then((response) => response.json(), (err) => console.log(err))
+    .then((response) => response.json(), (err) => console.error(err))
     .then((json) => {
       dispatch(deleteDashboardSuccess(json))
       dispatch(resetDashboardInformation())
@@ -148,7 +148,7 @@ export const editDashboard = (payload) =>
       },
       body: JSON.stringify(payload)
     })
-    .then((response) => response.json(), (err) => console.log(err))
+    .then((response) => response.json(), (err) => console.error(err))
     .then((json) => {
       dispatch(editDashboardSuccess(json))
       // FUTURE: OPTIMISTIC UPDATE INSTEAD
@@ -175,8 +175,9 @@ export const fetchDashboardsSuccess = (data) => ({
 export const fetchDashboards = () =>
   (dispatch) => {
     dispatch(fetchDashboardsRequest())
+
     return fetch(`${apiUri}/dashboards`)
-      .then((response) => response.json(), (err) => console.log(err))
+      .then((response) => response.json(), (err) => console.error(err))
       .then((json) => {
         dispatch(fetchDashboardsSuccess(json))
 

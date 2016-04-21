@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
 import {header} from '../styles/common'
+import React, {Component} from 'react'
 
 class Home extends Component {
   render () {

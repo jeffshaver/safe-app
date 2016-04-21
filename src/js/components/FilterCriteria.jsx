@@ -1,8 +1,8 @@
-import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {FloatingActionButton, MenuItem, SelectField, TextField} from 'material-ui'
 import ContentAdd from 'material-ui/lib/svg-icons/content/add'
 import ContentRemove from 'material-ui/lib/svg-icons/content/remove'
+import {FloatingActionButton, MenuItem, SelectField, TextField} from 'material-ui'
+import React, {Component, PropTypes} from 'react'
 
 class FilterCriteria extends Component {
   static propTypes = {

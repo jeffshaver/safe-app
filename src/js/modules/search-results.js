@@ -1,5 +1,5 @@
-import fetch from 'isomorphic-fetch'
 import {apiUri} from '../../../config'
+import fetch from 'isomorphic-fetch'
 
 export const REQUEST = 'safe-app/search-results/REQUEST'
 export const SUCCESS = 'safe-app/search-results/SUCCESS'
@@ -20,6 +20,7 @@ export const fetchSearchResultsSuccess = (data) => ({
 export const fetchSearchResults = (source, filters) =>
   (dispatch) => {
     dispatch(fetchSearchResultsRequest(source, filters))
+
     return fetch(`${apiUri}/search/${source}`,
       {
         method: 'POST',
@@ -29,7 +30,7 @@ export const fetchSearchResults = (source, filters) =>
         },
         body: JSON.stringify({filters})
       })
-      .then((response) => response.json(), (err) => console.log(err))
+      .then((response) => response.json(), (err) => console.error(err))
       .then((json) => dispatch(fetchSearchResultsSuccess(json)))
   }
 

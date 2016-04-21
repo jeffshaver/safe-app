@@ -6,9 +6,9 @@ import {
   RESET,
   resetUploadDataTypes,
   SET,
-  setUploadDataTypes,
   SET_BY_HEADER_NAME,
-  setUploadDataTypeByHeaderName
+  setUploadDataTypeByHeaderName,
+  setUploadDataTypes
 } from '../../src/js/modules/upload'
 
 describe('upload actions', () => {
@@ -65,6 +65,7 @@ describe('upload reducer', () => {
     }
     const result = reducer(undefined, action)
     const stateAfter = uploadDataTypes
+
     expect(result).toEqual(stateAfter)
   })
 

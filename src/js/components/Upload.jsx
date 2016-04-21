@@ -1,17 +1,15 @@
-/* global window */
-
-import React, {Component, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import Papa from 'papaparse'
 import {FileInput} from 'safe-framework'
+import Papa from 'papaparse'
 import {toggleDialog} from '../modules/dialog'
+import {Dialog, DropDownMenu, FlatButton, MenuItem} from 'material-ui'
+import {header, main} from '../styles/common'
+import React, {Component, PropTypes} from 'react'
 import {
   resetUploadDataTypes,
   setUploadDataTypeByHeaderName,
   setUploadDataTypes
 } from '../modules/upload'
-import {Dialog, DropDownMenu, FlatButton, MenuItem} from 'material-ui'
-import {header, main} from '../styles/common'
 
 const getFileExtension = (fileName) =>
   // From http://stackoverflow.com/a/12900504
@@ -80,7 +78,7 @@ class Upload extends Component {
   }
 
   parseError (error, file) {
-    console.log(`Error while trying to parse file: ${file.name}`, error)
+    console.error(`Error while trying to parse file: ${file.name}`, error)
   }
 
   handleDataTypeChange (header, value) {
