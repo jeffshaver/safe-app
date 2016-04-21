@@ -1,5 +1,10 @@
+'use strict'
+
 const path = require('path')
-const exec = require('child_process').exec
+const spawn = require('child_process').spawn
+const StringDecoder = require('string_decoder').StringDecoder
+const decoder = new StringDecoder(('utf8'))
+const readline = require('readline')
 const fs = require('fs')
 const https = require('https')
 const express = require('express')
@@ -37,7 +42,31 @@ if (app.get('env') === 'development') {
   }))
 
   // Also write to disk -_-
-  exec('webpack --watch')
+  const runWebpack = spawn('webpack', ['--watch', '--colors', '--progress'])
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    terminal: true
+  })
+
+  runWebpack.stdout.on('data', (data) => {
+    const message = decoder.write(data)
+
+    readline.clearLine(process.stdin, 0)
+    readline.cursorTo(process.stdin, 0)
+    rl.write(message)
+  })
+  runWebpack.stderr.on('data', (error) => {
+    const message = decoder.write(error)
+
+    readline.clearLine(process.stdin, 0)
+    readline.cursorTo(process.stdin, 0)
+    rl.write(`${message} `)
+  })
+  runWebpack.on('close', (code) => {
+    rl.write(`process exited with code ${code}`)
+    rl.close()
+  })
 }
 
 if (config.mongoUri) {
