@@ -5,10 +5,10 @@ export const setLabel = (label) => ({
   payload: {label}
 })
 
-export default (state = '', action) => {
-  const {label} = action.payload || {}
+export default (state = '', {payload = {}, type, ...action}) => {
+  const {label} = payload
 
-  switch (action.type) {
+  switch (type) {
     case SET:
       return label
     default:

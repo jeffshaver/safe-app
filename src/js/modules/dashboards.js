@@ -261,10 +261,10 @@ const initialState = {
   title: ''
 }
 
-export default (state = initialState, action) => {
-  const {data, id, recievedAt, value} = action.payload || {}
+export default (state = initialState, {payload = {}, type, ...action}) => {
+  const {data, id, recievedAt, value} = payload
 
-  switch (action.type) {
+  switch (type) {
     case GET_SUCCESS:
       return {
         ...state,

@@ -41,10 +41,10 @@ const initialState = {
   lastUpdated: null
 }
 
-export default (state = initialState, action) => {
-  const {data} = action.payload || {}
+export default (state = initialState, {payload = {}, type, ...action}) => {
+  const {data} = payload
 
-  switch (action.type) {
+  switch (type) {
     case REQUEST:
       return {
         ...state,

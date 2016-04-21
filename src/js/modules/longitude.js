@@ -5,10 +5,10 @@ export const setLongitude = (longitude) => ({
   payload: {longitude}
 })
 
-export default (state = '', action) => {
-  const {longitude} = action.payload || {}
+export default (state = '', {payload = {}, type, ...action}) => {
+  const {longitude} = payload
 
-  switch (action.type) {
+  switch (type) {
     case SET:
       return longitude
     default:

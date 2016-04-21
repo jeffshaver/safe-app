@@ -5,10 +5,10 @@ export const toggleDialog = (value) => ({
   payload: {value}
 })
 
-export default (state = false, action) => {
-  const {value} = action.payload || {}
+export default (state = false, {payload = {}, type, ...action}) => {
+  const {value} = payload
 
-  switch (action.type) {
+  switch (type) {
     case TOGGLE:
       return value
     default:

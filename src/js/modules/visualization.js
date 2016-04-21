@@ -10,10 +10,10 @@ export const setVisualization = (visualization) => ({
   payload: {visualization}
 })
 
-export default (state = '', action) => {
-  const {visualization} = action.payload || {}
+export default (state = '', {payload = {}, type, ...action}) => {
+  const {visualization} = payload
 
-  switch (action.type) {
+  switch (type) {
     case SET:
       return visualization
     default:

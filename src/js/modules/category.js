@@ -5,10 +5,10 @@ export const setCategory = (category) => ({
   payload: {category}
 })
 
-export default (state = '', action) => {
-  const {category} = action.payload || {}
+export default (state = '', {payload = {}, type, ...action}) => {
+  const {category} = payload
 
-  switch (action.type) {
+  switch (type) {
     case SET:
       return category
     default:

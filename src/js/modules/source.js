@@ -11,10 +11,10 @@ export const setSource = (source) => ({
   payload: {source}
 })
 
-export default (state = '', action) => {
-  const {source} = action.payload || {}
+export default (state = '', {payload = {}, type, ...action}) => {
+  const {source} = payload
 
-  switch (action.type) {
+  switch (type) {
     case SET:
       return source
     default:

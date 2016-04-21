@@ -36,10 +36,10 @@ const initialState = [{
   value: ''
 }]
 
-export default (state = initialState, action) => {
-  const {filter, index, value} = action.payload || {}
+export default (state = initialState, {payload = {}, type, ...action}) => {
+  const {filter, index, value} = payload
 
-  switch (action.type) {
+  switch (type) {
     case ADD:
       return [
         ...state,

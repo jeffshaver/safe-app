@@ -10,10 +10,10 @@ const initialState = {
   markers: []
 }
 
-export default (state = initialState, action) => {
-  const {mapResults} = action.payload || {}
+export default (state = initialState, {payload = {}, type, ...action}) => {
+  const {mapResults} = payload
 
-  switch (action.type) {
+  switch (type) {
     case SET:
       return mapResults
     default:

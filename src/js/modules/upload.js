@@ -16,10 +16,10 @@ export const setUploadDataTypes = (uploadDataTypes) => ({
   payload: {uploadDataTypes}
 })
 
-export default (state = {}, action) => {
-  const {header, uploadDataTypes, value} = action.payload || {}
+export default (state = {}, {payload = {}, type, ...action}) => {
+  const {header, uploadDataTypes, value} = payload
 
-  switch (action.type) {
+  switch (type) {
     case RESET:
       return {}
     case SET:

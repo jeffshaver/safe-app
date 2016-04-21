@@ -10,10 +10,10 @@ export const setAnalytic = (analytic) => ({
   payload: {analytic}
 })
 
-export default (state = '', action) => {
-  const {analytic} = action.payload || {}
+export default (state = '', {payload = {}, type, ...action}) => {
+  const {analytic} = payload
 
-  switch (action.type) {
+  switch (type) {
     case SET:
       return analytic
     default:
