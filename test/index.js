@@ -21,6 +21,22 @@ require('./modules/filters.spec')
 
 require('./modules/hydrateable.spec')
 
+// label
+
+require('./modules/label.spec')
+
+// latitude
+
+require('./modules/latitude.spec')
+
+// longitude
+
+require('./modules/longitude.spec')
+
+// map results
+
+require('./modules/map-results.spec')
+
 // search results
 
 require('./modules/search-results.spec')

@@ -57,7 +57,7 @@ module.exports = function (app) {
     res.send(fixtures.sourceFields)
   })
   // SEARCH A SPECIFIC DATA SOURCE
-  app.post('/api/search/:source', function (req, res) {
+  app.post('/api/sources/:source/query', function (req, res) {
     res.send(fixtures.searchResults)
   })
   // TO DO *****************************
