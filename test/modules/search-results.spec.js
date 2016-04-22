@@ -17,7 +17,7 @@ import {
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 const source = 'SourceA'
-const filters = [{id: 0, field: 'Age', operator: '>', value: '30'}, {id: 1, field: 'County', operator: '=', value: 'Howard'}]
+const filters = [{id: 0, field: 'Age', operator: '>', value: 20}, {id: 1, field: 'County', operator: '=', value: 'Howard'}]
 
 describe('searchResults actions', () => {
   describe('sync actions', () => {
@@ -53,8 +53,8 @@ describe('searchResults actions', () => {
 
     it('fetchSearchResults creates a SUCCESS action when done', (done) => {
       nock(apiUri)
-        .post(`/search/${source}`)
-        .reply(200, [{_id: 1, name: 'John', age: '25', county: 'Howard'}, {_id: 4, name: 'Bob', age: '40', county: 'Howard'}])
+        .post(`/sources/${source}/query`)
+        .reply(200, [{_id: 1, name: 'John', age: 25, county: 'Howard'}, {_id: 4, name: 'Bob', age: 40, county: 'Howard'}])
 
       const initialState = {
         searchResults: []
@@ -67,8 +67,8 @@ describe('searchResults actions', () => {
         type: SUCCESS,
         payload: {
           data: [
-            {_id: 1, name: 'John', age: '25', county: 'Howard'},
-            {_id: 4, name: 'Bob', age: '40', county: 'Howard'}
+            {_id: 1, name: 'John', age: 25, county: 'Howard'},
+            {_id: 4, name: 'Bob', age: 40, county: 'Howard'}
           ]
         },
         didInvalidate: false,

@@ -118,7 +118,7 @@ class Search extends Component {
 
   onChangeField (index, field) {
     const {dispatch} = this.props
-
+    
     dispatch(editFilter(index, {field}))
   }
 
@@ -154,14 +154,25 @@ class Search extends Component {
     dispatch(fetchFields(source))
   }
 
-  onChangeValue (index, value) {
+  onChangeValue (index, value, field, fields) {
     const {dispatch} = this.props
+
+    fields.forEach((item) => {
+      const isCurrentField = field === item.name
+      const fieldIsString = item.datatype === 'String'
+      const shouldConvert = isCurrentField && !fieldIsString
+  
+      if (!shouldConvert) {
+        return
+      }
+
+      value = JSON.parse(value)
+    })
 
     dispatch(editFilter(index, {value}))
   }
 
   onClickDashboard () {
-    // console.log('Add to Dashboard clicked')
   }
 
   onClickPlot () {
@@ -185,7 +196,7 @@ class Search extends Component {
     const markers = searchResults.data.map((row, i) => ({
       key: i,
       position: [row[latitude], row[longitude]],
-      children: row[label.toLowerCase()]
+      children: row[label]
     }))
 
     const mapResults = {

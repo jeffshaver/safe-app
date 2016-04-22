@@ -95,8 +95,20 @@ class Analytics extends Component {
     dispatch(fetchAnalytics(source))
   }
 
-  onChangeValue (index, value) {
+  onChangeValue (index, value, field, fields) {
     const {dispatch} = this.props
+    
+    fields.forEach((item) => {
+      const isCurrentField = field === item.name
+      const fieldIsString = item.datatype === 'String'
+      const shouldConvert = isCurrentField && !fieldIsString
+  
+      if (!shouldConvert) {
+        return
+      }
+
+      value = JSON.parse(value)
+    })
 
     dispatch(editFilter(index, {value}))
   }

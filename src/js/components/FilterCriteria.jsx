@@ -91,7 +91,7 @@ class FilterCriteria extends Component {
                 hintText='Filter Criteria'
                 style={style}
                 value={filter.value}
-                onChange={(ev) => onChangeValue(i, ev.target.value)}
+                onChange={(ev, field) => onChangeValue(i, ev.target.value, filter.field, fields.data)}
               />
               {(() => {
                 if (filters.length !== 1) {
