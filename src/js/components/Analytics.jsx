@@ -11,7 +11,6 @@ import {setSource} from '../modules/source'
 import {setVisualization} from '../modules/visualization'
 import SourceSelect from './SourceSelect'
 import VisualizationSelect from './VisualizationSelect'
-import {addFilter, editFilter, removeFilter} from '../modules/filters'
 import {header, main} from '../styles/common'
 import React, {Component, PropTypes} from 'react'
 
@@ -39,14 +38,9 @@ class Analytics extends Component {
 
     this.displayName = 'Analytics'
 
-    this.onAddFilter = ::this.onAddFilter
     this.onChangeAnalytic = ::this.onChangeAnalytic
-    this.onChangeField = ::this.onChangeField
-    this.onChangeOperator = ::this.onChangeOperator
     this.onChangeSource = ::this.onChangeSource
-    this.onChangeValue = ::this.onChangeValue
     this.onChangeVisualization = ::this.onChangeVisualization
-    this.onRemoveFilter = ::this.onRemoveFilter
   }
 
   componentWillMount () {
@@ -55,35 +49,12 @@ class Analytics extends Component {
     dispatch(fetchSources())
   }
 
-  onAddFilter (ev) {
-    const {dispatch} = this.props
-
-    ev.preventDefault()
-    dispatch(addFilter({
-      field: '',
-      operator: '',
-      value: ''
-    }))
-  }
-
   onChangeAnalytic (ev, index, analytic) {
     const {dispatch} = this.props
 
     ev.preventDefault()
     dispatch(setAnalytic(analytic))
     dispatch(fetchVisualizationTypes(analytic))
-  }
-
-  onChangeField (index, field) {
-    const {dispatch} = this.props
-
-    dispatch(editFilter(index, {field}))
-  }
-
-  onChangeOperator (index, operator) {
-    const {dispatch} = this.props
-
-    dispatch(editFilter(index, {operator}))
   }
 
   onChangeSource (ev, index, source) {
@@ -95,36 +66,11 @@ class Analytics extends Component {
     dispatch(fetchAnalytics(source))
   }
 
-  onChangeValue (index, value, field, fields) {
-    const {dispatch} = this.props
-    
-    fields.forEach((item) => {
-      const isCurrentField = field === item.name
-      const fieldIsString = item.datatype === 'String'
-      const shouldConvert = isCurrentField && !fieldIsString
-  
-      if (!shouldConvert) {
-        return
-      }
-
-      value = JSON.parse(value)
-    })
-
-    dispatch(editFilter(index, {value}))
-  }
-
   onChangeVisualization (ev, index, visualization) {
     const {dispatch} = this.props
 
     ev.preventDefault()
     dispatch(setVisualization(visualization))
-  }
-
-  onRemoveFilter (ev, index) {
-    const {dispatch} = this.props
-
-    ev.preventDefault()
-    dispatch(removeFilter(index))
   }
 
   render () {
@@ -164,17 +110,8 @@ class Analytics extends Component {
             onChange={this.onChangeVisualization}
           />
           <FilterCriteria
-            style={{
-              ...style.verticalTop
-            }}
-            wrapperStyle={{
-              ...filterStyle
-            }}
-            onAdd={this.onAddFilter}
-            onChangeField={this.onChangeField}
-            onChangeOperator={this.onChangeOperator}
-            onChangeValue={this.onChangeValue}
-            onRemove={this.onRemoveFilter}
+            style={style.verticalTop}
+            wrapperStyle={filterStyle}
           />
         </main>
       </div>

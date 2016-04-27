@@ -12,7 +12,6 @@ import {setLongitude} from '../modules/longitude'
 import {setMapResults} from '../modules/map-results'
 import {setSource} from '../modules/source'
 import SourceSelect from './SourceSelect'
-import {addFilter, editFilter, removeFilter} from '../modules/filters'
 import {BarChart, BasicDataTable, Map} from 'safe-framework'
 import {header, main} from '../styles/common'
 import {RaisedButton, Tab, Tabs} from 'material-ui'
@@ -78,19 +77,14 @@ class Search extends Component {
 
     this.displayName = 'Search'
 
-    this.onAddFilter = ::this.onAddFilter
     this.onChangeCategory = ::this.onChangeCategory
-    this.onChangeField = ::this.onChangeField
     this.onChangeLabel = ::this.onChangeLabel
     this.onChangeLatitude = ::this.onChangeLatitude
     this.onChangeLongitude = ::this.onChangeLongitude
-    this.onChangeOperator = ::this.onChangeOperator
     this.onChangeSource = ::this.onChangeSource
-    this.onChangeValue = ::this.onChangeValue
     this.onClickDashboard = ::this.onClickDashboard
     this.onClickPlot = ::this.onClickPlot
     this.onClickSearch = ::this.onClickSearch
-    this.onRemoveFilter = ::this.onRemoveFilter
   }
 
   componentWillMount () {
@@ -99,27 +93,10 @@ class Search extends Component {
     dispatch(fetchSources())
   }
 
-  onAddFilter (ev) {
-    const {dispatch} = this.props
-
-    ev.preventDefault()
-    dispatch(addFilter({
-      field: '',
-      operator: '',
-      value: ''
-    }))
-  }
-
   onChangeCategory (ev, index, category) {
     const {dispatch} = this.props
 
     dispatch(setCategory(category))
-  }
-
-  onChangeField (index, field) {
-    const {dispatch} = this.props
-    
-    dispatch(editFilter(index, {field}))
   }
 
   onChangeLabel (ev, index, label) {
@@ -140,36 +117,12 @@ class Search extends Component {
     dispatch(setLongitude(longitude))
   }
 
-  onChangeOperator (index, operator) {
-    const {dispatch} = this.props
-
-    dispatch(editFilter(index, {operator}))
-  }
-
   onChangeSource (ev, index, source) {
     const {dispatch} = this.props
 
     ev.preventDefault()
     dispatch(setSource(source))
     dispatch(fetchFields(source))
-  }
-
-  onChangeValue (index, value, field, fields) {
-    const {dispatch} = this.props
-
-    fields.forEach((item) => {
-      const isCurrentField = field === item.name
-      const fieldIsString = item.datatype === 'String'
-      const shouldConvert = isCurrentField && !fieldIsString
-  
-      if (!shouldConvert) {
-        return
-      }
-
-      value = JSON.parse(value)
-    })
-
-    dispatch(editFilter(index, {value}))
   }
 
   onClickDashboard () {
@@ -213,13 +166,6 @@ class Search extends Component {
     dispatch(fetchSearchResults(source, filters))
   }
 
-  onRemoveFilter (ev, index) {
-    const {dispatch} = this.props
-
-    ev.preventDefault()
-    dispatch(removeFilter(index))
-  }
-
   render () {
     const {category, label, latitude, longitude, mapResults, searchResults, source} = this.props
     const filterStyle = source === ''
@@ -242,11 +188,6 @@ class Search extends Component {
           <FilterCriteria
             style={style.verticalTop}
             wrapperStyle={filterStyle}
-            onAdd={this.onAddFilter}
-            onChangeField={this.onChangeField}
-            onChangeOperator={this.onChangeOperator}
-            onChangeValue={this.onChangeValue}
-            onRemove={this.onRemoveFilter}
           />
           <div>
             <RaisedButton
