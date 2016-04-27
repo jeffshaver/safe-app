@@ -62,4 +62,4 @@ require('./modules/visualization.spec')
 
 // visualizations
 
-require('./modules/visualizations.spec')
+require('./modules/visualization-types.spec')

@@ -14,7 +14,7 @@ import searchResults from './search-results'
 import sources from './sources'
 import uploadDataTypes from './upload'
 import user from './user'
-import visualizations from './visualizations'
+import visualizations from './visualization-types'
 import analytic, {
   HYDRATE as HYDRATE_ANALYTIC,
   hydrateAnalytic

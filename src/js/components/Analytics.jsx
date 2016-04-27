@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {fetchAnalytics} from '../modules/analytics'
 import {fetchFields} from '../modules/fields'
 import {fetchSources} from '../modules/sources'
-import {fetchVisualizations} from '../modules/visualizations'
+import {fetchVisualizationTypes} from '../modules/visualization-types'
 import FilterCriteria from './FilterCriteria'
 import {Hydrateable} from '../decorators'
 import {setAnalytic} from '../modules/analytic'
@@ -71,7 +71,7 @@ class Analytics extends Component {
 
     ev.preventDefault()
     dispatch(setAnalytic(analytic))
-    dispatch(fetchVisualizations(analytic))
+    dispatch(fetchVisualizationTypes(analytic))
   }
 
   onChangeField (index, field) {

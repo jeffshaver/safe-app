@@ -1,14 +1,14 @@
 import {apiUri} from '../../../config'
 import fetch from 'isomorphic-fetch'
 
-export const REQUEST = 'safe-app/visualizations/REQUEST'
-export const SUCCESS = 'safe-app/visualizations/SUCCESS'
+export const REQUEST = 'safe-app/visualization-types/REQUEST'
+export const SUCCESS = 'safe-app/visualization-types/SUCCESS'
 
-export const fetchVisualizationsRequest = () => ({
+export const fetchVisualizationTypesRequest = () => ({
   type: REQUEST
 })
 
-export const fetchVisualizationsSuccess = (data) => ({
+export const fetchVisualizationTypesSuccess = (data) => ({
   payload: {data},
   didInvalidate: false,
   isFetching: false,
@@ -16,13 +16,13 @@ export const fetchVisualizationsSuccess = (data) => ({
   type: SUCCESS
 })
 
-export const fetchVisualizations = (analytic) =>
+export const fetchVisualizationTypes = (analytic) =>
   (dispatch) => {
-    dispatch(fetchVisualizationsRequest())
+    dispatch(fetchVisualizationTypesRequest())
 
-    return fetch(`${apiUri}/analytics/${analytic}/visualizations`)
+    return fetch(`${apiUri}/analytics/${analytic}/visualization-types`)
       .then((response) => response.json(), (err) => console.error(err))
-      .then((json) => dispatch(fetchVisualizationsSuccess(json)))
+      .then((json) => dispatch(fetchVisualizationTypesSuccess(json)))
   }
 
 const initialState = {

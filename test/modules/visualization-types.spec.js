@@ -6,13 +6,13 @@ import expect from 'expect'
 import nock from 'nock'
 import thunk from 'redux-thunk'
 import {
-  fetchVisualizations,
-  fetchVisualizationsRequest,
-  fetchVisualizationsSuccess,
+  fetchVisualizationTypes,
+  fetchVisualizationTypesRequest,
+  fetchVisualizationTypesSuccess,
   default as reducer,
   REQUEST,
   SUCCESS
-} from '../../src/js/modules/visualizations'
+} from '../../src/js/modules/visualization-types'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
@@ -25,7 +25,7 @@ describe('visualizations actions', () => {
         type: REQUEST
       }
 
-      expect(fetchVisualizationsRequest()).toEqual(expectedAction)
+      expect(fetchVisualizationTypesRequest()).toEqual(expectedAction)
     })
 
     it('success should create a SUCCESS action', () => {
@@ -36,7 +36,7 @@ describe('visualizations actions', () => {
         recievedAt: null,
         type: SUCCESS
       }
-      const action = fetchVisualizationsSuccess([])
+      const action = fetchVisualizationTypesSuccess([])
 
       expectedAction.recievedAt = action.recievedAt
 
@@ -49,9 +49,9 @@ describe('visualizations actions', () => {
       nock.cleanAll()
     })
 
-    it('fetchVisualizations creates a SUCCESS action when done', (done) => {
+    it('fetchVisualizationTypes creates a SUCCESS action when done', (done) => {
       nock(apiUri)
-        .get(`/analytics/${analytic}/visualizations`)
+        .get(`/analytics/${analytic}/visualization-types`)
         .reply(200, [{_id: '1', name: 'VisualizationA'}, {_id: '2', name: 'VisualizationB'}])
 
       const initialState = {
@@ -74,7 +74,7 @@ describe('visualizations actions', () => {
       }
       const store = mockStore(initialState)
 
-      store.dispatch(fetchVisualizations(analytic))
+      store.dispatch(fetchVisualizationTypes(analytic))
         .then(() => {
           const actions = store.getActions()
           const expectedActions = [
