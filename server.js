@@ -1,5 +1,3 @@
-'use strict'
-
 const path = require('path')
 const spawn = require('child_process').spawn
 const StringDecoder = require('string_decoder').StringDecoder

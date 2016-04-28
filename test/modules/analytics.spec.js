@@ -6,7 +6,9 @@ import expect from 'expect'
 import nock from 'nock'
 import thunk from 'redux-thunk'
 import {
+  FAILURE,
   fetchAnalytics,
+  fetchAnalyticsFailure,
   fetchAnalyticsRequest,
   fetchAnalyticsSuccess,
   default as reducer,
@@ -20,7 +22,17 @@ const source = 'SourceA'
 
 describe('analytics actions', () => {
   describe('sync actions', () => {
-    it('request should create a REQUEST action', () => {
+    it('fetchAnalyticsFailure should create a FAILURE action', () => {
+      const error = new Error('test error')
+      const expectedAction = {
+        payload: {error},
+        type: FAILURE
+      }
+
+      expect(fetchAnalyticsFailure(error)).toEqual(expectedAction)
+    })
+
+    it('fetchAnalyticsRequest should create a REQUEST action', () => {
       const expectedAction = {
         type: REQUEST
       }
@@ -28,10 +40,8 @@ describe('analytics actions', () => {
       expect(fetchAnalyticsRequest()).toEqual(expectedAction)
     })
 
-    it('success should create a SUCCESS action', () => {
+    it('fetchAnalyticsSuccess should create a SUCCESS action', () => {
       const expectedAction = {
-        didInvalidate: false,
-        isFetching: false,
         payload: {data: []},
         recievedAt: null,
         type: SUCCESS
@@ -49,7 +59,7 @@ describe('analytics actions', () => {
       nock.cleanAll()
     })
 
-    it('fetchAnalytics creates a SUCCESS action when done', (done) => {
+    it('fetchAnalytics creates a SUCCESS action on success', (done) => {
       nock(apiUri)
         .get(`/sources/${source}/analytics`)
         .reply(200, [{_id: '1', name: 'AnalyticA'}, {_id: '2', name: 'AnalyticB'}])
@@ -69,8 +79,6 @@ describe('analytics actions', () => {
             {_id: '2', name: 'AnalyticB'}
           ]
         },
-        didInvalidate: false,
-        isFetching: false,
         recievedAt: null
       }
       const store = mockStore(initialState)
@@ -89,6 +97,40 @@ describe('analytics actions', () => {
           done()
         })
     })
+
+    it('fetchAnalytics creates a FAILURE action on failure', (done) => {
+      nock(apiUri)
+        .get(`/sources/${source}/analytics`)
+        .reply(500)
+
+      const error = new Error('NetworkError')
+      const initialState = {
+        analytics: []
+      }
+
+      const requestAction = {
+        type: REQUEST
+      }
+      const failureAction = {
+        payload: {error},
+        type: FAILURE
+      }
+      const store = mockStore(initialState)
+
+      store.dispatch(fetchAnalytics(source))
+        .then(() => {
+          const actions = store.getActions()
+          const expectedActions = [
+            requestAction,
+            failureAction
+          ]
+
+          expectedActions[1].payload.error = actions[1].payload.error
+
+          expect(actions).toEqual(expectedActions)
+          done()
+        })
+    })
   })
 })
 
@@ -96,12 +138,28 @@ describe('analytics reducer', () => {
   it('should return the initial state', () => {
     const stateAfter = {
       data: [],
-      didInvalidate: false,
+      error: undefined,
       isFetching: false,
       lastUpdated: null
     }
 
     expect(reducer(undefined, {})).toEqual(stateAfter)
+  })
+
+  it('should handle FAILURE', () => {
+    const error = new Error('test error')
+    const action = {
+      payload: {error},
+      type: FAILURE
+    }
+    const stateAfter = {
+      data: [],
+      error,
+      isFetching: false,
+      lastUpdated: null
+    }
+
+    expect(reducer(undefined, action)).toEqual(stateAfter)
   })
 
   it('should handle REQUEST', () => {
@@ -110,7 +168,7 @@ describe('analytics reducer', () => {
     }
     const stateAfter = {
       data: [],
-      didInvalidate: false,
+      error: undefined,
       isFetching: true,
       lastUpdated: null
     }
@@ -122,15 +180,13 @@ describe('analytics reducer', () => {
     const data = ['AnalyticA', 'AnalyticB']
     const action = {
       payload: {data},
-      didInvalidate: false,
-      isFetching: false,
       recievedAt: Date.now(),
       type: SUCCESS
     }
     const result = reducer(undefined, action)
     const expectedValue = {
       data,
-      didInvalidate: false,
+      error: undefined,
       isFetching: false,
       lastUpdated: result.lastUpdated
     }

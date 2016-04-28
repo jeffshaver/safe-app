@@ -6,7 +6,9 @@ import expect from 'expect'
 import nock from 'nock'
 import thunk from 'redux-thunk'
 import {
+  FAILURE,
   fetchFields,
+  fetchFieldsFailure,
   fetchFieldsRequest,
   fetchFieldsSuccess,
   default as reducer,
@@ -20,19 +22,25 @@ const source = 'SourceA'
 
 describe('fields actions', () => {
   describe('sync actions', () => {
-    it('request should create a REQUEST action', () => {
+    it('fetchFieldsFailure should create a FAILURE action', () => {
+      const error = new Error('test error')
       const expectedAction = {
-        type: REQUEST,
-        payload: {source}
+        payload: {error},
+        type: FAILURE
+      }
+
+      expect(fetchFieldsFailure(error)).toEqual(expectedAction)
+    })
+    it('fetchFieldsRequest should create a REQUEST action', () => {
+      const expectedAction = {
+        type: REQUEST
       }
 
       expect(fetchFieldsRequest(source)).toEqual(expectedAction)
     })
 
-    it('success should create a SUCCESS action', () => {
+    it('fetchFieldsSuccess should create a SUCCESS action', () => {
       const expectedAction = {
-        didInvalidate: false,
-        isFetching: false,
         payload: {data: []},
         recievedAt: null,
         type: SUCCESS
@@ -50,7 +58,7 @@ describe('fields actions', () => {
       nock.cleanAll()
     })
 
-    it('fetchSourceFields creates a SUCCESS action when done', (done) => {
+    it('fetchFields creates a SUCCESS action on success', (done) => {
       nock(apiUri)
         .get(`/sources/${source}/fields`)
         .reply(200, [{_id: '1', name: 'SourceFieldA'}, {_id: '2', name: 'SourceFieldB'}])
@@ -59,8 +67,7 @@ describe('fields actions', () => {
         fields: []
       }
       const requestAction = {
-        type: REQUEST,
-        payload: {source}
+        type: REQUEST
       }
       const recieveAction = {
         type: SUCCESS,
@@ -70,8 +77,6 @@ describe('fields actions', () => {
             {_id: '2', name: 'SourceFieldB'}
           ]
         },
-        didInvalidate: false,
-        isFetching: false,
         recievedAt: null
       }
       const store = mockStore(initialState)
@@ -90,6 +95,39 @@ describe('fields actions', () => {
           done()
         })
     })
+
+    it('fetchFields creates a FAILURE action on failure', (done) => {
+      nock(apiUri)
+        .get(`/sources/${source}/analytics`)
+        .reply(500)
+
+      const initialState = {
+        fields: []
+      }
+
+      const requestAction = {
+        type: REQUEST
+      }
+      const failureAction = {
+        payload: {},
+        type: FAILURE
+      }
+      const store = mockStore(initialState)
+
+      store.dispatch(fetchFields())
+        .then(() => {
+          const actions = store.getActions()
+          const expectedActions = [
+            requestAction,
+            failureAction
+          ]
+
+          expectedActions[1].payload.error = actions[1].payload.error
+
+          expect(actions).toEqual(expectedActions)
+          done()
+        })
+    })
   })
 })
 
@@ -97,12 +135,28 @@ describe('fields reducer', () => {
   it('should return the initial state', () => {
     const stateAfter = {
       data: [],
-      didInvalidate: false,
+      error: undefined,
       isFetching: false,
       lastUpdated: null
     }
 
     expect(reducer(undefined, {})).toEqual(stateAfter)
+  })
+
+  it('should handle FAILURE', () => {
+    const error = new Error('test error')
+    const action = {
+      payload: {error},
+      type: FAILURE
+    }
+    const stateAfter = {
+      data: [],
+      error,
+      isFetching: false,
+      lastUpdated: null
+    }
+
+    expect(reducer(undefined, action)).toEqual(stateAfter)
   })
 
   it('should handle REQUEST', () => {
@@ -111,7 +165,7 @@ describe('fields reducer', () => {
     }
     const stateAfter = {
       data: [],
-      didInvalidate: false,
+      error: undefined,
       isFetching: true,
       lastUpdated: null
     }
@@ -123,15 +177,13 @@ describe('fields reducer', () => {
     const data = ['SourceFieldA', 'SourceFieldB']
     const action = {
       payload: {data},
-      didInvalidate: false,
-      isFetching: false,
       recievedAt: Date.now(),
       type: SUCCESS
     }
     const result = reducer(undefined, action)
     const stateAfter = {
       data,
-      didInvalidate: false,
+      error: undefined,
       isFetching: false,
       lastUpdated: result.lastUpdated
     }

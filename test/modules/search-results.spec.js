@@ -6,7 +6,9 @@ import expect from 'expect'
 import nock from 'nock'
 import thunk from 'redux-thunk'
 import {
+  FAILURE,
   fetchSearchResults,
+  fetchSearchResultsFailure,
   fetchSearchResultsRequest,
   fetchSearchResultsSuccess,
   default as reducer,
@@ -21,19 +23,26 @@ const filters = [{id: 0, field: 'Age', operator: '>', value: 20}, {id: 1, field:
 
 describe('searchResults actions', () => {
   describe('sync actions', () => {
-    it('request should create a REQUEST action', () => {
+    it('fetchSearchResultsFailure should create a FAILURE action', () => {
+      const error = new Error('test error')
       const expectedAction = {
-        type: REQUEST,
-        payload: {filters, source}
+        payload: {error},
+        type: FAILURE
+      }
+
+      expect(fetchSearchResultsFailure(error)).toEqual(expectedAction)
+    })
+
+    it('fetchSearchResultsRequest should create a REQUEST action', () => {
+      const expectedAction = {
+        type: REQUEST
       }
 
       expect(fetchSearchResultsRequest(source, filters)).toEqual(expectedAction)
     })
 
-    it('success should create a SUCCESS action', () => {
+    it('fetchSearchResultsSuccess should create a SUCCESS action', () => {
       const expectedAction = {
-        didInvalidate: false,
-        isFetching: false,
         payload: {data: []},
         recievedAt: null,
         type: SUCCESS
@@ -51,7 +60,7 @@ describe('searchResults actions', () => {
       nock.cleanAll()
     })
 
-    it('fetchSearchResults creates a SUCCESS action when done', (done) => {
+    it('fetchSearchResults creates a SUCCESS action on success', (done) => {
       nock(apiUri)
         .post(`/sources/${source}/query`)
         .reply(200, [{_id: 1, name: 'John', age: 25, county: 'Howard'}, {_id: 4, name: 'Bob', age: 40, county: 'Howard'}])
@@ -60,8 +69,7 @@ describe('searchResults actions', () => {
         searchResults: []
       }
       const requestAction = {
-        type: REQUEST,
-        payload: {filters, source}
+        type: REQUEST
       }
       const recieveAction = {
         type: SUCCESS,
@@ -71,8 +79,6 @@ describe('searchResults actions', () => {
             {_id: 4, name: 'Bob', age: 40, county: 'Howard'}
           ]
         },
-        didInvalidate: false,
-        isFetching: false,
         recievedAt: null
       }
       const store = mockStore(initialState)
@@ -91,6 +97,39 @@ describe('searchResults actions', () => {
           done()
         })
     })
+
+    it('fetchSearchResults creates a FAILURE action on failure', (done) => {
+      nock(apiUri)
+        .post(`/sources/${source}/query`)
+        .reply(500)
+
+      const initialState = {
+        searchResults: []
+      }
+
+      const requestAction = {
+        type: REQUEST
+      }
+      const failureAction = {
+        payload: {},
+        type: FAILURE
+      }
+      const store = mockStore(initialState)
+
+      store.dispatch(fetchSearchResults(source, filters))
+        .then(() => {
+          const actions = store.getActions()
+          const expectedActions = [
+            requestAction,
+            failureAction
+          ]
+
+          expectedActions[1].payload.error = actions[1].payload.error
+
+          expect(actions).toEqual(expectedActions)
+          done()
+        })
+    })
   })
 })
 
@@ -98,12 +137,28 @@ describe('searchResults reducer', () => {
   it('should return the initial state', () => {
     const stateAfter = {
       data: [],
-      didInvalidate: false,
+      error: undefined,
       isFetching: false,
       lastUpdated: null
     }
 
     expect(reducer(undefined, {})).toEqual(stateAfter)
+  })
+
+  it('should handle FAILURE', () => {
+    const error = new Error('test error')
+    const action = {
+      payload: {error},
+      type: FAILURE
+    }
+    const stateAfter = {
+      data: [],
+      error,
+      isFetching: false,
+      lastUpdated: null
+    }
+
+    expect(reducer(undefined, action)).toEqual(stateAfter)
   })
 
   it('should handle REQUEST', () => {
@@ -112,7 +167,7 @@ describe('searchResults reducer', () => {
     }
     const stateAfter = {
       data: [],
-      didInvalidate: false,
+      error: undefined,
       isFetching: true,
       lastUpdated: null
     }
@@ -127,15 +182,13 @@ describe('searchResults reducer', () => {
     ]
     const action = {
       payload: {data},
-      didInvalidate: false,
-      isFetching: false,
       recievedAt: Date.now(),
       type: SUCCESS
     }
     const result = reducer(undefined, action)
     const stateAfter = {
       data,
-      didInvalidate: false,
+      error: undefined,
       isFetching: false,
       lastUpdated: result.lastUpdated
     }

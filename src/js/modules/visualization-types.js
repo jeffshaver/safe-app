@@ -1,55 +1,65 @@
 import {apiUri} from '../../../config'
+import {checkFetchStatus} from './utilities'
 import fetch from 'isomorphic-fetch'
 
+export const FAILURE = 'safe-app/visualization-types/FAILURE'
 export const REQUEST = 'safe-app/visualization-types/REQUEST'
 export const SUCCESS = 'safe-app/visualization-types/SUCCESS'
 
+export const fetchVisualizationTypesFailure = (error) => ({
+  payload: {error},
+  type: FAILURE
+})
 export const fetchVisualizationTypesRequest = () => ({
   type: REQUEST
 })
-
 export const fetchVisualizationTypesSuccess = (data) => ({
   payload: {data},
-  didInvalidate: false,
-  isFetching: false,
   recievedAt: Date.now(),
   type: SUCCESS
 })
-
 export const fetchVisualizationTypes = (analytic) =>
   (dispatch) => {
     dispatch(fetchVisualizationTypesRequest())
 
     return fetch(`${apiUri}/analytics/${analytic}/visualization-types`)
-      .then((response) => response.json(), (err) => console.error(err))
+      .then(checkFetchStatus)
+      .then((response) => response.json())
       .then((json) => dispatch(fetchVisualizationTypesSuccess(json)))
+      .catch((error) => dispatch(fetchVisualizationTypesFailure(error)))
   }
 
 const initialState = {
   data: [],
-  didInvalidate: false,
+  error: undefined,
   isFetching: false,
   lastUpdated: null
 }
 
 export default (state = initialState, {payload = {}, type, ...action}) => {
-  const {data} = payload
+  const {data, error} = payload
 
   switch (type) {
-    case SUCCESS:
+    case FAILURE:
       return {
         ...state,
-        data,
-        didInvalidate: false,
-        isFetching: false,
-        lastUpdated: action.recievedAt
+        error,
+        isFetching: false
       }
     case REQUEST:
       return {
         ...state,
-        didInvalidate: false,
+        error: undefined,
         isFetching: true
 
+      }
+    case SUCCESS:
+      return {
+        ...state,
+        data,
+        error: undefined,
+        isFetching: false,
+        lastUpdated: action.recievedAt
       }
     default:
       return state

@@ -45,9 +45,21 @@ class App extends Component {
           <h1>Fetching User Data</h1>
         </div>
       )
-    } else if (!user.data.authenticated) {
+    } else if (user.error || !user.data.authenticated) {
       content = (
-        <h1>{'You aren\'t authenticated'}</h1>
+        <div style={[style.loading.wrapper]}>
+          <h1>{'We couldn\'t authenticate you.'}</h1>
+          {(() => {
+            if (!user.error) return
+
+            const isNetworkError = user.error.message.contains('NetworkError')
+            const message = isNetworkError
+              ? user.error.message
+              : `NetworkError ${user.error.message}`
+
+            return <span>{message}</span>
+          })()}
+        </div>
       )
     } else {
       content = (

@@ -1,26 +1,27 @@
 import {apiUri} from '../../../config'
+import {checkFetchStatus} from './utilities'
 import fetch from 'isomorphic-fetch'
 
+export const FAILURE = 'safe-app/search-results/FAILURE'
 export const REQUEST = 'safe-app/search-results/REQUEST'
 export const SUCCESS = 'safe-app/search-results/SUCCESS'
 
-export const fetchSearchResultsRequest = (source, filters) => ({
-  type: REQUEST,
-  payload: {filters, source}
+export const fetchSearchResultsFailure = (error) => ({
+  payload: {error},
+  type: FAILURE
 })
-
+export const fetchSearchResultsRequest = () => ({
+  type: REQUEST
+})
 export const fetchSearchResultsSuccess = (data) => ({
   payload: {data},
-  didInvalidate: false,
-  isFetching: false,
   recievedAt: Date.now(),
   type: SUCCESS
 })
-
 export const fetchSearchResults = (source, filters) =>
   (dispatch) => {
-    dispatch(fetchSearchResultsRequest(source, filters))
-    
+    dispatch(fetchSearchResultsRequest())
+
     return fetch(`${apiUri}/sources/${source}/query`,
       {
         method: 'POST',
@@ -30,32 +31,40 @@ export const fetchSearchResults = (source, filters) =>
         },
         body: JSON.stringify({filters})
       })
-      .then((response) => response.json(), (err) => console.error(err))
+      .then(checkFetchStatus)
+      .then((response) => response.json())
       .then((json) => dispatch(fetchSearchResultsSuccess(json)))
+      .catch((error) => dispatch(fetchSearchResultsFailure(error)))
   }
 
 const initialState = {
   data: [],
-  didInvalidate: false,
+  error: undefined,
   isFetching: false,
   lastUpdated: null
 }
 
 export default (state = initialState, {payload = {}, type, ...action}) => {
-  const {data} = payload
+  const {data, error} = payload
 
   switch (type) {
+    case FAILURE:
+      return {
+        ...state,
+        error,
+        isFetching: false
+      }
     case REQUEST:
       return {
         ...state,
-        didInvalidate: false,
+        error: undefined,
         isFetching: true
       }
     case SUCCESS:
       return {
         ...state,
         data,
-        didInvalidate: false,
+        error: undefined,
         isFetching: false,
         lastUpdated: action.recievedAt
       }

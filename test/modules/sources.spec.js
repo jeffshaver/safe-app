@@ -6,7 +6,9 @@ import expect from 'expect'
 import nock from 'nock'
 import thunk from 'redux-thunk'
 import {
+  FAILURE,
   fetchSources,
+  fetchSourcesFailure,
   fetchSourcesRequest,
   fetchSourcesSuccess,
   default as reducer,
@@ -19,7 +21,16 @@ const mockStore = configureStore(middlewares)
 
 describe('sources actions', () => {
   describe('sync actions', () => {
-    it('request should create a REQUEST action', () => {
+    it('fetchSourcesFailure should create a FAILURE action', () => {
+      const error = new Error('test error')
+      const expectedAction = {
+        payload: {error},
+        type: FAILURE
+      }
+
+      expect(fetchSourcesFailure(error)).toEqual(expectedAction)
+    })
+    it('fetchSourcesRequest should create a REQUEST action', () => {
       const expectedAction = {
         type: REQUEST
       }
@@ -27,10 +38,8 @@ describe('sources actions', () => {
       expect(fetchSourcesRequest()).toEqual(expectedAction)
     })
 
-    it('success should create a SUCCESS action', () => {
+    it('fetchSourcesSuccess should create a SUCCESS action', () => {
       const expectedAction = {
-        didInvalidate: false,
-        isFetching: false,
         payload: {data: []},
         recievedAt: null,
         type: SUCCESS
@@ -48,7 +57,7 @@ describe('sources actions', () => {
       nock.cleanAll()
     })
 
-    it('fetchSources creates a SUCCESS action when done', (done) => {
+    it('fetchSources creates a SUCCESS action on success', (done) => {
       nock(apiUri)
         .get('/sources')
         .reply(200, [{_id: '1', name: 'SourceA'}, {_id: '2', name: 'SourceB'}])
@@ -67,8 +76,6 @@ describe('sources actions', () => {
             {_id: '2', name: 'SourceB'}
           ]
         },
-        didInvalidate: false,
-        isFetching: false,
         recievedAt: null
       }
       const store = mockStore(initialState)
@@ -87,6 +94,39 @@ describe('sources actions', () => {
           done()
         })
     })
+
+    it('fetchSources creates a FAILURE action on failure', (done) => {
+      nock(apiUri)
+        .get('/sources')
+        .reply(500)
+
+      const initialState = {
+        sources: []
+      }
+
+      const requestAction = {
+        type: REQUEST
+      }
+      const failureAction = {
+        payload: {},
+        type: FAILURE
+      }
+      const store = mockStore(initialState)
+
+      store.dispatch(fetchSources())
+        .then(() => {
+          const actions = store.getActions()
+          const expectedActions = [
+            requestAction,
+            failureAction
+          ]
+
+          expectedActions[1].payload.error = actions[1].payload.error
+
+          expect(actions).toEqual(expectedActions)
+          done()
+        })
+    })
   })
 })
 
@@ -94,12 +134,28 @@ describe('sources reducer', () => {
   it('should return the initial state', () => {
     const stateAfter = {
       data: [],
-      didInvalidate: false,
+      error: undefined,
       isFetching: false,
       lastUpdated: null
     }
 
     expect(reducer(undefined, {})).toEqual(stateAfter)
+  })
+
+  it('should handle FAILURE', () => {
+    const error = new Error('test error')
+    const action = {
+      payload: {error},
+      type: FAILURE
+    }
+    const stateAfter = {
+      data: [],
+      error,
+      isFetching: false,
+      lastUpdated: null
+    }
+
+    expect(reducer(undefined, action)).toEqual(stateAfter)
   })
 
   it('should handle REQUEST', () => {
@@ -108,7 +164,7 @@ describe('sources reducer', () => {
     }
     const stateAfter = {
       data: [],
-      didInvalidate: false,
+      error: undefined,
       isFetching: true,
       lastUpdated: null
     }
@@ -120,19 +176,17 @@ describe('sources reducer', () => {
     const data = ['SourceA', 'SourceB']
     const action = {
       payload: {data},
-      didInvalidate: false,
-      isFetching: false,
       recievedAt: Date.now(),
       type: SUCCESS
     }
     const result = reducer(undefined, action)
-    const expectedValue = {
+    const stateAfter = {
       data,
-      didInvalidate: false,
+      error: undefined,
       isFetching: false,
       lastUpdated: result.lastUpdated
     }
 
-    expect(result).toEqual(expectedValue)
+    expect(result).toEqual(stateAfter)
   })
 })

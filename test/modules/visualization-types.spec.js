@@ -6,7 +6,9 @@ import expect from 'expect'
 import nock from 'nock'
 import thunk from 'redux-thunk'
 import {
+  FAILURE,
   fetchVisualizationTypes,
+  fetchVisualizationTypesFailure,
   fetchVisualizationTypesRequest,
   fetchVisualizationTypesSuccess,
   default as reducer,
@@ -18,9 +20,19 @@ const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 const analytic = 'AnalyticA'
 
-describe('visualizations actions', () => {
+describe('visualizationTypes actions', () => {
   describe('sync actions', () => {
-    it('request should create a REQUEST action', () => {
+    it('fetchVisualizationTypesFailure should create a FAILURE action', () => {
+      const error = new Error('test error')
+      const expectedAction = {
+        payload: {error},
+        type: FAILURE
+      }
+
+      expect(fetchVisualizationTypesFailure(error)).toEqual(expectedAction)
+    })
+
+    it('fetchVisualizationTypesRquest should create a REQUEST action', () => {
       const expectedAction = {
         type: REQUEST
       }
@@ -28,10 +40,8 @@ describe('visualizations actions', () => {
       expect(fetchVisualizationTypesRequest()).toEqual(expectedAction)
     })
 
-    it('success should create a SUCCESS action', () => {
+    it('fetchVisualizationTypesSuccess should create a SUCCESS action', () => {
       const expectedAction = {
-        didInvalidate: false,
-        isFetching: false,
         payload: {data: []},
         recievedAt: null,
         type: SUCCESS
@@ -49,13 +59,13 @@ describe('visualizations actions', () => {
       nock.cleanAll()
     })
 
-    it('fetchVisualizationTypes creates a SUCCESS action when done', (done) => {
+    it('fetchVisualizationTypes creates a SUCCESS action on success', (done) => {
       nock(apiUri)
         .get(`/analytics/${analytic}/visualization-types`)
         .reply(200, [{_id: '1', name: 'VisualizationA'}, {_id: '2', name: 'VisualizationB'}])
 
       const initialState = {
-        visualizations: []
+        visualizationTypes: []
       }
       const requestAction = {
         type: REQUEST
@@ -68,8 +78,6 @@ describe('visualizations actions', () => {
             {_id: '2', name: 'VisualizationB'}
           ]
         },
-        didInvalidate: false,
-        isFetching: false,
         recievedAt: null
       }
       const store = mockStore(initialState)
@@ -88,19 +96,68 @@ describe('visualizations actions', () => {
           done()
         })
     })
+
+    it('fetchVisualizationTypes creates a FAILURE action on failure', (done) => {
+      nock(apiUri)
+        .get(`/analytics/${analytic}/visualization-types`)
+        .reply(500)
+
+      const initialState = {
+        visualizationTypes: {}
+      }
+
+      const requestAction = {
+        type: REQUEST
+      }
+      const failureAction = {
+        payload: {},
+        type: FAILURE
+      }
+      const store = mockStore(initialState)
+
+      store.dispatch(fetchVisualizationTypes())
+        .then(() => {
+          const actions = store.getActions()
+          const expectedActions = [
+            requestAction,
+            failureAction
+          ]
+
+          expectedActions[1].payload.error = actions[1].payload.error
+
+          expect(actions).toEqual(expectedActions)
+          done()
+        })
+    })
   })
 })
 
-describe('visualizations reducer', () => {
+describe('visualizationTypes reducer', () => {
   it('should return the initial state', () => {
     const stateAfter = {
       data: [],
-      didInvalidate: false,
+      error: undefined,
       isFetching: false,
       lastUpdated: null
     }
 
     expect(reducer(undefined, {})).toEqual(stateAfter)
+  })
+
+  it('should handle FAILURE', () => {
+    const error = new Error('test error')
+    const action = {
+      payload: {error},
+      type: FAILURE
+    }
+    const stateAfter = {
+      data: [],
+      error,
+      isFetching: false,
+      lastUpdated: null
+    }
+
+    expect(reducer(undefined, action)).toEqual(stateAfter)
   })
 
   it('should handle REQUEST', () => {
@@ -109,7 +166,7 @@ describe('visualizations reducer', () => {
     }
     const stateAfter = {
       data: [],
-      didInvalidate: false,
+      error: undefined,
       isFetching: true,
       lastUpdated: null
     }
@@ -121,15 +178,13 @@ describe('visualizations reducer', () => {
     const data = ['VisualizationA', 'VisualizationB']
     const action = {
       payload: {data},
-      didInvalidate: false,
-      isFetching: false,
       recievedAt: Date.now(),
       type: SUCCESS
     }
     const result = reducer(undefined, action)
     const stateAfter = {
       data,
-      didInvalidate: false,
+      error: undefined,
       isFetching: false,
       lastUpdated: result.lastUpdated
     }
