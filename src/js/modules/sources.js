@@ -4,6 +4,7 @@ import {checkFetchStatus, defaultFetchOptions} from './utilities'
 
 export const FAILURE = 'safe-app/sources/FAILURE'
 export const REQUEST = 'safe-app/sources/REQUEST'
+export const RESET = 'safe-app/sources/RESET'
 export const SUCCESS = 'safe-app/sources/SUCCESS'
 
 export const fetchSourcesFailure = (error) => ({
@@ -13,6 +14,9 @@ export const fetchSourcesFailure = (error) => ({
 export const fetchSourcesRequest = () => ({
   type: REQUEST
 })
+export const fetchSourcesReset = () => ({
+  type: RESET
+})
 export const fetchSourcesSuccess = (data) => ({
   payload: {data},
   receivedAt: Date.now(),
@@ -20,6 +24,7 @@ export const fetchSourcesSuccess = (data) => ({
 })
 export const fetchSources = () =>
   (dispatch) => {
+    dispatch(resetSources())
     dispatch(fetchSourcesRequest())
 
     return fetch(`${apiUri}/sources`, {...defaultFetchOptions})
@@ -28,6 +33,9 @@ export const fetchSources = () =>
       .then((json) => dispatch(fetchSourcesSuccess(json)))
       .catch((error) => dispatch(fetchSourcesFailure(error)))
   }
+export const resetSources = () => ({
+  type: RESET
+})
 
 const initialState = {
   data: [],
@@ -46,6 +54,8 @@ export default (state = initialState, {payload = {}, type, ...action}) => {
         error,
         isFetching: false
       }
+    case RESET:
+      return initialState
     case REQUEST:
       return {
         ...state,

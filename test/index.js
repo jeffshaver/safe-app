@@ -14,6 +14,10 @@ require('./modules/create-dashboard.spec')
 
 require('./modules/create-dashboard-dialog.spec')
 
+// create-source
+
+require('./modules/create-source.spec')
+
 // dashboard
 
 require('./modules/dashboard.spec')
@@ -82,8 +86,17 @@ require('./modules/source.spec')
 
 require('./modules/sources.spec')
 
-// upload
-require('./modules/upload.spec')
+// upload-data-types
+
+require('./modules/upload-data-types.spec')
+
+// upload-data
+
+require('./modules/upload-data.spec')
+
+// uploads
+
+require('./modules/uploads.spec')
 
 // user
 

@@ -2,69 +2,65 @@
 
 import {apiUri} from '../../config.js'
 import configureStore from 'redux-mock-store'
+import {DO_NEW_SOURCE_SAVED} from '../../src/js/modules/uploads'
 import expect from 'expect'
 import nock from 'nock'
 import thunk from 'redux-thunk'
 import {
+  createSource,
+  createSourceFailure,
+  createSourceRequest,
+  createSourceSuccess,
   FAILURE,
-  fetchSources,
-  fetchSourcesFailure,
-  fetchSourcesRequest,
-  fetchSourcesReset,
-  fetchSourcesSuccess,
   default as reducer,
   REQUEST,
   RESET,
-  resetSources,
+  resetNewSource,
   SUCCESS
-} from '../../src/js/modules/sources'
+} from '../../src/js/modules/create-source'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 
-describe('sources actions', () => {
+describe('createSource actions', () => {
   describe('sync actions', () => {
-    it('fetchSourcesFailure should create a FAILURE action', () => {
+    it('createSourceFailure should create a FAILURE action', () => {
       const error = new Error('test error')
       const expectedAction = {
         payload: {error},
         type: FAILURE
       }
 
-      expect(fetchSourcesFailure(error)).toEqual(expectedAction)
+      expect(createSourceFailure(error)).toEqual(expectedAction)
     })
-    it('fetchSourcesRequest should create a REQUEST action', () => {
+
+    it('createSourceRequest should create a REQUEST action', () => {
       const expectedAction = {
         type: REQUEST
       }
 
-      expect(fetchSourcesRequest()).toEqual(expectedAction)
+      expect(createSourceRequest()).toEqual(expectedAction)
     })
-    it('fetchSourcesReset should create a RESET action', () => {
-      const expectedAction = {
-        type: RESET
-      }
 
-      expect(fetchSourcesReset()).toEqual(expectedAction)
-    })
-    it('fetchSourcesSuccess should create a SUCCESS action', () => {
+    it('createSourceSuccess should create a SUCCESS action', () => {
       const expectedAction = {
-        payload: {data: []},
-        receivedAt: null,
+        payload: {data: {}},
+        recievedAt: null,
         type: SUCCESS
       }
-      const action = fetchSourcesSuccess([])
+      const action = createSourceSuccess({})
 
-      expectedAction.receivedAt = action.receivedAt
+      expectedAction.recievedAt = action.recievedAt
 
       expect(action).toEqual(expectedAction)
     })
-    it('resetSources should create a RESET action', () => {
+    
+    it('resetNewSource should create a RESET action', () => {
       const expectedAction = {
         type: RESET
       }
-      
-      expect(resetSources()).toEqual(expectedAction)
+
+      expect(resetNewSource()).toEqual(expectedAction)
     })
   })
 
@@ -73,79 +69,74 @@ describe('sources actions', () => {
       nock.cleanAll()
     })
 
-    it('fetchSources creates a SUCCESS action on success', (done) => {
+    it('createSource creates a SUCCESS action on success', (done) => {
       nock(apiUri)
-        .get('/sources')
-        .reply(200, [{_id: '1', name: 'SourceA'}, {_id: '2', name: 'SourceB'}])
+        .post('/sources')
+        .reply(200, {_id: 'abc123', name: 'Name'})
 
-      const initialState = {
-        sources: []
-      }
-      const resetAction = {
-        type: RESET
-      }
+      const name = 'Name'
       const requestAction = {
         type: REQUEST
       }
-      const recieveAction = {
+      const receiveAction = {
         type: SUCCESS,
         payload: {
-          data: [
-            {_id: '1', name: 'SourceA'},
-            {_id: '2', name: 'SourceB'}
-          ]
+          data: {_id: 'abc123', name}
         },
-        receivedAt: null
+        recievedAt: null
       }
-      const store = mockStore(initialState)
+      const sourceSavedAction = {
+        type: DO_NEW_SOURCE_SAVED,
+        payload: true
+      }
+      const store = mockStore({})
 
-      store.dispatch(fetchSources())
+      store.dispatch(createSource(name))
         .then(() => {
           const actions = store.getActions()
           const expectedActions = [
-            resetAction,
             requestAction,
-            recieveAction
+            receiveAction,
+            sourceSavedAction
           ]
 
-          expectedActions[2].receivedAt = actions[2].receivedAt
+          expectedActions[1].recievedAt = actions[1].recievedAt
 
           expect(actions).toEqual(expectedActions)
           done()
         })
     })
 
-    it('fetchSources creates a FAILURE action on failure', (done) => {
+    it('createSource creates a FAILURE action on failure', (done) => {
       nock(apiUri)
-        .get('/sources')
+        .post('/sources')
         .reply(500)
 
-      const initialState = {
-        sources: []
-      }
-
-      const resetAction = {
-        type: RESET
-      }
+      const name = 'Name'
+      const error = new Error('NetworkError')
       const requestAction = {
         type: REQUEST
       }
       const failureAction = {
-        payload: {},
+        payload: {error},
         type: FAILURE
       }
-      const store = mockStore(initialState)
+      const sourceNotSavedAction = {
+        type: DO_NEW_SOURCE_SAVED,
+        payload: false
+      }
+      const store = mockStore({})
 
-      store.dispatch(fetchSources())
+      store.dispatch(createSource(name))
         .then(() => {
           const actions = store.getActions()
           const expectedActions = [
-            resetAction,
             requestAction,
-            failureAction
+            failureAction,
+            sourceNotSavedAction
           ]
 
-          expectedActions[2].payload.error = actions[2].payload.error
+          expectedActions[1].payload.error = actions[1].payload.error
 
           expect(actions).toEqual(expectedActions)
           done()
@@ -154,10 +145,10 @@ describe('sources actions', () => {
   })
 })
 
-describe('sources reducer', () => {
+describe('createSource reducer', () => {
   it('should return the initial state', () => {
     const stateAfter = {
-      data: [],
+      data: {},
       error: undefined,
       isFetching: false,
       lastUpdated: null
@@ -173,7 +164,7 @@ describe('sources reducer', () => {
       type: FAILURE
     }
     const stateAfter = {
-      data: [],
+      data: {},
       error,
       isFetching: false,
       lastUpdated: null
@@ -187,7 +178,7 @@ describe('sources reducer', () => {
       type: REQUEST
     }
     const stateAfter = {
-      data: [],
+      data: {},
       error: undefined,
       isFetching: true,
       lastUpdated: null
@@ -201,7 +192,7 @@ describe('sources reducer', () => {
       type: RESET
     }
     const stateAfter = {
-      data: [],
+      data: {},
       error: undefined,
       isFetching: false,
       lastUpdated: null
@@ -211,20 +202,20 @@ describe('sources reducer', () => {
   })
 
   it('should handle SUCCESS', () => {
-    const data = ['SourceA', 'SourceB']
+    const data = {_id: 'abc123', name: 'Name'}
     const action = {
       payload: {data},
-      receivedAt: Date.now(),
+      recievedAt: Date.now(),
       type: SUCCESS
     }
     const result = reducer(undefined, action)
-    const stateAfter = {
+    const expectedValue = {
       data,
       error: undefined,
       isFetching: false,
       lastUpdated: result.lastUpdated
     }
 
-    expect(result).toEqual(stateAfter)
+    expect(result).toEqual(expectedValue)
   })
 })

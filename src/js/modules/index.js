@@ -3,6 +3,7 @@ import category from './category'
 import {combineReducers} from 'redux'
 import createDashboard from './create-dashboard'
 import createDashboardDialog from './create-dashboard-dialog'
+import createSource from './create-source'
 import dashboard from './dashboard'
 import dashboards from './dashboards'
 import deleteDashboard from './delete-dashboard'
@@ -19,7 +20,9 @@ import mapResults from './map-results'
 import {routerReducer as routing} from 'react-router-redux'
 import searchResults from './search-results'
 import sources from './sources'
-import uploadDataTypes from './upload'
+import uploadData from './upload-data'
+import uploadDataTypes from './upload-data-types'
+import uploads from './uploads'
 import user from './user'
 import visualizationResults from './visualization-results'
 import visualizationTypes from './visualization-types'
@@ -53,6 +56,7 @@ export const rootReducer = combineReducers({
   category,
   createDashboard,
   createDashboardDialog,
+  createSource,
   dashboard,
   dashboards,
   deleteDashboard,
@@ -69,7 +73,9 @@ export const rootReducer = combineReducers({
   searchResults,
   source: hydrateable(source, HYDRATE_SOURCE),
   sources,
+  uploadData,
   uploadDataTypes,
+  uploads,
   user,
   visualization: hydrateable(visualization, HYDRATE_VISUALIZATION),
   visualizationResults,

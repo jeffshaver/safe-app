@@ -5,6 +5,8 @@ import {
   HYDRATE,
   hydrateSource,
   default as reducer,
+  RESET,
+  resetSource,
   SET,
   setSource
 } from '../../src/js/modules/source'
@@ -18,6 +20,15 @@ describe('source actions', () => {
     }
 
     expect(hydrateSource(source)).toEqual(expectedAction)
+  })
+
+  it('resetSource should create an SET action', () => {
+    const source = 'SourceA'
+    const expectedAction = {
+      type: RESET
+    }
+
+    expect(resetSource(source)).toEqual(expectedAction)
   })
 
   it('setSource should create an SET action', () => {
@@ -36,6 +47,15 @@ describe('source reducer', () => {
     const stateAfter = ''
 
     expect(reducer(undefined, {})).toEqual(stateAfter)
+  })
+
+  it('should handle RESET', () => {
+    const stateAfter = ''
+    const action = {
+      type: RESET
+    }
+    
+    expect(reducer('SourceA', action)).toEqual(stateAfter)
   })
 
   it('should handle SET', () => {

@@ -1,6 +1,6 @@
-export const RESET = 'safe-app/upload/RESET'
-export const SET = 'safe-app/upload/SET'
-export const SET_BY_HEADER_NAME = 'safe-app/upload/SET_BY_HEADER_NAME'
+export const RESET = 'safe-app/upload-data-types/RESET'
+export const SET = 'safe-app/upload-data-types/SET'
+export const SET_BY_HEADER_NAME = 'safe-app/upload-data-types/SET_BY_HEADER_NAME'
 
 export const resetUploadDataTypes = () => ({
   type: RESET

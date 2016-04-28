@@ -9,9 +9,9 @@ import {
   SET_BY_HEADER_NAME,
   setUploadDataTypeByHeaderName,
   setUploadDataTypes
-} from '../../src/js/modules/upload'
+} from '../../src/js/modules/upload-data-types'
 
-describe('upload actions', () => {
+describe('upload-data-types actions', () => {
   it('setUploadDataTypes creates SET action', () => {
     const uploadDataTypes = {
       columnName1: 'type1',
@@ -47,7 +47,7 @@ describe('upload actions', () => {
   })
 })
 
-describe('upload reducer', () => {
+describe('upload-data-types reducer', () => {
   it('should return the initial state', () => {
     const stateAfter = {}
 
