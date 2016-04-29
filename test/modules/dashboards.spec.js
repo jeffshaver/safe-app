@@ -7,46 +7,46 @@ import nock from 'nock'
 import thunk from 'redux-thunk'
 import {
   FAILURE,
-  fetchAnalytics,
-  fetchAnalyticsFailure,
-  fetchAnalyticsRequest,
-  fetchAnalyticsSuccess,
+  fetchDashboards,
+  fetchDashboardsFailure,
+  fetchDashboardsRequest,
+  fetchDashboardsSuccess,
   default as reducer,
   REQUEST,
   SUCCESS
-} from '../../src/js/modules/analytics'
+} from '../../src/js/modules/dashboards'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 const source = 'SourceA'
 
-describe('analytics actions', () => {
+describe('dashboards actions', () => {
   describe('sync actions', () => {
-    it('fetchAnalyticsFailure should create a FAILURE action', () => {
+    it('fetchDashboardsFailure should create a FAILURE action', () => {
       const error = new Error('test error')
       const expectedAction = {
         payload: {error},
         type: FAILURE
       }
 
-      expect(fetchAnalyticsFailure(error)).toEqual(expectedAction)
+      expect(fetchDashboardsFailure(error)).toEqual(expectedAction)
     })
 
-    it('fetchAnalyticsRequest should create a REQUEST action', () => {
+    it('fetchDashboardsRequest should create a REQUEST action', () => {
       const expectedAction = {
         type: REQUEST
       }
 
-      expect(fetchAnalyticsRequest()).toEqual(expectedAction)
+      expect(fetchDashboardsRequest()).toEqual(expectedAction)
     })
 
-    it('fetchAnalyticsSuccess should create a SUCCESS action', () => {
+    it('fetchDashboardsSuccess should create a SUCCESS action', () => {
       const expectedAction = {
         payload: {data: []},
         recievedAt: null,
         type: SUCCESS
       }
-      const action = fetchAnalyticsSuccess([])
+      const action = fetchDashboardsSuccess([])
 
       expectedAction.recievedAt = action.recievedAt
 
@@ -59,13 +59,16 @@ describe('analytics actions', () => {
       nock.cleanAll()
     })
 
-    it('fetchAnalytics creates a SUCCESS action on success', (done) => {
+    it('fetchDashboards creates a SUCCESS action on success', (done) => {
       nock(apiUri)
-        .get(`/sources/${source}/analytics`)
-        .reply(200, [{_id: '1', name: 'AnalyticA'}, {_id: '2', name: 'AnalyticB'}])
+        .get('/dashboards')
+        .reply(200, [
+          {_id: 'abc123', subtitle: 'SubtitleA', title: 'TitleA'},
+          {_id: 'def456', subtitle: 'SubtitleB', title: 'TitleB'}
+        ])
 
       const initialState = {
-        analytics: []
+        dashboards: []
       }
       const requestAction = {
         type: REQUEST
@@ -74,15 +77,15 @@ describe('analytics actions', () => {
         type: SUCCESS,
         payload: {
           data: [
-            {_id: '1', name: 'AnalyticA'},
-            {_id: '2', name: 'AnalyticB'}
+            {_id: 'abc123', subtitle: 'SubtitleA', title: 'TitleA'},
+            {_id: 'def456', subtitle: 'SubtitleB', title: 'TitleB'}
           ]
         },
         recievedAt: null
       }
       const store = mockStore(initialState)
 
-      store.dispatch(fetchAnalytics(source))
+      store.dispatch(fetchDashboards(source))
         .then(() => {
           const actions = store.getActions()
           const expectedActions = [
@@ -97,14 +100,14 @@ describe('analytics actions', () => {
         })
     })
 
-    it('fetchAnalytics creates a FAILURE action on failure', (done) => {
+    it('fetchDashboards creates a FAILURE action on failure', (done) => {
       nock(apiUri)
-        .get(`/sources/${source}/analytics`)
+        .get('/dashboards')
         .reply(500)
 
       const error = new Error('NetworkError')
       const initialState = {
-        analytics: []
+        dashboards: []
       }
       const requestAction = {
         type: REQUEST
@@ -115,7 +118,7 @@ describe('analytics actions', () => {
       }
       const store = mockStore(initialState)
 
-      store.dispatch(fetchAnalytics(source))
+      store.dispatch(fetchDashboards())
         .then(() => {
           const actions = store.getActions()
           const expectedActions = [
@@ -132,7 +135,7 @@ describe('analytics actions', () => {
   })
 })
 
-describe('analytics reducer', () => {
+describe('dashboards reducer', () => {
   it('should return the initial state', () => {
     const stateAfter = {
       data: [],

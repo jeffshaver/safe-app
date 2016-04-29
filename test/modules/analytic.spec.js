@@ -13,8 +13,8 @@ describe('analytic actions', () => {
   it('hydrateAnalytic should create a HYDRATE action', () => {
     const analytic = 'AnalyticA'
     const expectedAction = {
-      type: HYDRATE,
-      state: analytic
+      state: analytic,
+      type: HYDRATE
     }
 
     expect(hydrateAnalytic(analytic)).toEqual(expectedAction)
@@ -23,8 +23,8 @@ describe('analytic actions', () => {
   it('setAnalytic should create an SET action', () => {
     const analytic = 'AnalyticA'
     const expectedAction = {
-      type: SET,
-      payload: {analytic}
+      payload: {analytic},
+      type: SET
     }
 
     expect(setAnalytic(analytic)).toEqual(expectedAction)
@@ -41,8 +41,8 @@ describe('analytic reducer', () => {
   it('should handle SET', () => {
     const stateAfter = 'AnalyticA'
     const action = {
-      type: SET,
-      payload: {analytic: stateAfter}
+      payload: {analytic: stateAfter},
+      type: SET
     }
 
     expect(reducer(undefined, action)).toEqual(stateAfter)

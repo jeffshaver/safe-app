@@ -2,51 +2,53 @@
 
 import {apiUri} from '../../config.js'
 import configureStore from 'redux-mock-store'
+import {RESET as DASHBOARD_RESET} from '../../src/js/modules/dashboard'
+import {REQUEST as DASHBOARDS_REQUEST} from '../../src/js/modules/dashboards'
 import expect from 'expect'
 import nock from 'nock'
 import thunk from 'redux-thunk'
 import {
+  deleteDashboard,
+  deleteDashboardFailure,
+  deleteDashboardRequest,
+  deleteDashboardSuccess,
   FAILURE,
-  fetchAnalytics,
-  fetchAnalyticsFailure,
-  fetchAnalyticsRequest,
-  fetchAnalyticsSuccess,
   default as reducer,
   REQUEST,
   SUCCESS
-} from '../../src/js/modules/analytics'
+} from '../../src/js/modules/delete-dashboard'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
-const source = 'SourceA'
+const dashboardId = 'abc123'
 
-describe('analytics actions', () => {
+describe('deleteDashboard actions', () => {
   describe('sync actions', () => {
-    it('fetchAnalyticsFailure should create a FAILURE action', () => {
+    it('deleteDashboardFailure should create a FAILURE action', () => {
       const error = new Error('test error')
       const expectedAction = {
         payload: {error},
         type: FAILURE
       }
 
-      expect(fetchAnalyticsFailure(error)).toEqual(expectedAction)
+      expect(deleteDashboardFailure(error)).toEqual(expectedAction)
     })
 
-    it('fetchAnalyticsRequest should create a REQUEST action', () => {
+    it('deleteDashboardRequest should create a REQUEST action', () => {
       const expectedAction = {
         type: REQUEST
       }
 
-      expect(fetchAnalyticsRequest()).toEqual(expectedAction)
+      expect(deleteDashboardRequest()).toEqual(expectedAction)
     })
 
-    it('fetchAnalyticsSuccess should create a SUCCESS action', () => {
+    it('deleteDashboardSuccess should create a SUCCESS action', () => {
       const expectedAction = {
-        payload: {data: []},
+        payload: {data: {}},
         recievedAt: null,
         type: SUCCESS
       }
-      const action = fetchAnalyticsSuccess([])
+      const action = deleteDashboardSuccess({})
 
       expectedAction.recievedAt = action.recievedAt
 
@@ -59,35 +61,37 @@ describe('analytics actions', () => {
       nock.cleanAll()
     })
 
-    it('fetchAnalytics creates a SUCCESS action on success', (done) => {
+    it('deleteDashboard creates a SUCCESS action on success', (done) => {
       nock(apiUri)
-        .get(`/sources/${source}/analytics`)
-        .reply(200, [{_id: '1', name: 'AnalyticA'}, {_id: '2', name: 'AnalyticB'}])
+        .delete(`/dashboards/${dashboardId}`)
+        .reply(200, {})
 
-      const initialState = {
-        analytics: []
-      }
       const requestAction = {
         type: REQUEST
       }
       const recieveAction = {
         type: SUCCESS,
         payload: {
-          data: [
-            {_id: '1', name: 'AnalyticA'},
-            {_id: '2', name: 'AnalyticB'}
-          ]
+          data: {}
         },
         recievedAt: null
       }
-      const store = mockStore(initialState)
+      const dashboardResetAction = {
+        type: DASHBOARD_RESET
+      }
+      const dashboardsRequestAction = {
+        type: DASHBOARDS_REQUEST
+      }
+      const store = mockStore({})
 
-      store.dispatch(fetchAnalytics(source))
+      store.dispatch(deleteDashboard(dashboardId))
         .then(() => {
           const actions = store.getActions()
           const expectedActions = [
             requestAction,
-            recieveAction
+            recieveAction,
+            dashboardResetAction,
+            dashboardsRequestAction
           ]
 
           expectedActions[1].recievedAt = actions[1].recievedAt
@@ -97,15 +101,12 @@ describe('analytics actions', () => {
         })
     })
 
-    it('fetchAnalytics creates a FAILURE action on failure', (done) => {
+    it('deleteDashboard creates a FAILURE action on failure', (done) => {
       nock(apiUri)
-        .get(`/sources/${source}/analytics`)
+        .delete(`/dashboards/${dashboardId}`)
         .reply(500)
 
       const error = new Error('NetworkError')
-      const initialState = {
-        analytics: []
-      }
       const requestAction = {
         type: REQUEST
       }
@@ -113,9 +114,9 @@ describe('analytics actions', () => {
         payload: {error},
         type: FAILURE
       }
-      const store = mockStore(initialState)
+      const store = mockStore({})
 
-      store.dispatch(fetchAnalytics(source))
+      store.dispatch(deleteDashboard(dashboardId))
         .then(() => {
           const actions = store.getActions()
           const expectedActions = [
@@ -132,10 +133,10 @@ describe('analytics actions', () => {
   })
 })
 
-describe('analytics reducer', () => {
+describe('deleteDashboard reducer', () => {
   it('should return the initial state', () => {
     const stateAfter = {
-      data: [],
+      data: {},
       error: undefined,
       isFetching: false,
       lastUpdated: null
@@ -151,7 +152,7 @@ describe('analytics reducer', () => {
       type: FAILURE
     }
     const stateAfter = {
-      data: [],
+      data: {},
       error,
       isFetching: false,
       lastUpdated: null
@@ -165,7 +166,7 @@ describe('analytics reducer', () => {
       type: REQUEST
     }
     const stateAfter = {
-      data: [],
+      data: {},
       error: undefined,
       isFetching: true,
       lastUpdated: null
@@ -175,7 +176,7 @@ describe('analytics reducer', () => {
   })
 
   it('should handle SUCCESS', () => {
-    const data = ['AnalyticA', 'AnalyticB']
+    const data = {}
     const action = {
       payload: {data},
       recievedAt: Date.now(),
