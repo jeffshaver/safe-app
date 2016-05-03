@@ -2,54 +2,31 @@
 
 import expect from 'expect'
 import {
+  CHANGE,
+  changeCreateDialog,
   default as reducer,
   RESET,
-  resetCreateDialog,
-  SET_SUBTITLE,
-  SET_TITLE,
-  SET_VISIBILITY,
-  setCreateDialogSubtitle,
-  setCreateDialogTitle,
-  setCreateDialogVisibility
+  resetCreateDialog
 } from '../../src/js/modules/create-dashboard-dialog'
 
 describe('createDashboardDialog actions', () => {
+  it('changeCreateDialog should create a CHANGE actions', () => {
+    const subtitle = 'CreateSubtitle'
+    const visibility = true
+    const expectedAction = {
+      payload: {value: {subtitle, visibility}},
+      type: CHANGE
+    }
+
+    expect(changeCreateDialog({subtitle, visibility})).toEqual(expectedAction)
+  })
+
   it('resetCreateDialog should create a RESET action', () => {
     const expectedAction = {
       type: RESET
     }
 
     expect(resetCreateDialog()).toEqual(expectedAction)
-  })
-
-  it('setCreateDialogSubtitle should create a SET_SUBTITLE action', () => {
-    const subtitle = 'CreateSubtitle'
-    const expectedAction = {
-      payload: {subtitle},
-      type: SET_SUBTITLE
-    }
-
-    expect(setCreateDialogSubtitle(subtitle)).toEqual(expectedAction)
-  })
-
-  it('setCreateDialogTitle should create a SET_TITLE action', () => {
-    const title = 'CreateTitle'
-    const expectedAction = {
-      payload: {title},
-      type: SET_TITLE
-    }
-
-    expect(setCreateDialogTitle(title)).toEqual(expectedAction)
-  })
-
-  it('setCreateDialogVisibility should create a SET_VISIBILITY action', () => {
-    const visibility = true
-    const expectedAction = {
-      payload: {visibility},
-      type: SET_VISIBILITY
-    }
-
-    expect(setCreateDialogVisibility(visibility)).toEqual(expectedAction)
   })
 })
 
@@ -62,6 +39,23 @@ describe('createDashboardDialog reducer', () => {
     }
 
     expect(reducer(undefined, {})).toEqual(stateAfter)
+  })
+
+  it('should handle CHANGE', () => {
+    const subtitle = 'CreateSubtitle1'
+    const visibility = true
+    const value = {subtitle, visibility}
+    const stateAfter = {
+      subtitle,
+      title: '',
+      visibility
+    }
+    const action = {
+      payload: {value},
+      type: CHANGE
+    }
+
+    expect(reducer(undefined, action)).toEqual(stateAfter)
   })
 
   it('should handle RESET', () => {
@@ -80,50 +74,5 @@ describe('createDashboardDialog reducer', () => {
     }
 
     expect(reducer(stateBefore, action)).toEqual(stateAfter)
-  })
-
-  it('should handle SET_SUBTITLE', () => {
-    const subtitle = 'CreateSubtitle'
-    const stateAfter = {
-      subtitle,
-      title: '',
-      visibility: false
-    }
-    const action = {
-      payload: {subtitle},
-      type: SET_SUBTITLE
-    }
-
-    expect(reducer(undefined, action)).toEqual(stateAfter)
-  })
-
-  it('should handle SET_TITLE', () => {
-    const title = 'CreateTitle'
-    const stateAfter = {
-      subtitle: '',
-      title,
-      visibility: false
-    }
-    const action = {
-      payload: {title},
-      type: SET_TITLE
-    }
-
-    expect(reducer(undefined, action)).toEqual(stateAfter)
-  })
-
-  it('should handle SET_VISIBILITY', () => {
-    const visibility = true
-    const stateAfter = {
-      subtitle: '',
-      title: '',
-      visibility
-    }
-    const action = {
-      payload: {visibility},
-      type: SET_VISIBILITY
-    }
-
-    expect(reducer(undefined, action)).toEqual(stateAfter)
   })
 })

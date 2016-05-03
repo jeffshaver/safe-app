@@ -14,7 +14,7 @@ cache:
   directories:
     - node_modules
 node_js:
-  - "5.7.0"
+  - "6.0.0"
 before_script:
   - "npm run create-default-config"
   - "npm install"

@@ -8,24 +8,21 @@ import FlatButton from 'material-ui/lib/flat-button'
 import MenuItem from 'material-ui/lib/menus/menu-item'
 import SelectField from 'material-ui/lib/select-field'
 import {setDashboard} from '../modules/dashboard'
-import {setDeleteDialogVisibility} from '../modules/delete-dashboard-dialog'
 import TextField from 'material-ui/lib/text-field'
-// import {saveCreateDialog} from ''
-// import {saveEditDialog} from ''
-import {header, main} from '../styles/common'
-import React, {Component, PropTypes} from 'react'
 import {
-  resetCreateDialog,
-  setCreateDialogSubtitle,
-  setCreateDialogTitle,
-  setCreateDialogVisibility
+  changeCreateDialog,
+  resetCreateDialog
 } from '../modules/create-dashboard-dialog'
 import {
-  resetEditDialog,
-  setEditDialogSubtitle,
-  setEditDialogTitle,
-  setEditDialogVisibility
+  changeDeleteDialog,
+  resetDeleteDialog
+} from '../modules/delete-dashboard-dialog'
+import {
+  changeEditDialog,
+  resetEditDialog
 } from '../modules/edit-dashboard-dialog'
+import {header, main} from '../styles/common'
+import React, {Component, PropTypes} from 'react'
 
 const style = {
   width: '400px'
@@ -59,18 +56,51 @@ class Dashboards extends Component {
     super(props)
 
     this.createDashboard = ::this.createDashboard
-    this.createDialogSubtitleChange = ::this.createDialogSubtitleChange
-    this.createDialogTitleChange = ::this.createDialogTitleChange
-    this.dashboardSelectChange = ::this.dashboardSelectChange
+    this.deleteDashboard = ::this.deleteDashboard
     this.editDashboard = ::this.editDashboard
-    this.editDialogSubtitleChange = ::this.editDialogSubtitleChange
-    this.editDialogTitleChange = ::this.editDialogTitleChange
+    this.selectDashboard = ::this.selectDashboard
+    this.changeCreateDialogSubtitle = this.changeCreateDialog.bind(this, 'subtitle')
+    this.changeCreateDialogTitle = this.changeCreateDialog.bind(this, 'title')
+    this.hideCreateDialog = this.changeCreateDialog.bind(this, 'visibility', false)
+    this.showCreateDialog = this.changeCreateDialog.bind(this, 'visibility', true)
+    this.changeEditDialogSubtitle = this.changeEditDialog.bind(this, 'subtitle')
+    this.changeEditDialogTitle = this.changeEditDialog.bind(this, 'title')
+    this.hideEditDialog = this.changeEditDialog.bind(this, 'visibility', false)
+    this.showEditDialog = this.changeEditDialog.bind(this, 'visibility', true)
+    this.hideDeleteDialog = this.changeDeleteDialog.bind(this, 'visibility', false)
+    this.showDeleteDialog = this.changeDeleteDialog.bind(this, 'visibility', true)
   }
 
   componentWillMount () {
     const {dispatch} = this.props
 
     dispatch(fetchDashboards())
+  }
+
+  changeCreateDialog (property, event) {
+    const {dispatch} = this.props
+    const value = event && event.target && event.target.value || event
+
+    dispatch(changeCreateDialog({[property]: value}))
+  }
+
+  changeDeleteDialog (property, event) {
+    const {dispatch} = this.props
+    const value = event && event.target && event.target.value || event
+
+    dispatch(changeDeleteDialog({[property]: value}))
+  }
+
+  changeEditDialog (property, event) {
+    const {dashboard, dispatch} = this.props
+    const {subtitle, title} = dashboard
+    const value = event && event.target && event.target.value || event
+
+    if (property === 'visibility' && value) {
+      dispatch(changeEditDialog({subtitle, title}))
+    }
+
+    dispatch(changeEditDialog({[property]: value}))
   }
 
   createDashboard (event) {
@@ -81,37 +111,9 @@ class Dashboards extends Component {
     dispatch(resetCreateDialog())
   }
 
-  createDialogSubtitleChange (event) {
-    const {dispatch} = this.props
-
-    dispatch(setCreateDialogSubtitle(event.target.value))
-  }
-
-  createDialogTitleChange (event) {
-    const {dispatch} = this.props
-
-    dispatch(setCreateDialogTitle(event.target.value))
-  }
-
-  createDialogVisibility (visible) {
-    const {dispatch} = this.props
-
-    dispatch(setCreateDialogVisibility(visible))
-  }
-
-  dashboardSelectChange (event, index, id) {
-    const {dispatch, dashboards} = this.props
-    const dashboard = getDashboardById(dashboards.data, id)
-    const {subtitle, title} = dashboard
-
-    dispatch(setDashboard(id, subtitle, title))
-  }
-
-  deleteDashboard (event) {
+  deleteDashboard () {
     const {dispatch, dashboard} = this.props
     const {id} = dashboard
-
-    dispatch(setDeleteDialogVisibility(false))
 
     if (!id) {
       console.error('Cannot delete a dashboard that is not selected')
@@ -120,20 +122,13 @@ class Dashboards extends Component {
     }
 
     dispatch(deleteDashboard(id))
-  }
-
-  deleteDialogVisibility (visible) {
-    const {dispatch} = this.props
-
-    dispatch(setDeleteDialogVisibility(visible))
+    dispatch(resetDeleteDialog())
   }
 
   editDashboard (event) {
     const {dispatch, dashboard, editDashboardDialog} = this.props
     const {id} = dashboard
     const {subtitle, title} = editDashboardDialog
-
-    dispatch(setEditDialogVisibility(false))
 
     if (!id) {
       console.error('Cannot edit a dashboard that is not selected')
@@ -145,27 +140,29 @@ class Dashboards extends Component {
     dispatch(resetEditDialog())
   }
 
-  editDialogSubtitleChange (event) {
-    const {dispatch} = this.props
-
-    dispatch(setEditDialogSubtitle(event.target.value))
+  generateActions (cancelText, submitText, onCancelTap, onSubmitTap) {
+    return [
+      <FlatButton
+        key={0}
+        label={cancelText}
+        secondary={true}
+        onTouchTap={onCancelTap}
+      />,
+      <FlatButton
+        key={1}
+        label={submitText}
+        primary={true}
+        onTouchTap={onSubmitTap}
+      />
+    ]
   }
 
-  editDialogTitleChange (event) {
-    const {dispatch} = this.props
+  selectDashboard (event, index, id) {
+    const {dispatch, dashboards} = this.props
+    const dashboard = getDashboardById(dashboards.data, id)
+    const {subtitle, title} = dashboard
 
-    dispatch(setEditDialogTitle(event.target.value))
-  }
-
-  editDialogVisibility (visible) {
-    const {dispatch, dashboard} = this.props
-
-    if (visible) {
-      dispatch(setEditDialogSubtitle(dashboard.subtitle))
-      dispatch(setEditDialogTitle(dashboard.title))
-    }
-
-    dispatch(setEditDialogVisibility(visible))
+    dispatch(setDashboard(id, subtitle, title))
   }
 
   render () {
@@ -190,100 +187,12 @@ class Dashboards extends Component {
       title: editTitle,
       visibility: editVisibility
     } = editDashboardDialog
-
-    const createActions = [
-      <FlatButton
-        key={0}
-        label='Cancel'
-        secondary={true}
-        onTouchTap={() => (this.createDialogVisibility(false))}
-      />,
-      <FlatButton
-        key={1}
-        label='Create'
-        primary={true}
-        onTouchTap={this.createDashboard}
-      />
-    ]
-    const deleteActions = [
-      <FlatButton
-        key={0}
-        label='Cancel'
-        secondary={true}
-        onTouchTap={() => (this.deleteDialogVisibility(false))}
-      />,
-      <FlatButton
-        key={1}
-        label='Delete'
-        primary={true}
-        onTouchTap={() => (this.deleteDashboard(false))}
-      />
-    ]
-    const editActions = [
-      <FlatButton
-        key={0}
-        label='Cancel'
-        secondary={true}
-        onTouchTap={() => (this.editDialogVisibility(false))}
-      />,
-      <FlatButton
-        key={1}
-        label='Save'
-        primary={true}
-        onTouchTap={this.editDashboard}
-      />
-    ]
+    const createActions = this.generateActions('Cancel', 'Create', this.hideCreateDialog, this.createDashboard)
+    const deleteActions = this.generateActions('Cancel', 'Delete', this.hideDeleteDialog, this.deleteDashboard)
+    const editActions = this.generateActions('Cancel', 'Save', this.hideEditDialog, this.editDashboard)
 
     return (
       <div>
-        <Dialog
-          actions={createActions}
-          contentStyle={style}
-          modal={false}
-          open={createVisibility}
-          title='Create a Dashboard'
-          onRequestClose={() => (this.createDialogVisibility(false))}
-        >
-          <TextField
-            floatingLabelText='Title'
-            value={createTitle}
-            onChange={this.createDialogTitleChange}
-          />
-          <TextField
-            floatingLabelText='Subtitle'
-            value={createSubtitle}
-            onChange={this.createDialogSubtitleChange}
-          />
-        </Dialog>
-        <Dialog
-          actions={deleteActions}
-          contentStyle={style}
-          modal={false}
-          open={deleteVisibility}
-          title='Delete a Dashboard'
-          onRequestClose={() => (this.deleteDialogVisibility(false))}
-        >
-          <p>Are you sure you want to delete this dashboard?</p>
-        </Dialog>
-        <Dialog
-          actions={editActions}
-          contentStyle={style}
-          modal={false}
-          open={editVisibility}
-          title='Edit a Dashboard'
-          onRequestClose={() => (this.editDialogVisibility(false))}
-        >
-          <TextField
-            floatingLabelText='Title'
-            value={editTitle}
-            onChange={this.editDialogTitleChange}
-          />
-          <TextField
-            floatingLabelText='Subtitle'
-            value={editSubtitle}
-            onChange={this.editDialogSubtitleChange}
-          />
-        </Dialog>
         <header style={header}>
           <h1>Dashboards {title ? `/ ${title}` : ''}</h1>
         </header>
@@ -293,7 +202,7 @@ class Dashboards extends Component {
             floatingLabelText='Select a Dashboard'
             fullWidth={true}
             value={id}
-            onChange={this.dashboardSelectChange}
+            onChange={this.selectDashboard}
           >
             {dashboards.data.map(function (dashboard) {
               return (
@@ -305,23 +214,71 @@ class Dashboards extends Component {
               )
             })}
           </SelectField>
-
           <FlatButton
             disabled={!id}
             label='Edit'
-            onTouchTap={() => (this.editDialogVisibility(true))}
+            onTouchTap={this.showEditDialog}
           />
           <FlatButton
             disabled={!id}
             label='Delete'
-            onTouchTap={() => (this.deleteDialogVisibility(true))}
+            onTouchTap={this.showDeleteDialog}
           />
           <FlatButton
             label='Create'
             primary={true}
-            onTouchTap={() => (this.createDialogVisibility(true))}
+            onTouchTap={this.showCreateDialog}
           />
         </main>
+        {/* Dialog Definitions */}
+        <Dialog
+          actions={createActions}
+          contentStyle={style}
+          modal={false}
+          open={createVisibility}
+          title='Create a Dashboard'
+          onRequestClose={this.hideCreateDialog}
+        >
+          <TextField
+            floatingLabelText='Title'
+            value={createTitle}
+            onChange={this.changeCreateDialogTitle}
+          />
+          <TextField
+            floatingLabelText='Subtitle'
+            value={createSubtitle}
+            onChange={this.changeCreateDialogSubtitle}
+          />
+        </Dialog>
+        <Dialog
+          actions={deleteActions}
+          contentStyle={style}
+          modal={false}
+          open={deleteVisibility}
+          title='Delete a Dashboard'
+          onRequestClose={this.hideDeleteDialog}
+        >
+          <p>Are you sure you want to delete this dashboard?</p>
+        </Dialog>
+        <Dialog
+          actions={editActions}
+          contentStyle={style}
+          modal={false}
+          open={editVisibility}
+          title='Edit a Dashboard'
+          onRequestClose={this.hideEditDialog}
+        >
+          <TextField
+            floatingLabelText='Title'
+            value={editTitle}
+            onChange={this.changeEditDialogTitle}
+          />
+          <TextField
+            floatingLabelText='Subtitle'
+            value={editSubtitle}
+            onChange={this.changeEditDialogSubtitle}
+          />
+        </Dialog>
       </div>
     )
   }

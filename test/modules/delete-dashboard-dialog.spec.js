@@ -2,53 +2,31 @@
 
 import expect from 'expect'
 import {
+  CHANGE,
+  changeDeleteDialog,
   default as reducer,
   RESET,
-  resetDeleteDialog,
-  SET_SUBTITLE,
-  SET_TITLE,
-  SET_VISIBILITY,
-  setDeleteDialogSubtitle,
-  setDeleteDialogTitle,
-  setDeleteDialogVisibility
+  resetDeleteDialog
 } from '../../src/js/modules/delete-dashboard-dialog'
 
 describe('deleteDashboardDialog actions', () => {
+  it('changeDeleteDialog should create a CHANGE action', () => {
+    const subtitle = 'DeleteSubtitle'
+    const visibility = true
+    const expectedAction = {
+      payload: {value: {subtitle, visibility}},
+      type: CHANGE
+    }
+
+    expect(changeDeleteDialog({subtitle, visibility})).toEqual(expectedAction)
+  })
+
   it('resetDeleteDialog should create a RESET action', () => {
     const expectedAction = {
       type: RESET
     }
 
     expect(resetDeleteDialog()).toEqual(expectedAction)
-  })
-  it('setDeleteDialogSubtitle should create a SET_SUBTITLE action', () => {
-    const subtitle = 'DeleteSubtitle'
-    const expectedAction = {
-      payload: {subtitle},
-      type: SET_SUBTITLE
-    }
-
-    expect(setDeleteDialogSubtitle(subtitle)).toEqual(expectedAction)
-  })
-
-  it('setDeleteDialogTitle should create a SET_TITLE action', () => {
-    const title = 'DeleteTitle'
-    const expectedAction = {
-      payload: {title},
-      type: SET_TITLE
-    }
-
-    expect(setDeleteDialogTitle(title)).toEqual(expectedAction)
-  })
-
-  it('setDeleteDialogVisibility should create a SET_VISIBILITY action', () => {
-    const visibility = true
-    const expectedAction = {
-      payload: {visibility},
-      type: SET_VISIBILITY
-    }
-
-    expect(setDeleteDialogVisibility(visibility)).toEqual(expectedAction)
   })
 })
 
@@ -61,6 +39,23 @@ describe('deleteDashboardDialog reducer', () => {
     }
 
     expect(reducer(undefined, {})).toEqual(stateAfter)
+  })
+
+  it('should handle CHANGE', () => {
+    const subtitle = 'DeleteSubtitle1'
+    const visibility = true
+    const value = {subtitle, visibility}
+    const stateAfter = {
+      subtitle,
+      title: '',
+      visibility
+    }
+    const action = {
+      payload: {value},
+      type: CHANGE
+    }
+
+    expect(reducer(undefined, action)).toEqual(stateAfter)
   })
 
   it('should handle RESET', () => {
@@ -79,50 +74,5 @@ describe('deleteDashboardDialog reducer', () => {
     }
 
     expect(reducer(stateBefore, action)).toEqual(stateAfter)
-  })
-
-  it('should handle SET_SUBTITLE', () => {
-    const subtitle = 'DeleteSubtitle'
-    const stateAfter = {
-      subtitle,
-      title: '',
-      visibility: false
-    }
-    const action = {
-      payload: {subtitle},
-      type: SET_SUBTITLE
-    }
-
-    expect(reducer(undefined, action)).toEqual(stateAfter)
-  })
-
-  it('should handle SET_TITLE', () => {
-    const title = 'DeleteTitle'
-    const stateAfter = {
-      subtitle: '',
-      title,
-      visibility: false
-    }
-    const action = {
-      payload: {title},
-      type: SET_TITLE
-    }
-
-    expect(reducer(undefined, action)).toEqual(stateAfter)
-  })
-
-  it('should handle SET_VISIBILITY', () => {
-    const visibility = true
-    const stateAfter = {
-      subtitle: '',
-      title: '',
-      visibility
-    }
-    const action = {
-      payload: {visibility},
-      type: SET_VISIBILITY
-    }
-
-    expect(reducer(undefined, action)).toEqual(stateAfter)
   })
 })
