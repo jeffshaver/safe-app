@@ -1,4 +1,5 @@
 import {connect} from 'react-redux'
+import {DataTable} from 'safe-framework'
 import {fetchFields} from '../modules/fields'
 import {fetchSearchResults} from '../modules/search-results'
 import {fetchSources} from '../modules/sources'
@@ -9,9 +10,8 @@ import {setCategory} from '../modules/category'
 import {setLabel} from '../modules/label'
 import {setLatitude} from '../modules/latitude'
 import {setLongitude} from '../modules/longitude'
-import {setMapResults} from '../modules/map-results'
+// import {setMapResults} from '../modules/map-results'
 import {setSource} from '../modules/source'
-import {BarChart, BasicDataTable, Map} from 'safe-framework'
 import {header, main, verticalTop} from '../styles/common'
 import {RaisedButton, Tab, Tabs} from 'material-ui'
 import React, {Component, PropTypes} from 'react'
@@ -31,28 +31,9 @@ const style = {
   }
 }
 
-const mapTitle = 'Cities'
+// const mapTitle = 'Cities'
 const size = 'col-xs-12 col-sm-12'
-const zoomControlPosition = 'topleft'
-const chartTitle = 'Cities in Colorado'
-const chartSeries = [{
-  name: 'Cities',
-  colorByPoint: true,
-  data: [{
-    name: 'Littleton',
-    y: 2
-  }, {
-    name: 'Denver',
-    y: 2
-  }, {
-    name: 'Aurora',
-    y: 1
-  }, {
-    name: 'Golden',
-    y: 1
-  }]
-}]
-const chartDrilldown = {}
+// const zoomControlPosition = 'topleft'
 
 @Hydrateable('Search', ['filters', 'source'])
 class Search extends Component {
@@ -60,10 +41,10 @@ class Search extends Component {
     category: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     filters: PropTypes.array.isRequired,
-    label: PropTypes.string.isRequired,
-    latitude: PropTypes.string.isRequired,
-    longitude: PropTypes.string.isRequired,
-    mapResults: PropTypes.object,
+    // label: PropTypes.string.isRequired,
+    // latitude: PropTypes.string.isRequired,
+    // longitude: PropTypes.string.isRequired,
+    // mapResults: PropTypes.object,
     searchResults: PropTypes.object.isRequired,
     source: PropTypes.string.isRequired,
     sources: PropTypes.object.isRequired
@@ -126,35 +107,35 @@ class Search extends Component {
   }
 
   onClickPlot () {
-    const {dispatch, label, latitude, longitude, searchResults} = this.props
+    // const {dispatch, label, latitude, longitude, searchResults} = this.props
 
-    // Verify selected fields contain lat/lon values
-    const lat = searchResults.data[0][latitude]
-    const long = searchResults.data[0][longitude]
+    // // Verify selected fields contain lat/lon values
+    // const lat = searchResults.data[0][latitude]
+    // const long = searchResults.data[0][longitude]
 
-    if (
-      Number(lat) !== lat ||
-      Number(long) !== long ||
-      lat < -90 ||
-      lat > 90 ||
-      long < -180 ||
-      long > 180
-    ) {
-      return
-    }
+    // if (
+    //   Number(lat) !== lat ||
+    //   Number(long) !== long ||
+    //   lat < -90 ||
+    //   lat > 90 ||
+    //   long < -180 ||
+    //   long > 180
+    // ) {
+    //   return
+    // }
 
-    const markers = searchResults.data.map((row, i) => ({
-      key: i,
-      position: [row[latitude], row[longitude]],
-      children: row[label]
-    }))
+    // const markers = searchResults.data.map((row, i) => ({
+    //   key: i,
+    //   position: [row[latitude], row[longitude]],
+    //   children: row[label]
+    // }))
 
-    const mapResults = {
-      center: [lat, long],
-      markers: markers
-    }
+    // const mapResults = {
+    //   center: [lat, long],
+    //   markers: markers
+    // }
 
-    dispatch(setMapResults(mapResults))
+    // dispatch(setMapResults(mapResults))
   }
 
   onClickSearch () {
@@ -165,10 +146,10 @@ class Search extends Component {
 
   render () {
     const {
-      category,
-      label, latitude,
-      longitude,
-      mapResults,
+      // category,
+      // label, latitude,
+      // longitude,
+      // mapResults,
       searchResults,
       source,
       sources
@@ -196,7 +177,7 @@ class Search extends Component {
             onChange={this.onChangeSource}
           />
           <FilterCriteria
-            style={style.verticalTop}
+            style={verticalTop}
             wrapperStyle={filterStyle}
           />
           <div>
@@ -216,40 +197,47 @@ class Search extends Component {
           </div>
           {(() => {
             if (searchResults.data && searchResults.data.length > 0) {
-              const columns = Object.keys(searchResults.data[0]).map((data) => ({
-                title: data.toUpperCase(),
-                data
+              const columns = Object.keys(searchResults.data[0]).map((field) => ({
+                headerName: field.toUpperCase(),
+                field
               }))
 
-              const items = Object.keys(searchResults.data[0]).map((data, i) => ({
-                value: i,
-                primaryText: data
-              }))
+              // const items = Object.keys(searchResults.data[0]).map((data, i) => ({
+              //   value: i,
+              //   primaryText: data
+              // }))
 
-              const lat = searchResults.data[0][latitude]
-              const long = searchResults.data[0][longitude]
+              // const lat = searchResults.data[0][latitude]
+              // const long = searchResults.data[0][longitude]
 
-              const isValidLatitude = latitude.length === 0 || (Number(lat) === lat && lat > -90 && lat < 90)
-              const isValidLongitude = longitude.length === 0 || (Number(long) === long && long > -180 && long < 180)
+              // const isValidLatitude = latitude.length === 0 || (Number(lat) === lat && lat > -90 && lat < 90)
+              // const isValidLongitude = longitude.length === 0 || (Number(long) === long && long > -180 && long < 180)
 
               return (
                 <div className={size}>
                   <Tabs>
                     <Tab label='Data'>
-                      <BasicDataTable
-                        columns={columns}
-                        data={searchResults.data}
-                      />
+                      <div style={{height: '350px'}}>
+                        <DataTable
+                          columns={columns}
+                          data={searchResults.data}
+                          enableColResize='true'
+                          enableSorting='true'
+                        />
+                      </div>
                     </Tab>
-                    <Tab label='Map'>
+                    {/* <Tab label='Map'>
                       <div>
                         <SelectField
                           errorText={!isValidLatitude && 'Select a latitude field'}
                           floatingLabelText='Select a Latitude'
                           hintText='Select a Latitude'
                           items={items}
-                          style={style.verticalTop}
+                          keyProp={'value'}
+                          primaryTextProp={'primaryText'}
+                          style={verticalTop}
                           value={latitude}
+                          valueProp={'value'}
                           onChange={this.onChangeLatitude}
                         />
                         <SelectField
@@ -257,16 +245,22 @@ class Search extends Component {
                           floatingLabelText='Select a Longitude'
                           hintText='Select a Longitude'
                           items={items}
-                          style={style.verticalTop}
+                          keyProp={'value'}
+                          primaryTextProp={'primaryText'}
+                          style={verticalTop}
                           value={longitude}
+                          valueProp={'value'}
                           onChange={this.onChangeLongitude}
                         />
                         <SelectField
                           floatingLabelText='Select a Label'
                           hintText='Select a label'
                           items={items}
-                          style={style.verticalTop}
+                          keyProp={'value'}
+                          primaryTextProp={'primaryText'}
+                          style={verticalTop}
                           value={label}
+                          valueProp={'value'}
                           onChange={this.onChangeLabel}
                         />
                         <RaisedButton
@@ -285,22 +279,7 @@ class Search extends Component {
                           zoomControlPosition={zoomControlPosition}
                         />
                       </div>
-                    </Tab>
-                    <Tab label='Bar'>
-                      <SelectField
-                        floatingLabelText='Select a Category'
-                        hintText='Select a Category'
-                        items={items}
-                        style={style.verticalTop}
-                        value={category}
-                        onChange={this.onChangeCategory}
-                      />
-                      <BarChart
-                        drilldown={chartDrilldown}
-                        series={chartSeries}
-                        title={chartTitle}
-                      />
-                    </Tab>
+                    </Tab>*/}
                   </Tabs>
                 </div>
               )
