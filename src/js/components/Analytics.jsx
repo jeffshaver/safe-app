@@ -1,4 +1,3 @@
-import AnalyticSelect from './AnalyticSelect'
 import {connect} from 'react-redux'
 import {fetchAnalytics} from '../modules/analytics'
 import {fetchFields} from '../modules/fields'
@@ -6,20 +5,16 @@ import {fetchSources} from '../modules/sources'
 import {fetchVisualizationTypes} from '../modules/visualization-types'
 import FilterCriteria from './FilterCriteria'
 import {Hydrateable} from '../decorators'
+import {SelectField} from './SelectField'
 import {setAnalytic} from '../modules/analytic'
 import {setSource} from '../modules/source'
 import {setVisualization} from '../modules/visualization'
-import SourceSelect from './SourceSelect'
-import VisualizationSelect from './VisualizationSelect'
-import {header, main} from '../styles/common'
+import {header, main, verticalTop} from '../styles/common'
 import React, {Component, PropTypes} from 'react'
 
 const style = {
   hidden: {
     display: 'none'
-  },
-  verticalTop: {
-    verticalAlign: 'top'
   }
 }
 
@@ -27,10 +22,13 @@ const style = {
 class Analytics extends Component {
   static propTypes = {
     analytic: PropTypes.string.isRequired,
+    analytics: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     filters: PropTypes.array.isRequired,
     source: PropTypes.string.isRequired,
-    visualization: PropTypes.string.isRequired
+    sources: PropTypes.object.isRequired,
+    visualization: PropTypes.string.isRequired,
+    visualizations: PropTypes.object.isRequired
   }
 
   constructor (props) {
@@ -74,7 +72,14 @@ class Analytics extends Component {
   }
 
   render () {
-    const {source, analytic} = this.props
+    const {
+      analytic,
+      analytics,
+      source,
+      sources,
+      visualization,
+      visualizations
+    } = this.props
     const analyticStyle = source === ''
       ? style.hidden
       : {}
@@ -91,26 +96,44 @@ class Analytics extends Component {
           <h1>Analytics</h1>
         </header>
         <main style={main}>
-          <SourceSelect
-            style={style.verticalTop}
+          <SelectField
+            floatingLabelText='Select a data source'
+            hintText='Select a data source'
+            isFetching={sources.isFetching}
+            items={sources.data}
+            keyProp={'_id'}
+            primaryTextProp={'name'}
+            style={verticalTop}
+            value={source}
+            valueProp={'_id'}
             onChange={this.onChangeSource}
           />
-          <AnalyticSelect
-            style={{
-              ...style.verticalTop,
-              ...analyticStyle
-            }}
+          <SelectField
+            floatingLabelText='Select an analytic'
+            hintText='Select an analytic'
+            isFetching={analytics.isFetching}
+            items={analytics.data}
+            keyProp={'_id'}
+            primaryTextProp={'name'}
+            style={{...verticalTop, ...analyticStyle}}
+            value={analytic}
+            valueProp={'_id'}
             onChange={this.onChangeAnalytic}
           />
-          <VisualizationSelect
-            style={{
-              ...style.verticalTop,
-              ...visualizationStyle
-            }}
+          <SelectField
+            floatingLabelText='Select a visualization'
+            hintText='Select a visualization'
+            isFetching={visualizations.isFetching}
+            items={visualizations.data}
+            keyProp={'_id'}
+            primaryTextProp={'name'}
+            style={{...verticalTop, ...visualizationStyle}}
+            value={visualization}
+            valueProp={'_id'}
             onChange={this.onChangeVisualization}
           />
           <FilterCriteria
-            style={style.verticalTop}
+            style={verticalTop}
             wrapperStyle={filterStyle}
           />
         </main>
@@ -121,7 +144,10 @@ class Analytics extends Component {
 
 export default connect((state) => ({
   analytic: state.analytic,
+  analytics: state.analytics,
   filters: state.filters,
   source: state.source,
-  visualization: state.visualization
+  sources: state.sources,
+  visualization: state.visualization,
+  visualizations: state.visualizations
 }))(Analytics)

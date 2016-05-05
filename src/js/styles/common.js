@@ -8,3 +8,7 @@ export const header = {
 export const main = {
   padding: '0 1.25em'
 }
+
+export const verticalTop = {
+  verticalAlign: 'top'
+}

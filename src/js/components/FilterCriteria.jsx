@@ -1,9 +1,28 @@
 import {connect} from 'react-redux'
 import ContentAdd from 'material-ui/lib/svg-icons/content/add'
 import ContentRemove from 'material-ui/lib/svg-icons/content/remove'
+import {SelectField} from './SelectField'
+import {verticalTop} from '../styles/common'
 import {addFilter, editFilter, removeFilter} from '../modules/filters'
-import {FloatingActionButton, MenuItem, SelectField, TextField} from 'material-ui'
+import {FloatingActionButton, TextField} from 'material-ui'
 import React, {Component, PropTypes} from 'react'
+
+const operators = [{
+  primaryText: '=',
+  value: '='
+}, {
+  primaryText: '>',
+  value: '>'
+}, {
+  primaryText: '>=',
+  value: '>='
+}, {
+  primaryText: '<',
+  value: '<'
+}, {
+  primaryText: '<=',
+  value: '<='
+}]
 
 class FilterCriteria extends Component {
   static propTypes = {
@@ -23,6 +42,8 @@ class FilterCriteria extends Component {
     super(props)
 
     this.onAddFilter = ::this.onAddFilter
+    this.onChangeField = ::this.onChangeField
+    this.onChangeOperator = ::this.onChangeOperator
   }
 
   onAddFilter (ev) {
@@ -52,6 +73,7 @@ class FilterCriteria extends Component {
     const {dispatch, fields, filters} = this.props
     const filter = filters[index]
     let value = ev.target.value
+    let valueDataTypeMismatch = false
 
     fields.data.forEach((item) => {
       const isCurrentField = filter.field === item.name
@@ -62,8 +84,20 @@ class FilterCriteria extends Component {
         return
       }
 
-      value = JSON.parse(value)
+      try {
+        value = JSON.parse(value)
+      } catch (e) {
+        valueDataTypeMismatch = true
+        value = ''
+      }
     })
+
+    const currentValueIsEmpty = filter.value.toString().length === 0
+    const newValueIsEmpty = ev.target.value.length === 0
+
+    if (valueDataTypeMismatch && !currentValueIsEmpty && !newValueIsEmpty) {
+      return
+    }
 
     dispatch(editFilter(index, {value}))
   }
@@ -92,48 +126,26 @@ class FilterCriteria extends Component {
               <SelectField
                 floatingLabelText='Select a field'
                 hintText='Select a field'
-                style={style}
+                isFetching={fields.isFetching}
+                items={fields.data}
+                keyProp={'name'}
+                primaryTextProp={'name'}
+                style={verticalTop}
                 value={filter.field}
+                valueProp={'name'}
                 onChange={(ev, index, value) => this.onChangeField(ev, i, value)}
-              >
-                {
-                  fields.data.map((field) => (
-                    <MenuItem
-                      key={field.name}
-                      primaryText={field.name}
-                      value={field.name}
-                    />
-                  ))
-                }
-              </SelectField>
+              />
               <SelectField
                 floatingLabelText='Select an operator'
                 hintText='Select an operator'
-                style={style}
+                items={operators}
+                keyProp={'value'}
+                primaryTextProp={'primaryText'}
+                style={verticalTop}
                 value={filter.operator}
+                valueProp={'value'}
                 onChange={(ev, index, value) => this.onChangeOperator(ev, i, value)}
-              >
-                <MenuItem
-                  primaryText='='
-                  value={'='}
-                />
-                <MenuItem
-                  primaryText='>'
-                  value={'>'}
-                />
-                <MenuItem
-                  primaryText='>='
-                  value={'>='}
-                />
-                <MenuItem
-                  primaryText='<'
-                  value={'<'}
-                />
-                <MenuItem
-                  primaryText='<='
-                  value={'<='}
-                />
-              </SelectField>
+              />
               <TextField
                 floatingLabelText='Filter Criteria'
                 hintText='Filter Criteria'

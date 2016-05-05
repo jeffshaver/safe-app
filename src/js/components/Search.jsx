@@ -11,9 +11,8 @@ import {setLatitude} from '../modules/latitude'
 import {setLongitude} from '../modules/longitude'
 import {setMapResults} from '../modules/map-results'
 import {setSource} from '../modules/source'
-import SourceSelect from './SourceSelect'
 import {BarChart, BasicDataTable, Map} from 'safe-framework'
-import {header, main} from '../styles/common'
+import {header, main, verticalTop} from '../styles/common'
 import {RaisedButton, Tab, Tabs} from 'material-ui'
 import React, {Component, PropTypes} from 'react'
 
@@ -27,11 +26,8 @@ const style = {
   button: {
     margin: '1.5em 0'
   },
-  verticalTop: {
-    verticalAlign: 'top'
-  },
   margin: {
-    margin: 12
+    margin: '12px'
   }
 }
 
@@ -69,7 +65,8 @@ class Search extends Component {
     longitude: PropTypes.string.isRequired,
     mapResults: PropTypes.object,
     searchResults: PropTypes.object.isRequired,
-    source: PropTypes.string.isRequired
+    source: PropTypes.string.isRequired,
+    sources: PropTypes.object.isRequired
   }
 
   constructor (props) {
@@ -167,7 +164,15 @@ class Search extends Component {
   }
 
   render () {
-    const {category, label, latitude, longitude, mapResults, searchResults, source} = this.props
+    const {
+      category,
+      label, latitude,
+      longitude,
+      mapResults,
+      searchResults,
+      source,
+      sources
+    } = this.props
     const filterStyle = source === ''
       ? style.hidden
       : {}
@@ -178,11 +183,16 @@ class Search extends Component {
           <h1>Search</h1>
         </header>
         <main style={main}>
-          <SourceSelect
-            style={{
-              ...style.verticalTop,
-              ...style.sourceSelect
-            }}
+          <SelectField
+            floatingLabelText='Select a data source'
+            hintText='Select a data source'
+            isFetching={sources.isFetching}
+            items={sources.data}
+            keyProp={'_id'}
+            primaryTextProp={'name'}
+            style={{...verticalTop, ...style.sourceSelect}}
+            value={source}
+            valueProp={'_id'}
             onChange={this.onChangeSource}
           />
           <FilterCriteria
@@ -310,5 +320,6 @@ export default connect((state) => ({
   longitude: state.longitude,
   mapResults: state.mapResults,
   searchResults: state.searchResults,
-  source: state.source
+  source: state.source,
+  sources: state.sources
 }))(Search)
