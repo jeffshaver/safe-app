@@ -4,11 +4,8 @@ import {deleteDashboard} from '../modules/delete-dashboard'
 import Dialog from 'material-ui/lib/dialog'
 import {editDashboard} from '../modules/edit-dashboard'
 import {fetchDashboards} from '../modules/dashboards'
-import FlatButton from 'material-ui/lib/flat-button'
-import MenuItem from 'material-ui/lib/menus/menu-item'
-import SelectField from 'material-ui/lib/select-field'
+import {SelectField} from './SelectField'
 import {setDashboard} from '../modules/dashboard'
-import TextField from 'material-ui/lib/text-field'
 import {
   changeCreateDialog,
   resetCreateDialog
@@ -21,6 +18,7 @@ import {
   changeEditDialog,
   resetEditDialog
 } from '../modules/edit-dashboard-dialog'
+import {FlatButton, TextField} from 'material-ui'
 import {header, main} from '../styles/common'
 import React, {Component, PropTypes} from 'react'
 
@@ -199,21 +197,17 @@ class Dashboards extends Component {
         <main style={main}>
           <p>{subtitle}</p>
           <SelectField
-            floatingLabelText='Select a Dashboard'
-            fullWidth={true}
+            floatingLabelText='Select a dashboard'
+            hintText='Select a dashboard'
+            isFetching={dashboards.isFetching}
+            items={dashboards.data}
+            keyProp={'_id'}
+            primaryTextProp={'title'}
+            style={{display: 'block'}}
             value={id}
+            valueProp={'_id'}
             onChange={this.selectDashboard}
-          >
-            {dashboards.data.map(function (dashboard) {
-              return (
-                <MenuItem
-                  key={dashboard._id}
-                  primaryText={dashboard.title}
-                  value={dashboard._id}
-                />
-              )
-            })}
-          </SelectField>
+          />
           <FlatButton
             disabled={!id}
             label='Edit'
