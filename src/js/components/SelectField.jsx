@@ -45,7 +45,6 @@ export class SelectField extends Component {
   render () {
     const {
       errorText,
-      floatingLabelText,
       hintText,
       isFetching,
       items,
