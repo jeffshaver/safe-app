@@ -1,8 +1,11 @@
 import {connect} from 'react-redux'
+import Dialog from 'material-ui/Dialog'
+import DropDownMenu from 'material-ui/DropDownMenu'
 import {FileInput} from 'safe-framework'
+import FlatButton from 'material-ui/FlatButton'
+import MenuItem from 'material-ui/MenuItem'
 import Papa from 'papaparse'
 import {toggleDialog} from '../modules/dialog'
-import {Dialog, DropDownMenu, FlatButton, MenuItem} from 'material-ui'
 import {header, main} from '../styles/common'
 import React, {Component, PropTypes} from 'react'
 import {

@@ -1,11 +1,13 @@
 import {connect} from 'react-redux'
 import {createDashboard} from '../modules/create-dashboard'
 import {deleteDashboard} from '../modules/delete-dashboard'
-import Dialog from 'material-ui/lib/dialog'
+import Dialog from 'material-ui/Dialog'
 import {editDashboard} from '../modules/edit-dashboard'
 import {fetchDashboards} from '../modules/dashboards'
+import FlatButton from 'material-ui/FlatButton'
 import {SelectField} from './SelectField'
 import {setDashboard} from '../modules/dashboard'
+import TextField from 'material-ui/TextField'
 import {
   changeCreateDialog,
   resetCreateDialog
@@ -18,7 +20,6 @@ import {
   changeEditDialog,
   resetEditDialog
 } from '../modules/edit-dashboard-dialog'
-import {FlatButton, TextField} from 'material-ui'
 import {header, main} from '../styles/common'
 import React, {Component, PropTypes} from 'react'
 

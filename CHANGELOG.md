@@ -1,5 +1,19 @@
 # safe-app ChangeLog
 
+## HEAD
+
+### Changes
+
+* [[272df0d](https://github.com/jeffshaver/safe-app/commit/272df0d)] - import directly from material-ui instead of lib path ([jeffshaver](https://github.com/jeffshaver))
+* [[35974e1](https://github.com/jeffshaver/safe-app/commit/35974e1)] - fixes receievedAt misspellings ([jeffshaver](https://github.com/jeffshaver))
+* [[64fc690](https://github.com/jeffshaver/safe-app/commit/64fc690)] - adds missing reducers into root reducer ([jeffshaver](https://github.com/jeffshaver))
+
+### Dependency updates
+
+* update `babel-plugin-add-module-exports` to `0.2.0`
+* update `expect` to `1.20.1`
+* update `material-ui` to `0.15.0`
+
 ## 0.0.7 (May 5, 2016)
 
 ### Changes

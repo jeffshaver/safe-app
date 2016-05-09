@@ -1,9 +1,12 @@
+import AppCanvas from 'material-ui/internal/AppCanvas'
+import CircularProgress from 'material-ui/CircularProgress'
 import {connect} from 'react-redux'
 import {fetchUser} from '../modules/user'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import {GlobalStyles} from './GlobalStyles'
 import {LeftNav} from './LeftNav'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import {Wrapper} from './Wrapper'
-import {AppCanvas, CircularProgress} from 'material-ui'
 import Radium, {StyleRoot} from 'radium'
 import React, {Component, PropTypes} from 'react'
 
@@ -52,7 +55,7 @@ class App extends Component {
           {(() => {
             if (!user.error) return
 
-            const isNetworkError = user.error.message.contains('NetworkError')
+            const isNetworkError = user.error.message.indexOf('NetworkError') !== -1
             const message = isNetworkError
               ? user.error.message
               : `NetworkError ${user.error.message}`
@@ -74,10 +77,12 @@ class App extends Component {
 
     return (
       <StyleRoot>
-        <AppCanvas>
-          <GlobalStyles />
-          {content}
-        </AppCanvas>
+        <MuiThemeProvider muiTheme={getMuiTheme()}>
+          <AppCanvas>
+            <GlobalStyles />
+            {content}
+          </AppCanvas>
+        </MuiThemeProvider>
       </StyleRoot>
     )
   }

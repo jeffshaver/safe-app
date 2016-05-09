@@ -1,18 +1,19 @@
-import ActionAssessment from 'material-ui/lib/svg-icons/action/assessment'
-import ActionDashboard from 'material-ui/lib/svg-icons/action/dashboard'
-import ActionSearch from 'material-ui/lib/svg-icons/action/search'
-import ActionSettings from 'material-ui/lib/svg-icons/action/settings'
+import ActionAssessment from 'material-ui/svg-icons/action/assessment'
+import ActionDashboard from 'material-ui/svg-icons/action/dashboard'
+import ActionSearch from 'material-ui/svg-icons/action/search'
+import ActionSettings from 'material-ui/svg-icons/action/settings'
+import Avatar from 'material-ui/Avatar'
 import {browserHistory} from 'react-router'
-import Divider from 'material-ui/lib/divider'
-import FileFolder from 'material-ui/lib/svg-icons/file/folder'
-import {Avatar, ListItem, LeftNav as MULeftNav} from 'material-ui'
+import Divider from 'material-ui/Divider'
+import Drawer from 'material-ui/Drawer'
+import FileFolder from 'material-ui/svg-icons/file/folder'
+import ListItem from 'material-ui/List/ListItem'
 import React, {Component} from 'react'
-// SVG
 
 export class LeftNav extends Component {
   render () {
     return (
-      <MULeftNav
+      <Drawer
         ref='leftNav'
         width={175}
       >
@@ -78,7 +79,7 @@ export class LeftNav extends Component {
         >
           Settings
         </ListItem>
-      </MULeftNav>
+      </Drawer>
     )
   }
 }

@@ -1,9 +1,6 @@
-import {
-  CircularProgress,
-  SelectField as MaterialSelectField,
-  MenuItem
-
-} from 'material-ui'
+import CircularProgress from 'material-ui/CircularProgress'
+import MaterialSelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
 import React, {Component, PropTypes} from 'react'
 
 const style = {
@@ -64,8 +61,8 @@ export class SelectField extends Component {
       <MaterialSelectField
         disabled={isFetching}
         errorText={errorText}
+        floatingLabelStyle={{pointerEvents: 'none'}}
         floatingLabelText={text}
-        hintText={text}
         items={items}
         style={style}
         value={value}
