@@ -4,9 +4,11 @@
 
 ### Changes
 
-* [[272df0d](https://github.com/jeffshaver/safe-app/commit/272df0d)] - import directly from material-ui instead of lib path ([jeffshaver](https://github.com/jeffshaver))
+* [[1cde6bf](https://github.com/jeffshaver/safe-app/commit/1cde6bf)] - add config to disable routes by name ([jeffshaver](https://github.com/jeffshaver))
+* [[0018fbc](https://github.com/jeffshaver/safe-app/commit/0018fbc)] - import directly from material-ui instead of lib path ([jeffshaver](https://github.com/jeffshaver))
 * [[35974e1](https://github.com/jeffshaver/safe-app/commit/35974e1)] - fixes receievedAt misspellings ([jeffshaver](https://github.com/jeffshaver))
 * [[64fc690](https://github.com/jeffshaver/safe-app/commit/64fc690)] - adds missing reducers into root reducer ([jeffshaver](https://github.com/jeffshaver))
+* [[06cf2a1](https://github.com/jeffshaver/safe-app/commit/06cf2a1)] - make this changelog ([jeffshaver](https://github.com/jeffshaver))
 
 ### Dependency updates
 
