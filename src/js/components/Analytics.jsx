@@ -28,7 +28,7 @@ class Analytics extends Component {
     source: PropTypes.string.isRequired,
     sources: PropTypes.object.isRequired,
     visualization: PropTypes.string.isRequired,
-    visualizations: PropTypes.object.isRequired
+    visualizationTypes: PropTypes.object.isRequired
   }
 
   constructor (props) {
@@ -78,7 +78,7 @@ class Analytics extends Component {
       source,
       sources,
       visualization,
-      visualizations
+      visualizationTypes
     } = this.props
     const analyticStyle = source === ''
       ? style.hidden
@@ -123,8 +123,8 @@ class Analytics extends Component {
           <SelectField
             floatingLabelText='Select a visualization'
             hintText='Select a visualization'
-            isFetching={visualizations.isFetching}
-            items={visualizations.data}
+            isFetching={visualizationTypes.isFetching}
+            items={visualizationTypes.data}
             keyProp={'_id'}
             primaryTextProp={'name'}
             style={{...verticalTop, ...visualizationStyle}}
@@ -149,5 +149,5 @@ export default connect((state) => ({
   source: state.source,
   sources: state.sources,
   visualization: state.visualization,
-  visualizations: state.visualizations
+  visualizationTypes: state.visualizationTypes
 }))(Analytics)

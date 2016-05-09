@@ -1,11 +1,14 @@
 import analytics from './analytics'
 import category from './category'
 import {combineReducers} from 'redux'
+import createDashboard from './create-dashboard'
 import createDashboardDialog from './create-dashboard-dialog'
 import dashboard from './dashboard'
 import dashboards from './dashboards'
+import deleteDashboard from './delete-dashboard'
 import deleteDashboardDialog from './delete-dashboard-dialog'
 import dialog from './dialog'
+import editDashboard from './edit-dashboard'
 import editDashboardDialog from './edit-dashboard-dialog'
 import fields from './fields'
 import hydrateable from './hydrateable'
@@ -18,7 +21,7 @@ import searchResults from './search-results'
 import sources from './sources'
 import uploadDataTypes from './upload'
 import user from './user'
-import visualizations from './visualization-types'
+import visualizationTypes from './visualization-types'
 import analytic, {
   HYDRATE as HYDRATE_ANALYTIC,
   hydrateAnalytic
@@ -47,11 +50,14 @@ export const rootReducer = combineReducers({
   analytic: hydrateable(analytic, HYDRATE_ANALYTIC),
   analytics,
   category,
+  createDashboard,
   createDashboardDialog,
   dashboard,
   dashboards,
+  deleteDashboard,
   deleteDashboardDialog,
   dialog,
+  editDashboard,
   editDashboardDialog,
   fields,
   filters: hydrateable(filters, HYDRATE_FILTERS),
@@ -65,7 +71,7 @@ export const rootReducer = combineReducers({
   uploadDataTypes,
   user,
   visualization: hydrateable(visualization, HYDRATE_VISUALIZATION),
-  visualizations,
+  visualizationTypes,
 
   // for react-router-redux
   routing
