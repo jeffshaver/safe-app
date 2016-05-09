@@ -1,16 +1,13 @@
-import Analytics from './components/Analytics'
 import App from './components/App'
-import Dashboards from './components/Dashboards'
 import Home from './components/Home'
 import injectTapEventPlugin from 'react-tap-event-plugin'
+import NotFound from './components/NotFound'
 import {Provider} from 'react-redux'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Search from './components/Search'
-import Settings from './components/Settings'
+import {routes} from './constants'
 import {store} from './store'
 import {syncHistoryWithStore} from 'react-router-redux'
-import Upload from './components/Upload'
 import {browserHistory, IndexRoute, Route, Router} from 'react-router'
 
 injectTapEventPlugin()
@@ -25,31 +22,26 @@ ReactDOM.render((
         path='/'
       >
         <IndexRoute component={Home} />
-        <Route
-          component={Analytics}
-          path='analytics'
-        />
-        <Route
-          component={Dashboards}
-          path='dashboards'
-        />
-        <Route
-          component={Search}
-          path='search'
-        />
-        <Route
-          component={Settings}
-          path='settings'
-        />
-        <Route
-          component={Upload}
-          path='upload'
-        />
+        {
+          routes.map((route) => {
+            if (!route.enabled) return
+
+            return (
+              <Route
+                component={route.component}
+                key={route.name}
+                path={route.path}
+              />
+            )
+          })
+        }
       </Route>
       <Route
         component={App}
         path='*'
-      />
+      >
+        <IndexRoute component={NotFound} />
+      </Route>
     </Router>
   </Provider>
 ), document.querySelector('.app'))

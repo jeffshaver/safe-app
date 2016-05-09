@@ -9,7 +9,7 @@
     "bump-minor": "node ./bin/bump.js minor --commit --tag",
     "bump-patch": "node ./bin/bump.js patch --commit --tag",
     "clean-dist": "rm -f dist/*.hot-update.js*",
-    "create-default-config": "echo -n \"module.exports = {\n  apiUri: 'http://localhost/api',\n  hotModuleReloadUri: 'localhost',\n  domain: 'localhost',\n  port: 80,\n  protocol: 'http'\n}\" > config.js",
+    "create-default-config": "echo -n \"module.exports = {\n  apiUri: 'http://localhost/api',\n  disabledRoutes: [],\n  domain: 'localhost',\n  hotModuleReloadUri: 'localhost',\n  port: 80,\n  protocol: 'http'\n}\" > config.js",
     "dev-server": "node server.js",
     "lint": "eslint --ext .js,.jsx src/ test/ ./*.js",
     "prepublish": "npm run lint && npm test",
