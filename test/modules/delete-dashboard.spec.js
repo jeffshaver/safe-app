@@ -45,12 +45,12 @@ describe('deleteDashboard actions', () => {
     it('deleteDashboardSuccess should create a SUCCESS action', () => {
       const expectedAction = {
         payload: {data: {}},
-        recievedAt: null,
+        receivedAt: null,
         type: SUCCESS
       }
       const action = deleteDashboardSuccess({})
 
-      expectedAction.recievedAt = action.recievedAt
+      expectedAction.receivedAt = action.receivedAt
 
       expect(action).toEqual(expectedAction)
     })
@@ -74,7 +74,7 @@ describe('deleteDashboard actions', () => {
         payload: {
           data: {}
         },
-        recievedAt: null
+        receivedAt: null
       }
       const dashboardResetAction = {
         type: DASHBOARD_RESET
@@ -94,7 +94,7 @@ describe('deleteDashboard actions', () => {
             dashboardsRequestAction
           ]
 
-          expectedActions[1].recievedAt = actions[1].recievedAt
+          expectedActions[1].receivedAt = actions[1].receivedAt
 
           expect(actions).toEqual(expectedActions)
           done()
@@ -179,7 +179,7 @@ describe('deleteDashboard reducer', () => {
     const data = {}
     const action = {
       payload: {data},
-      recievedAt: Date.now(),
+      receivedAt: Date.now(),
       type: SUCCESS
     }
     const result = reducer(undefined, action)

@@ -43,12 +43,12 @@ describe('visualizationTypes actions', () => {
     it('fetchVisualizationTypesSuccess should create a SUCCESS action', () => {
       const expectedAction = {
         payload: {data: []},
-        recievedAt: null,
+        receivedAt: null,
         type: SUCCESS
       }
       const action = fetchVisualizationTypesSuccess([])
 
-      expectedAction.recievedAt = action.recievedAt
+      expectedAction.receivedAt = action.receivedAt
 
       expect(action).toEqual(expectedAction)
     })
@@ -78,7 +78,7 @@ describe('visualizationTypes actions', () => {
             {_id: '2', name: 'VisualizationB'}
           ]
         },
-        recievedAt: null
+        receivedAt: null
       }
       const store = mockStore(initialState)
 
@@ -90,7 +90,7 @@ describe('visualizationTypes actions', () => {
             recieveAction
           ]
 
-          expectedActions[1].recievedAt = actions[1].recievedAt
+          expectedActions[1].receivedAt = actions[1].receivedAt
 
           expect(actions).toEqual(expectedActions)
           done()
@@ -178,7 +178,7 @@ describe('visualizationTypes reducer', () => {
     const data = ['VisualizationA', 'VisualizationB']
     const action = {
       payload: {data},
-      recievedAt: Date.now(),
+      receivedAt: Date.now(),
       type: SUCCESS
     }
     const result = reducer(undefined, action)

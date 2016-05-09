@@ -42,12 +42,12 @@ describe('fields actions', () => {
     it('fetchFieldsSuccess should create a SUCCESS action', () => {
       const expectedAction = {
         payload: {data: []},
-        recievedAt: null,
+        receivedAt: null,
         type: SUCCESS
       }
       const action = fetchFieldsSuccess([])
 
-      expectedAction.recievedAt = action.recievedAt
+      expectedAction.receivedAt = action.receivedAt
 
       expect(action).toEqual(expectedAction)
     })
@@ -77,7 +77,7 @@ describe('fields actions', () => {
             {_id: '2', name: 'SourceFieldB'}
           ]
         },
-        recievedAt: null
+        receivedAt: null
       }
       const store = mockStore(initialState)
 
@@ -89,7 +89,7 @@ describe('fields actions', () => {
             recieveAction
           ]
 
-          expectedActions[1].recievedAt = actions[1].recievedAt
+          expectedActions[1].receivedAt = actions[1].receivedAt
 
           expect(actions).toEqual(expectedActions)
           done()
@@ -177,7 +177,7 @@ describe('fields reducer', () => {
     const data = ['SourceFieldA', 'SourceFieldB']
     const action = {
       payload: {data},
-      recievedAt: Date.now(),
+      receivedAt: Date.now(),
       type: SUCCESS
     }
     const result = reducer(undefined, action)

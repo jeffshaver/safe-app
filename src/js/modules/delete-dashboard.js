@@ -19,7 +19,7 @@ export const deleteDashboardRequest = () => ({
 
 export const deleteDashboardSuccess = (data) => ({
   payload: {data},
-  recievedAt: Date.now(),
+  receivedAt: Date.now(),
   type: SUCCESS
 })
 
@@ -74,7 +74,7 @@ export default (state = initialState, {payload = {}, type, ...action}) => {
         data,
         error: undefined,
         isFetching: false,
-        lastUpdated: action.recievedAt
+        lastUpdated: action.receivedAt
       }
     default:
       return state

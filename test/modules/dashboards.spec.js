@@ -43,12 +43,12 @@ describe('dashboards actions', () => {
     it('fetchDashboardsSuccess should create a SUCCESS action', () => {
       const expectedAction = {
         payload: {data: []},
-        recievedAt: null,
+        receivedAt: null,
         type: SUCCESS
       }
       const action = fetchDashboardsSuccess([])
 
-      expectedAction.recievedAt = action.recievedAt
+      expectedAction.receivedAt = action.receivedAt
 
       expect(action).toEqual(expectedAction)
     })
@@ -81,7 +81,7 @@ describe('dashboards actions', () => {
             {_id: 'def456', subtitle: 'SubtitleB', title: 'TitleB'}
           ]
         },
-        recievedAt: null
+        receivedAt: null
       }
       const store = mockStore(initialState)
 
@@ -93,7 +93,7 @@ describe('dashboards actions', () => {
             recieveAction
           ]
 
-          expectedActions[1].recievedAt = actions[1].recievedAt
+          expectedActions[1].receivedAt = actions[1].receivedAt
 
           expect(actions).toEqual(expectedActions)
           done()
@@ -181,7 +181,7 @@ describe('dashboards reducer', () => {
     const data = ['AnalyticA', 'AnalyticB']
     const action = {
       payload: {data},
-      recievedAt: Date.now(),
+      receivedAt: Date.now(),
       type: SUCCESS
     }
     const result = reducer(undefined, action)

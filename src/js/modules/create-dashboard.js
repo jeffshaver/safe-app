@@ -17,7 +17,7 @@ export const createDashboardRequest = () => ({
 })
 export const createDashboardSuccess = (data) => ({
   payload: {data},
-  recievedAt: Date.now(),
+  receivedAt: Date.now(),
   type: SUCCESS
 })
 export const createDashboard = (subtitle, title) =>
@@ -76,7 +76,7 @@ export default (state = initialState, {payload = {}, type, ...action}) => {
         data,
         error: undefined,
         isFetching: false,
-        lastUpdated: action.recievedAt
+        lastUpdated: action.receivedAt
       }
     default:
       return state

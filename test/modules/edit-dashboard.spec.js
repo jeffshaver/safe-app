@@ -44,12 +44,12 @@ describe('editDashboard actions', () => {
     it('editDashboardSuccess should create a SUCCESS action', () => {
       const expectedAction = {
         payload: {data: {}},
-        recievedAt: null,
+        receivedAt: null,
         type: SUCCESS
       }
       const action = editDashboardSuccess({})
 
-      expectedAction.recievedAt = action.recievedAt
+      expectedAction.receivedAt = action.receivedAt
 
       expect(action).toEqual(expectedAction)
     })
@@ -75,7 +75,7 @@ describe('editDashboard actions', () => {
         payload: {
           data: {_id: 'abc123', subtitle, title}
         },
-        recievedAt: null
+        receivedAt: null
       }
       const dashboardsRequestAction = {
         type: DASHBOARDS_REQUEST
@@ -91,7 +91,7 @@ describe('editDashboard actions', () => {
             dashboardsRequestAction
           ]
 
-          expectedActions[1].recievedAt = actions[1].recievedAt
+          expectedActions[1].receivedAt = actions[1].receivedAt
 
           expect(actions).toEqual(expectedActions)
           done()
@@ -178,7 +178,7 @@ describe('editDashboard reducer', () => {
     const data = {_id: 'abc123', subtitle: 'Subtitle', title: 'Title'}
     const action = {
       payload: {data},
-      recievedAt: Date.now(),
+      receivedAt: Date.now(),
       type: SUCCESS
     }
     const result = reducer(undefined, action)

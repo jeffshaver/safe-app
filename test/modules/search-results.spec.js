@@ -44,12 +44,12 @@ describe('searchResults actions', () => {
     it('fetchSearchResultsSuccess should create a SUCCESS action', () => {
       const expectedAction = {
         payload: {data: []},
-        recievedAt: null,
+        receivedAt: null,
         type: SUCCESS
       }
       const action = fetchSearchResultsSuccess([])
 
-      expectedAction.recievedAt = action.recievedAt
+      expectedAction.receivedAt = action.receivedAt
 
       expect(action).toEqual(expectedAction)
     })
@@ -79,7 +79,7 @@ describe('searchResults actions', () => {
             {_id: 4, name: 'Bob', age: 40, county: 'Howard'}
           ]
         },
-        recievedAt: null
+        receivedAt: null
       }
       const store = mockStore(initialState)
 
@@ -91,7 +91,7 @@ describe('searchResults actions', () => {
             recieveAction
           ]
 
-          expectedActions[1].recievedAt = actions[1].recievedAt
+          expectedActions[1].receivedAt = actions[1].receivedAt
 
           expect(actions).toEqual(expectedActions)
           done()
@@ -182,7 +182,7 @@ describe('searchResults reducer', () => {
     ]
     const action = {
       payload: {data},
-      recievedAt: Date.now(),
+      receivedAt: Date.now(),
       type: SUCCESS
     }
     const result = reducer(undefined, action)

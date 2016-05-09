@@ -15,7 +15,7 @@ export const fetchSourcesRequest = () => ({
 })
 export const fetchSourcesSuccess = (data) => ({
   payload: {data},
-  recievedAt: Date.now(),
+  receivedAt: Date.now(),
   type: SUCCESS
 })
 export const fetchSources = () =>
@@ -58,7 +58,7 @@ export default (state = initialState, {payload = {}, type, ...action}) => {
         data,
         error: undefined,
         isFetching: false,
-        lastUpdated: action.recievedAt
+        lastUpdated: action.receivedAt
       }
     default:
       return state

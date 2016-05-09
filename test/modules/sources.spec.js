@@ -41,12 +41,12 @@ describe('sources actions', () => {
     it('fetchSourcesSuccess should create a SUCCESS action', () => {
       const expectedAction = {
         payload: {data: []},
-        recievedAt: null,
+        receivedAt: null,
         type: SUCCESS
       }
       const action = fetchSourcesSuccess([])
 
-      expectedAction.recievedAt = action.recievedAt
+      expectedAction.receivedAt = action.receivedAt
 
       expect(action).toEqual(expectedAction)
     })
@@ -76,7 +76,7 @@ describe('sources actions', () => {
             {_id: '2', name: 'SourceB'}
           ]
         },
-        recievedAt: null
+        receivedAt: null
       }
       const store = mockStore(initialState)
 
@@ -88,7 +88,7 @@ describe('sources actions', () => {
             recieveAction
           ]
 
-          expectedActions[1].recievedAt = actions[1].recievedAt
+          expectedActions[1].receivedAt = actions[1].receivedAt
 
           expect(actions).toEqual(expectedActions)
           done()
@@ -176,7 +176,7 @@ describe('sources reducer', () => {
     const data = ['SourceA', 'SourceB']
     const action = {
       payload: {data},
-      recievedAt: Date.now(),
+      receivedAt: Date.now(),
       type: SUCCESS
     }
     const result = reducer(undefined, action)

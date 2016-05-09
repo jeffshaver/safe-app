@@ -17,7 +17,7 @@ export const fetchDashboardsRequest = () => ({
 
 export const fetchDashboardsSuccess = (data) => ({
   payload: {data},
-  recievedAt: Date.now(),
+  receivedAt: Date.now(),
   type: SUCCESS
 })
 
@@ -65,7 +65,7 @@ export default (state = initialState, {payload = {}, type, ...action}) => {
         data,
         error,
         isFetching: false,
-        lastUpdated: action.recievedAt
+        lastUpdated: action.receivedAt
       }
     default:
       return state

@@ -41,12 +41,12 @@ describe('user actions', () => {
     it('fetchUserSuccess should create a SUCCESS action', () => {
       const expectedAction = {
         payload: {data: {}},
-        recievedAt: null,
+        receivedAt: null,
         type: SUCCESS
       }
       const action = fetchUserSuccess({})
 
-      expectedAction.recievedAt = action.recievedAt
+      expectedAction.receivedAt = action.receivedAt
 
       expect(action).toEqual(expectedAction)
     })
@@ -77,7 +77,7 @@ describe('user actions', () => {
             username: 'unknown'
           }
         },
-        recievedAt: null
+        receivedAt: null
       }
       const store = mockStore(initialState)
 
@@ -89,7 +89,7 @@ describe('user actions', () => {
             recieveAction
           ]
 
-          expectedActions[1].recievedAt = actions[1].recievedAt
+          expectedActions[1].receivedAt = actions[1].receivedAt
 
           expect(actions).toEqual(expectedActions)
           done()
@@ -177,7 +177,7 @@ describe('user reducer', () => {
     const data = {authenticated: true, username: 'unknown'}
     const action = {
       payload: {data},
-      recievedAt: Date.now(),
+      receivedAt: Date.now(),
       type: SUCCESS
 
     }
