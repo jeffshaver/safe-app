@@ -104,7 +104,8 @@ if (config.mongoUri) {
       cert: fs.readFileSync(config.serverCertificate),
       ca: fs.readFileSync(config.serverCertificateAuthority),
       requestCert: true,
-      rejectUnauthorized: true
+      rejectUnauthorized: true,
+      secureProtocol: 'TLSv1_2_method'
     }
 
     https.createServer(serverOptions, app).listen(config.port, () => {
