@@ -9,8 +9,8 @@ const style = {
   }
 }
 
-export const Wrapper = Radium(({children}) => (
-  <div style={style}>
+export const Wrapper = Radium(({children, style: wrapperStyle}) => (
+  <div style={{...style, ...wrapperStyle}}>
     {children}
   </div>
 ))
