@@ -1,4 +1,3 @@
-import AppCanvas from 'material-ui/internal/AppCanvas'
 import CircularProgress from 'material-ui/CircularProgress'
 import {connect} from 'react-redux'
 import {fetchUser} from '../modules/user'
@@ -78,10 +77,10 @@ class App extends Component {
     return (
       <StyleRoot>
         <MuiThemeProvider muiTheme={getMuiTheme()}>
-          <AppCanvas>
+          <div>
             <GlobalStyles />
             {content}
-          </AppCanvas>
+          </div>
         </MuiThemeProvider>
       </StyleRoot>
     )
