@@ -1,11 +1,11 @@
-var exec = require('child_process').execSync
-var path = require('path')
-var semver = require('semver')
-var jsonFile = require('json-file-plus')
-var args = process.argv.slice(2)
-var type = args[0]
-var shouldCommit = args.indexOf('--commit') !== -1
-var shouldTag = args.indexOf('--tag') !== -1
+const exec = require('child_process').execSync
+const path = require('path')
+const semver = require('semver')
+const jsonFile = require('json-file-plus')
+const args = process.argv.slice(2)
+const type = args[0]
+const shouldCommit = args.indexOf('--commit') !== -1
+const shouldTag = args.indexOf('--tag') !== -1
 
 if (['major', 'minor', 'patch'].indexOf(type) === -1) {
   throw new Error('You must pass in `major`, `minor` or `patch`')
@@ -16,7 +16,7 @@ jsonFile('package.json', updatePackageJson)
 function updatePackageJson (err, file) {
   file.get('version')
     .then(function(version) {
-      var newVersion = semver.inc(version, type)
+      const newVersion = semver.inc(version, type)
 
       file.set({'version': newVersion})
       file.save()

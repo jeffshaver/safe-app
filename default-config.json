@@ -1,0 +1,9 @@
+{
+  "apiUri": "http://localhost/api",
+  "bannerText": "",
+  "disabledRoutes": [],
+  "domain": "localhost",
+  "hotModuleReloadUri": "localhost",
+  "port": 80,
+  "protocol": "http"
+}
