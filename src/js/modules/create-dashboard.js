@@ -1,8 +1,8 @@
 import {apiUri} from '../../../config'
-import {checkFetchStatus} from './utilities'
 import fetch from 'isomorphic-fetch'
 import {fetchDashboards} from './dashboards'
 import {setDashboard} from './dashboard'
+import {checkFetchStatus, defaultFetchOptions} from './utilities'
 
 export const FAILURE = 'safe-app/create-dashboard/FAILURE'
 export const REQUEST = 'safe-app/create-dashboard/REQUEST'
@@ -25,6 +25,7 @@ export const createDashboard = (subtitle, title) =>
     dispatch(createDashboardRequest())
 
     return fetch(`${apiUri}/dashboards`, {
+      ...defaultFetchOptions,
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -32,19 +33,19 @@ export const createDashboard = (subtitle, title) =>
       },
       body: JSON.stringify({subtitle, title})
     })
-    .then(checkFetchStatus)
-    .then((response) => response.json())
-    .then((json) => {
-      dispatch(createDashboardSuccess(json))
-      // FUTURE: OPTIMISTIC UPDATE INSTEAD
-      dispatch(fetchDashboards())
-        .then(() => {
-          const {_id: id, subtitle, title} = json
+      .then(checkFetchStatus)
+      .then((response) => response.json())
+      .then((json) => {
+        dispatch(createDashboardSuccess(json))
+        // FUTURE: OPTIMISTIC UPDATE INSTEAD
+        dispatch(fetchDashboards())
+          .then(() => {
+            const {_id: id, subtitle, title} = json
 
-          dispatch(setDashboard(id, subtitle, title))
-        })
-    })
-    .catch((error) => dispatch(createDashboardFailure(error)))
+            dispatch(setDashboard(id, subtitle, title))
+          })
+      })
+      .catch((error) => dispatch(createDashboardFailure(error)))
   }
 
 const initialState = {

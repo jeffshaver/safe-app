@@ -1,6 +1,6 @@
 import {apiUri} from '../../../config'
-import {checkFetchStatus} from './utilities'
 import fetch from 'isomorphic-fetch'
+import {checkFetchStatus, defaultFetchOptions} from './utilities'
 
 export const FAILURE = 'safe-app/analytics/FAILURE'
 export const REQUEST = 'safe-app/analytics/REQUEST'
@@ -22,7 +22,7 @@ export const fetchAnalytics = (source) =>
   (dispatch) => {
     dispatch(fetchAnalyticsRequest())
 
-    return fetch(`${apiUri}/sources/${source}/analytics`)
+    return fetch(`${apiUri}/sources/${source}/analytics`, {...defaultFetchOptions})
       .then(checkFetchStatus)
       .then((response) => response.json())
       .then((json) => dispatch(fetchAnalyticsSuccess(json)))

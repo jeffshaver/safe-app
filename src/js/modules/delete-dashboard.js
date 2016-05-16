@@ -1,8 +1,8 @@
 import {apiUri} from '../../../config'
-import {checkFetchStatus} from './utilities'
 import fetch from 'isomorphic-fetch'
 import {fetchDashboards} from './dashboards'
 import {resetDashboard} from './dashboard'
+import {checkFetchStatus, defaultFetchOptions} from './utilities'
 
 export const FAILURE = 'safe-app/delete-dashboard/FAILURE'
 export const REQUEST = 'safe-app/delete-dashboard/REQUEST'
@@ -28,6 +28,7 @@ export const deleteDashboard = (id) =>
     dispatch(deleteDashboardRequest())
 
     return fetch(`${apiUri}/dashboards/${id}`, {
+      ...defaultFetchOptions,
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',

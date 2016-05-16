@@ -49,9 +49,7 @@ class Dashboard extends Component {
 
   render () {
     const {dispatch, dashboard} = this.props
-
     const {visualizations = []} = dashboard
-
     // Populate the Fields based off of the fields
     // for each visualization's source.
     const fields = {

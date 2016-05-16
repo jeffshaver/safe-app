@@ -1,6 +1,6 @@
 import {apiUri} from '../../../config'
-import {checkFetchStatus} from './utilities'
 import fetch from 'isomorphic-fetch'
+import {checkFetchStatus, defaultFetchOptions} from './utilities'
 
 export const FAILURE = 'safe-app/user/FAILURE'
 export const REQUEST = 'safe-app/user/REQUEST'
@@ -25,7 +25,7 @@ export const fetchUser = () =>
   (dispatch) => {
     dispatch(fetchUserRequest())
 
-    return fetch(`${apiUri}/authenticate`)
+    return fetch(`${apiUri}/authenticate`, {...defaultFetchOptions})
       .then(checkFetchStatus)
       .then((response) => response.json())
       .then((json) => dispatch(fetchUserSuccess(json)))

@@ -1,6 +1,6 @@
 import {apiUri} from '../../../config'
-import {checkFetchStatus} from './utilities'
 import fetch from 'isomorphic-fetch'
+import {checkFetchStatus, defaultFetchOptions} from './utilities'
 
 export const FAILURE = 'safe-app/fields/FAILURE'
 export const REQUEST = 'safe-app/fields/REQUEST'
@@ -22,7 +22,7 @@ export const fetchFields = (source) => {
   return (dispatch) => {
     dispatch(fetchFieldsRequest())
 
-    return fetch(`${apiUri}/sources/${source}/fields`)
+    return fetch(`${apiUri}/sources/${source}/fields`, {...defaultFetchOptions})
       .then(checkFetchStatus)
       .then((response) => response.json())
       .then((json) => dispatch(fetchFieldsSuccess(json)))

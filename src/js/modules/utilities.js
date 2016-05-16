@@ -9,3 +9,7 @@ export const checkFetchStatus = (response) => {
 
   throw error
 }
+
+export const defaultFetchOptions = {
+  credentials: 'include'
+}

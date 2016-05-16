@@ -1,6 +1,6 @@
 import {apiUri} from '../../../config'
-import {checkFetchStatus} from './utilities'
 import fetch from 'isomorphic-fetch'
+import {checkFetchStatus, defaultFetchOptions} from './utilities'
 
 export const FAILURE = 'safe-app/dashboards/FAILURE'
 export const REQUEST = 'safe-app/dashboards/REQUEST'
@@ -25,7 +25,7 @@ export const fetchDashboards = () =>
   (dispatch) => {
     dispatch(fetchDashboardsRequest())
 
-    return fetch(`${apiUri}/dashboards`)
+    return fetch(`${apiUri}/dashboards`, {...defaultFetchOptions})
       .then(checkFetchStatus)
       .then((response) => response.json())
       .then((json) => {

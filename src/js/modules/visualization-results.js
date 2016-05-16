@@ -1,6 +1,6 @@
 import {apiUri} from '../../../config'
-import {checkFetchStatus} from './utilities'
 import fetch from 'isomorphic-fetch'
+import {checkFetchStatus, defaultFetchOptions} from './utilities'
 
 export const REMOVE = 'safe-app/visualization-results/REMOVE'
 export const FAILURE = 'safe-app/visualization-results/FAILURE'
@@ -27,6 +27,7 @@ export const fetchVisualizationResults = (visualizationId, filters) =>
     dispatch(fetchVisualizationResultsRequest())
 
     return fetch(`${apiUri}/execute/${visualizationId}`, {
+      ...defaultFetchOptions,
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -43,7 +44,7 @@ export const fetchVisualizationResults = (visualizationId, filters) =>
     })
     .catch((error) => dispatch(fetchVisualizationResultsFailure(error)))
   }
-  
+
 export const removeVisualizationResults = (visualization) => ({
   payload: {visualization},
   type: REMOVE
@@ -87,7 +88,7 @@ export default (state = initialState, {payload = {}, type, ...action}) => {
         ...state.data,
         [visualizationId]: payloadData
       }
-      
+
       return {
         ...state,
         data,

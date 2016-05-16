@@ -1,6 +1,6 @@
 import {apiUri} from '../../../config'
-import {checkFetchStatus} from './utilities'
 import fetch from 'isomorphic-fetch'
+import {checkFetchStatus, defaultFetchOptions} from './utilities'
 
 export const FAILURE = 'safe-app/visualization-types/FAILURE'
 export const REQUEST = 'safe-app/visualization-types/REQUEST'
@@ -22,7 +22,7 @@ export const fetchVisualizationTypes = (analytic) =>
   (dispatch) => {
     dispatch(fetchVisualizationTypesRequest())
 
-    return fetch(`${apiUri}/analytics/${analytic}/visualization-types`)
+    return fetch(`${apiUri}/analytics/${analytic}/visualization-types`, {...defaultFetchOptions})
       .then(checkFetchStatus)
       .then((response) => response.json())
       .then((json) => dispatch(fetchVisualizationTypesSuccess(json)))

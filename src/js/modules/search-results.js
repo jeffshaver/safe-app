@@ -1,6 +1,6 @@
 import {apiUri} from '../../../config'
-import {checkFetchStatus} from './utilities'
 import fetch from 'isomorphic-fetch'
+import {checkFetchStatus, defaultFetchOptions} from './utilities'
 
 export const FAILURE = 'safe-app/search-results/FAILURE'
 export const REQUEST = 'safe-app/search-results/REQUEST'
@@ -22,15 +22,15 @@ export const fetchSearchResults = (source, filters) =>
   (dispatch) => {
     dispatch(fetchSearchResultsRequest())
 
-    return fetch(`${apiUri}/sources/${source}/query`,
-      {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({filters})
-      })
+    return fetch(`${apiUri}/sources/${source}/query`, {
+      ...defaultFetchOptions,
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({filters})
+    })
       .then(checkFetchStatus)
       .then((response) => response.json())
       .then((json) => dispatch(fetchSearchResultsSuccess(json)))
