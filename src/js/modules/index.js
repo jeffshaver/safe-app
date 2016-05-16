@@ -21,6 +21,7 @@ import searchResults from './search-results'
 import sources from './sources'
 import uploadDataTypes from './upload'
 import user from './user'
+import visualizationResults from './visualization-results'
 import visualizationTypes from './visualization-types'
 import analytic, {
   HYDRATE as HYDRATE_ANALYTIC,
@@ -71,6 +72,7 @@ export const rootReducer = combineReducers({
   uploadDataTypes,
   user,
   visualization: hydrateable(visualization, HYDRATE_VISUALIZATION),
+  visualizationResults,
   visualizationTypes,
 
   // for react-router-redux

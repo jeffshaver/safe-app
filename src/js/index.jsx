@@ -1,3 +1,4 @@
+import 'babel-polyfill'
 import App from './components/App'
 import Home from './components/Home'
 import injectTapEventPlugin from 'react-tap-event-plugin'

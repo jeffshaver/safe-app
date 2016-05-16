@@ -1,5 +1,6 @@
 import {connect} from 'react-redux'
 import {createDashboard} from '../modules/create-dashboard'
+import Dashboard from './Dashboard'
 import {deleteDashboard} from '../modules/delete-dashboard'
 import Dialog from 'material-ui/Dialog'
 import {editDashboard} from '../modules/edit-dashboard'
@@ -159,9 +160,8 @@ class Dashboards extends Component {
   selectDashboard (event, index, id) {
     const {dispatch, dashboards} = this.props
     const dashboard = getDashboardById(dashboards.data, id)
-    const {subtitle, title} = dashboard
 
-    dispatch(setDashboard(id, subtitle, title))
+    dispatch(setDashboard(dashboard))
   }
 
   render () {
@@ -172,7 +172,7 @@ class Dashboards extends Component {
       deleteDashboardDialog,
       editDashboardDialog
     } = this.props
-    const {id, subtitle, title} = dashboard
+    const {id = '', title} = dashboard
     const {
       subtitle: createSubtitle,
       title: createTitle,
@@ -196,7 +196,6 @@ class Dashboards extends Component {
           <h1>Dashboards {title ? `/ ${title}` : ''}</h1>
         </header>
         <main style={main}>
-          <p>{subtitle}</p>
           <SelectField
             floatingLabelText='Select a dashboard'
             hintText='Select a dashboard'
@@ -209,7 +208,7 @@ class Dashboards extends Component {
             valueProp={'_id'}
             onChange={this.selectDashboard}
           />
-          <FlatButton
+          {/* <FlatButton
             disabled={!id}
             label='Edit'
             onTouchTap={this.showEditDialog}
@@ -223,7 +222,8 @@ class Dashboards extends Component {
             label='Create'
             primary={true}
             onTouchTap={this.showCreateDialog}
-          />
+          /> */}
+          <Dashboard/>
         </main>
         {/* Dialog Definitions */}
         <Dialog

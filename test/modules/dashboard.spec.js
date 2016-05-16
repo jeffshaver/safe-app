@@ -27,17 +27,13 @@ describe('dashboard actions', () => {
       type: SET
     }
 
-    expect(setDashboard(id, subtitle, title)).toEqual(expectedAction)
+    expect(setDashboard({id, subtitle, title})).toEqual(expectedAction)
   })
 })
 
 describe('dashboard reducer', () => {
   it('should return the initial state', () => {
-    const stateAfter = {
-      id: '',
-      subtitle: '',
-      title: ''
-    }
+    const stateAfter = {}
 
     expect(reducer(undefined, {})).toEqual(stateAfter)
   })
@@ -48,11 +44,7 @@ describe('dashboard reducer', () => {
       subtitle: 'Subtitle',
       title: 'Title'
     }
-    const stateAfter = {
-      id: '',
-      subtitle: '',
-      title: ''
-    }
+    const stateAfter = {}
     const action = {
       type: RESET
     }

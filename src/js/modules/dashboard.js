@@ -5,28 +5,21 @@ export const resetDashboard = () => ({
   type: RESET
 })
 
-export const setDashboard = (id, subtitle, title) => ({
-  payload: {id, subtitle, title},
+export const setDashboard = (dashboard) => ({
+  payload: {...dashboard},
   type: SET
 })
 
-const initialState = {
-  id: '',
-  subtitle: '',
-  title: ''
-}
+const initialState = {}
 
 export default (state = initialState, {payload = {}, type, ...action}) => {
-  const {id, subtitle, title} = payload
-
   switch (type) {
     case RESET:
       return initialState
     case SET:
       return {
-        id,
-        subtitle,
-        title
+        id: payload._id,
+        ...payload
       }
     default:
       return state

@@ -42,6 +42,7 @@ class Search extends Component {
   static propTypes = {
     category: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
+    fields: PropTypes.object.isRequired,
     filters: PropTypes.array.isRequired,
     // label: PropTypes.string.isRequired,
     // latitude: PropTypes.string.isRequired,
@@ -141,7 +142,7 @@ class Search extends Component {
   }
 
   onClickSearch () {
-    const {dispatch, source, filters} = this.props
+    const {dispatch, filters, source} = this.props
 
     dispatch(fetchSearchResults(source, filters))
   }
@@ -152,6 +153,7 @@ class Search extends Component {
       // label, latitude,
       // longitude,
       // mapResults,
+      fields,
       searchResults,
       source,
       sources
@@ -179,6 +181,7 @@ class Search extends Component {
             onChange={this.onChangeSource}
           />
           <FilterCriteria
+            fields={fields}
             style={verticalTop}
             wrapperStyle={filterStyle}
           />
@@ -295,6 +298,7 @@ class Search extends Component {
 
 export default connect((state) => ({
   category: state.category,
+  fields: state.filters,
   filters: state.filters,
   label: state.label,
   latitude: state.latitude,

@@ -1,7 +1,9 @@
+import CardExpandable from 'material-ui/Card/CardExpandable'
 import {connect} from 'react-redux'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import ContentRemove from 'material-ui/svg-icons/content/remove'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
+import RaisedButton from 'material-ui/RaisedButton'
 import {SelectField} from './SelectField'
 import TextField from 'material-ui/TextField'
 import {verticalTop} from '../styles/common'
@@ -25,23 +27,41 @@ const operators = [{
   value: '<='
 }]
 
+const styles = {
+  expandButton: {
+    position: 'relative',
+    verticalAlign: 'middle'
+  }
+}
+
 class FilterCriteria extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     fields: PropTypes.object.isRequired,
     filters: PropTypes.array.isRequired,
+    headerStyle: PropTypes.object,
+    headerText: PropTypes.string,
     style: PropTypes.object,
-    wrapperStyle: PropTypes.object
+    wrapperStyle: PropTypes.object,
+    onClickFilter: PropTypes.func
   }
 
   static defaultProps = {
+    headerStyle: {},
+    headerText: 'Select filter criteria (optional)',
+    onClickFilter: null,
     style: {},
     wrapperStyle: {}
+  }
+  
+  state = {
+    expanded: true
   }
 
   constructor (props) {
     super(props)
 
+    this.handleTouchTap = ::this.handleTouchTap
     this.onAddFilter = ::this.onAddFilter
     this.onChangeField = ::this.onChangeField
     this.onChangeOperator = ::this.onChangeOperator
@@ -109,20 +129,46 @@ class FilterCriteria extends Component {
     ev.preventDefault()
     dispatch(removeFilter(index))
   }
-
+  
+  handleTouchTap () {
+    this.setState({
+      expanded: !this.state.expanded
+    })
+  }
+  
   render () {
     const {
       fields,
       filters,
+      headerStyle,
+      headerText,
+      onClickFilter,
       style,
       wrapperStyle
     } = this.props
 
     return (
       <div style={wrapperStyle}>
-        <h3>Select filter criteria (optional)</h3>
-        {
-          filters.map((filter, i) => (
+        <h3 style={headerStyle}>
+          {headerText}
+          {onClickFilter
+            ? <span>
+                <CardExpandable
+                  expanded={this.state.expanded}
+                  style={styles.expandButton}
+                  onExpanding={this.handleTouchTap}
+                />
+                <RaisedButton
+                  label='Filter'
+                  primary={true}
+                  style={style.button}
+                  onTouchTap={onClickFilter}
+                />
+              </span>
+          : null}
+        </h3>
+        {this.state.expanded
+          ? filters.map((filter, i) => (
             <div key={i}>
               <SelectField
                 floatingLabelText='Select a field'
@@ -190,13 +236,12 @@ class FilterCriteria extends Component {
               })()}
             </div>
           ))
-        }
+         : null}
       </div>
     )
   }
 }
 
 export default connect((state) => ({
-  fields: state.fields,
   filters: state.filters
 }))(FilterCriteria)
