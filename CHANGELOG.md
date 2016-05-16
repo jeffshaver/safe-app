@@ -1,9 +1,14 @@
 # safe-app ChangeLog
 
-## HEAD
+## 0.0.8 (May 16, 2016)
 
 ### Changes
 
+* [[2a9becb](https://github.com/jeffshaver/safe-app/commit/2a9becb)] - force fetch to pass credentials ([jeffshaver](https://github.com/jeffshaver))
+* [[21c99d7](https://github.com/jeffshaver/safe-app/commit/21c99d7)] - initial safe-rest integration of dashboards ([pml984](https://github.com/pml984))
+* [[c0e961d](https://github.com/jeffshaver/safe-app/commit/c0e961d)] - config option to add top/bottom banners ([jeffshaver](https://github.com/jeffshaver))
+* [[640de70](https://github.com/jeffshaver/safe-app/commit/640de70)] - force tls 1.2 ([knorris](https://github.com/knorris))
+* [[08dbf9d](https://github.com/jeffshaver/safe-app/commit/08dbf9d)] - enable asset compression ([jeffshaver](https://github.com/jeffshaver))
 * [[1cde6bf](https://github.com/jeffshaver/safe-app/commit/1cde6bf)] - add config to disable routes by name ([jeffshaver](https://github.com/jeffshaver))
 * [[0018fbc](https://github.com/jeffshaver/safe-app/commit/0018fbc)] - import directly from material-ui instead of lib path ([jeffshaver](https://github.com/jeffshaver))
 * [[35974e1](https://github.com/jeffshaver/safe-app/commit/35974e1)] - fixes receievedAt misspellings ([jeffshaver](https://github.com/jeffshaver))
@@ -15,6 +20,7 @@
 * update `babel-plugin-add-module-exports` to `0.2.0`
 * update `expect` to `1.20.1`
 * update `material-ui` to `0.15.0`
+* update `safe-framework` to `0.0.18`
 
 ## 0.0.7 (May 5, 2016)
 
