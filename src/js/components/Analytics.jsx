@@ -24,6 +24,7 @@ class Analytics extends Component {
     analytic: PropTypes.string.isRequired,
     analytics: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
+    fields: PropTypes.object.isRequired,
     filters: PropTypes.array.isRequired,
     source: PropTypes.string.isRequired,
     sources: PropTypes.object.isRequired,
@@ -75,6 +76,7 @@ class Analytics extends Component {
     const {
       analytic,
       analytics,
+      fields,
       source,
       sources,
       visualization,
@@ -133,6 +135,7 @@ class Analytics extends Component {
             onChange={this.onChangeVisualization}
           />
           <FilterCriteria
+            fields={fields}
             style={verticalTop}
             wrapperStyle={filterStyle}
           />
@@ -145,6 +148,7 @@ class Analytics extends Component {
 export default connect((state) => ({
   analytic: state.analytic,
   analytics: state.analytics,
+  fields: state.fields,
   filters: state.filters,
   source: state.source,
   sources: state.sources,

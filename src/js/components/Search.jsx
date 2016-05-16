@@ -298,7 +298,7 @@ class Search extends Component {
 
 export default connect((state) => ({
   category: state.category,
-  fields: state.filters,
+  fields: state.fields,
   filters: state.filters,
   label: state.label,
   latitude: state.latitude,

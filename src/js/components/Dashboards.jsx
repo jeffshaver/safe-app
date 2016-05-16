@@ -6,6 +6,7 @@ import Dialog from 'material-ui/Dialog'
 import {editDashboard} from '../modules/edit-dashboard'
 import {fetchDashboards} from '../modules/dashboards'
 import FlatButton from 'material-ui/FlatButton'
+import {Hydrateable} from '../decorators'
 import {SelectField} from './SelectField'
 import {setDashboard} from '../modules/dashboard'
 import TextField from 'material-ui/TextField'
@@ -42,6 +43,7 @@ const getDashboardById = (dashboards, id) => {
   return dashboard
 }
 
+@Hydrateable('Dashboards', ['filters'])
 class Dashboards extends Component {
   static propTypes = {
     createDashboardDialog: PropTypes.object.isRequired,
@@ -54,6 +56,8 @@ class Dashboards extends Component {
 
   constructor (props) {
     super(props)
+
+    this.displayName = 'Dashboards'
 
     this.createDashboard = ::this.createDashboard
     this.deleteDashboard = ::this.deleteDashboard

@@ -53,7 +53,7 @@ class FilterCriteria extends Component {
     style: {},
     wrapperStyle: {}
   }
-  
+
   state = {
     expanded: true
   }
@@ -129,13 +129,13 @@ class FilterCriteria extends Component {
     ev.preventDefault()
     dispatch(removeFilter(index))
   }
-  
+
   handleTouchTap () {
     this.setState({
       expanded: !this.state.expanded
     })
   }
-  
+
   render () {
     const {
       fields,
