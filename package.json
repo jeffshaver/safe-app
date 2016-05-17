@@ -13,7 +13,8 @@
     "prepublish": "npm run lint && npm test",
     "start": "NODE_ENV=production node server",
     "start:dev": "NODE_ENV=development node server.js",
-    "test": "mocha --compilers js:babel-register test/index",
+    "test": "mocha --reporter dot --compilers js:babel-register test/index",
+    "test:spec": "mocha --compilers js:babel-register test/index",
     "test:watch": "npm test -- --watch",
     "update:config": "node ./bin/update-config.js"
   },
