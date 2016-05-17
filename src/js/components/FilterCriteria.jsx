@@ -54,17 +54,18 @@ class FilterCriteria extends Component {
     wrapperStyle: {}
   }
 
-  state = {
-    expanded: true
-  }
-
   constructor (props) {
     super(props)
 
-    this.handleTouchTap = ::this.handleTouchTap
+    this.state = {
+      expanded: true
+    }
+
+    this.handleClickFilter = ::this.handleClickFilter
     this.onAddFilter = ::this.onAddFilter
     this.onChangeField = ::this.onChangeField
     this.onChangeOperator = ::this.onChangeOperator
+    this.toggle = ::this.toggle
   }
 
   onAddFilter (ev) {
@@ -130,10 +131,20 @@ class FilterCriteria extends Component {
     dispatch(removeFilter(index))
   }
 
-  handleTouchTap () {
+  toggle () {
     this.setState({
       expanded: !this.state.expanded
     })
+  }
+
+  handleClickFilter (...params) {
+    const {onClickFilter} = this.props
+
+    if (this.state.expanded) {
+      this.toggle()
+    }
+
+    onClickFilter(...params)
   }
 
   render () {
@@ -156,13 +167,13 @@ class FilterCriteria extends Component {
                 <CardExpandable
                   expanded={this.state.expanded}
                   style={styles.expandButton}
-                  onExpanding={this.handleTouchTap}
+                  onExpanding={this.toggle}
                 />
                 <RaisedButton
                   label='Filter'
                   primary={true}
                   style={style.button}
-                  onTouchTap={onClickFilter}
+                  onTouchTap={this.handleClickFilter}
                 />
               </span>
           : null}

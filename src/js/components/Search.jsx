@@ -1,5 +1,6 @@
 import {connect} from 'react-redux'
 import {DataTable} from 'safe-framework'
+import {excludeEmptyFilters} from '../modules/utilities'
 import {fetchFields} from '../modules/fields'
 import {fetchSearchResults} from '../modules/search-results'
 import {fetchSources} from '../modules/sources'
@@ -144,7 +145,7 @@ class Search extends Component {
   onClickSearch () {
     const {dispatch, filters, source} = this.props
 
-    dispatch(fetchSearchResults(source, filters))
+    dispatch(fetchSearchResults(source, excludeEmptyFilters(filters)))
   }
 
   render () {

@@ -10,6 +10,18 @@ export const checkFetchStatus = (response) => {
   throw error
 }
 
+export const excludeEmptyFilters = (filters) => (
+  filters.filter((filter) => {
+    const keys = Object.keys(filter)
+
+    return keys.filter((key) => {
+      const value = filter[key]
+
+      return String(value).length > 0
+    }).length === keys.length
+  })
+)
+
 export const defaultFetchOptions = {
   credentials: 'include'
 }

@@ -1,5 +1,6 @@
 import {ChartComponent} from './ChartComponent'
 import {connect} from 'react-redux'
+import {excludeEmptyFilters} from '../modules/utilities'
 import {fetchVisualizationResults} from '../modules/visualization-results'
 import {MapComponent} from './MapComponent'
 import {Paper} from 'material-ui'
@@ -29,7 +30,9 @@ class Visualization extends Component {
   componentWillMount () {
     const {dispatch, visualization, filters} = this.props
 
-    dispatch(fetchVisualizationResults(visualization._id, filters))
+    dispatch(fetchVisualizationResults(
+      visualization._id, excludeEmptyFilters(filters))
+    )
   }
 
   componentWillUnmount () {

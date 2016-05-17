@@ -1,4 +1,5 @@
 import {connect} from 'react-redux'
+import {excludeEmptyFilters} from '../modules/utilities'
 import {fetchVisualizationResults} from '../modules/visualization-results'
 import FilterCriteria from './FilterCriteria'
 import {GridList} from 'material-ui'
@@ -43,7 +44,9 @@ class Dashboard extends Component {
         return
       }
 
-      dispatch(fetchVisualizationResults(_id, filters))
+      dispatch(fetchVisualizationResults(
+        _id, excludeEmptyFilters(filters))
+      )
     })
   }
 
