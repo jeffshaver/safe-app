@@ -1,5 +1,4 @@
 const exec = require('child_process').execSync
-const path = require('path')
 const semver = require('semver')
 const jsonFile = require('json-file-plus')
 const args = process.argv.slice(2)
@@ -14,6 +13,12 @@ if (['major', 'minor', 'patch'].indexOf(type) === -1) {
 jsonFile('package.json', updatePackageJson)
 
 function updatePackageJson (err, file) {
+  try {
+    exec('git status | grep -q "CHANGELOG.md"')
+  } catch (e) {
+    throw new Error('You must update CHANGELOG.md in order to bump the version')
+  }
+
   file.get('version')
     .then(function(version) {
       const newVersion = semver.inc(version, type)
@@ -21,17 +26,17 @@ function updatePackageJson (err, file) {
       file.set({'version': newVersion})
       file.save()
         .then(function () {
-          console.log('updated package.json to version: ', newVersion)
+          process.stdout.write(`updated package.json to version: ${newVersion}\n`)
           if (shouldCommit) {
-            exec('git add package.json && git commit -m "' + newVersion + '"')
+            exec('git add package.json CHANGELOG.md && git commit -m "' + newVersion + '"')
           }
 
           if (shouldTag) {
-            exec('git tag -a v' + newVersion + ' -m "' + newVersion + '"')
+            exec(`git tag -a v${newVersion} -m "${newVersion}"`)
           }
         })
         .catch(function () {
-          console.log('could not update package.json')
+          process.stdout.write('could not update package.json\n')
         })
     })
 }
