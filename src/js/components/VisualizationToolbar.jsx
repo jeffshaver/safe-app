@@ -2,31 +2,25 @@ import {connect} from 'react-redux'
 import Toolbar from 'material-ui/Toolbar/Toolbar'
 import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup'
 import ToolbarTitle from 'material-ui/Toolbar/ToolbarTitle'
-import React, {Component, PropTypes} from 'react'
+import React, {PropTypes} from 'react'
 
-class VisualizationToolbar extends Component {
-  static propTypes = {
-    title: PropTypes.string.isRequired
-  }
-  
-  static defaultProps = {
-    title: 'Visualization'
-  }
+const VisualizationToolbar = ({title}) => (
+  <Toolbar>
+    <ToolbarGroup float='left'>
+      <ToolbarTitle text={title} />
+    </ToolbarGroup>
+    <ToolbarGroup float='right'>
+      {/* Icons to float to right */}
+    </ToolbarGroup>
+  </Toolbar>
+)
 
-  render () {
-    const {title} = this.props
-    
-    return (
-      <Toolbar>
-        <ToolbarGroup float='left'>
-          <ToolbarTitle text={title} />
-        </ToolbarGroup>
-        <ToolbarGroup float='right'>
-          {/* Icons to float to right */}
-        </ToolbarGroup>
-      </Toolbar>
-    )
-  }
+VisualizationToolbar.propTypes = {
+  title: PropTypes.string.isRequired
+}
+
+VisualizationToolbar.defaultProps = {
+  title: 'Visualization'
 }
 
 export default connect()(VisualizationToolbar)

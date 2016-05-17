@@ -1,16 +1,10 @@
 import {header} from '../styles/common'
-import React, {Component} from 'react'
+import React from 'react'
 
-class Home extends Component {
-  render () {
-    return (
-      <div>
-        <header style={header}>
-          <h1>Home</h1>
-        </header>
-      </div>
-    )
-  }
-}
-
-export default Home
+export const Home = () => (
+  <div>
+    <header style={header}>
+      <h1>Home</h1>
+    </header>
+  </div>
+)

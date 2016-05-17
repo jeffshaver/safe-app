@@ -1,11 +1,13 @@
-import * as Components from './'
+import {ChartComponent} from './ChartComponent'
 import {connect} from 'react-redux'
 import {fetchVisualizationResults} from '../modules/visualization-results'
+import {MapComponent} from './MapComponent'
 import {Paper} from 'material-ui'
+import {TableComponent} from './TableComponent'
 import VisualizationToolbar from './VisualizationToolbar'
-
 import React, {Component, PropTypes} from 'react'
 
+const components = {ChartComponent, MapComponent, TableComponent}
 const styles = {
   paper: {
     height: '80%'
@@ -19,7 +21,7 @@ class Visualization extends Component {
     visualization: PropTypes.object.isRequired,
     visualizationResults: PropTypes.object.isRequired
   }
-  
+
   static defaultProps = {
     filters: []
   }
@@ -29,7 +31,7 @@ class Visualization extends Component {
 
     dispatch(fetchVisualizationResults(visualization._id, filters))
   }
-  
+
   componentWillUnmount () {
     // const {dispatch} = this.props
     // dispatch(removeVisualizationResults())
@@ -40,19 +42,19 @@ class Visualization extends Component {
     const {name, visualizationType} = visualization
     const data = visualizationResults.data[visualization._id] || []
     const {name: visualizationTypeName} = visualizationType
-  
+
     if (data.length === 0) {
       return <div/>
     }
-    
-    let VisualizationComponent = visualizationTypeName
-  
+
+    let visualizationComponentName = visualizationTypeName
+
     if (visualizationTypeName !== 'Map' && visualizationTypeName !== 'Table') {
-      VisualizationComponent = 'Chart'
+      visualizationComponentName = 'Chart'
     }
-    
-    VisualizationComponent = Components[`${VisualizationComponent}Component`]
-  
+
+    const VisualizationComponent = components[`${visualizationComponentName}Component`]
+
     return (
       <Paper style={styles.paper}>
         <VisualizationToolbar title={name} />
