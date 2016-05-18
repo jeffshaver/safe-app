@@ -5,13 +5,13 @@ import {fetchFields} from '../modules/fields'
 import {fetchSearchResults} from '../modules/search-results'
 import {fetchSources} from '../modules/sources'
 import FilterCriteria from './FilterCriteria'
-import {Hydrateable} from '../decorators'
 import RaisedButton from 'material-ui/RaisedButton'
 import {SelectField} from './SelectField'
 import {setSource} from '../modules/source'
 import Tab from 'material-ui/Tabs/Tab'
 import Tabs from 'material-ui/Tabs/Tabs'
 import {header, main, verticalTop} from '../styles/common'
+import {Hydrateable, LogMetrics} from '../decorators'
 import React, {Component, PropTypes} from 'react'
 
 const style = {
@@ -39,6 +39,7 @@ const generateColumns = (data) => {
 }
 const size = 'col-xs-12 col-sm-12'
 
+@LogMetrics('pageView', 'Search')
 @Hydrateable('Search', ['filters', 'source'])
 class Search extends Component {
   static propTypes = {
@@ -74,7 +75,7 @@ class Search extends Component {
 
   componentWillMount () {
     const {dispatch, searchResults} = this.props
-
+    
     this.updateColumns(searchResults)
 
     dispatch(fetchSources())

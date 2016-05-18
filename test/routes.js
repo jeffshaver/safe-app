@@ -60,6 +60,9 @@ module.exports = function (app) {
   app.post('/api/sources/:source/query', function (req, res) {
     res.send(fixtures.searchResults)
   })
+  app.post('/api/metrics', function (req, res) {
+    res.status(200).json(req.body.events)
+  })
   // TO DO *****************************
   // LIST OF FILTERS ENABLED FOR A SPECIFIC DATA SOURCE
   // app.get('/api/sources/:source/filters', function (req, res) {

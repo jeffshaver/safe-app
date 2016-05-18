@@ -33,7 +33,9 @@ rules:
     - "never"
   padded-blocks:
     - 2
-    - "never"
+    - blocks: "never"
+      switches: "never"
+      classes: "never"
   prefer-const:
     - 2
     - destructuring: "any"

@@ -12,14 +12,14 @@ class VisualizationToolbar extends Component {
     children: React.PropTypes.element,
     title: PropTypes.string.isRequired
   }
-  
+
   static defaultProps = {
     children: null
   }
-  
+
   render () {
     const {children, title} = this.props
-    
+
     return (
       <Toolbar>
         <ToolbarGroup float='left'>
@@ -44,7 +44,6 @@ class VisualizationToolbar extends Component {
       </Toolbar>
     )
   }
-
 }
 
 export default connect()(VisualizationToolbar)

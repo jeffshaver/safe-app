@@ -8,7 +8,6 @@ import {editDashboard} from '../modules/edit-dashboard'
 import {fetchDashboards} from '../modules/dashboards'
 import FlatButton from 'material-ui/FlatButton'
 import {getDashboardById} from '../constants'
-import {Hydrateable} from '../decorators'
 import {SelectField} from './SelectField'
 import TextField from 'material-ui/TextField'
 import {
@@ -24,12 +23,14 @@ import {
   resetEditDialog
 } from '../modules/edit-dashboard-dialog'
 import {header, main} from '../styles/common'
+import {Hydrateable, LogMetrics} from '../decorators'
 import React, {Component, PropTypes} from 'react'
 
 const style = {
   width: '400px'
 }
 
+@LogMetrics('pageView', 'Dashboards')
 @Hydrateable('Dashboards', ['filters'])
 class Dashboards extends Component {
   static propTypes = {

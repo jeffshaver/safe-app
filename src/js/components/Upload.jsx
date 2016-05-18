@@ -3,6 +3,7 @@ import Dialog from 'material-ui/Dialog'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import {FileInput} from 'safe-framework'
 import FlatButton from 'material-ui/FlatButton'
+import {LogMetrics} from '../decorators'
 import MenuItem from 'material-ui/MenuItem'
 import Papa from 'papaparse'
 import {toggleDialog} from '../modules/dialog'
@@ -20,6 +21,7 @@ const getFileExtension = (fileName) =>
     .slice((fileName.lastIndexOf('.') - 1 >>> 0) + 2)
     .toLowerCase()
 
+@LogMetrics('pageView', 'Upload')
 class Upload extends Component {
   static propTypes = {
     dialogOpen: PropTypes.bool.isRequired,
@@ -41,7 +43,7 @@ class Upload extends Component {
 
   componentWillUnmount () {
     const {dispatch} = this.props
-
+    
     dispatch(resetUploadDataTypes())
   }
 
@@ -171,6 +173,6 @@ class Upload extends Component {
 }
 
 export default connect((state) => ({
-  uploadDataTypes: state.uploadDataTypes,
-  dialogOpen: state.dialog
+  dialogOpen: state.dialog,
+  uploadDataTypes: state.uploadDataTypes
 }))(Upload)

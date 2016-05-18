@@ -4,12 +4,12 @@ import {fetchFields} from '../modules/fields'
 import {fetchSources} from '../modules/sources'
 import {fetchVisualizationTypes} from '../modules/visualization-types'
 import FilterCriteria from './FilterCriteria'
-import {Hydrateable} from '../decorators'
 import {SelectField} from './SelectField'
 import {setAnalytic} from '../modules/analytic'
 import {setSource} from '../modules/source'
 import {setVisualization} from '../modules/visualization'
 import {header, main, verticalTop} from '../styles/common'
+import {Hydrateable, LogMetrics} from '../decorators'
 import React, {Component, PropTypes} from 'react'
 
 const style = {
@@ -18,6 +18,7 @@ const style = {
   }
 }
 
+@LogMetrics('pageView', 'Analytics')
 @Hydrateable('Analytics', ['analytic', 'filters', 'source', 'visualization'])
 class Analytics extends Component {
   static propTypes = {
@@ -44,7 +45,7 @@ class Analytics extends Component {
 
   componentWillMount () {
     const {dispatch} = this.props
-
+    
     dispatch(fetchSources())
   }
 

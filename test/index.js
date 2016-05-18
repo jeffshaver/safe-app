@@ -66,6 +66,10 @@ require('./modules/longitude.spec')
 
 require('./modules/map-results.spec')
 
+// metrics
+
+require('./modules/metrics.spec')
+
 // search results
 
 require('./modules/search-results.spec')
