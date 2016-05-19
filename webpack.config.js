@@ -2,6 +2,21 @@ const path = require('path')
 const webpack = require('webpack')
 const config = require('./config')
 
+let plugins = [
+  new webpack.optimize.DedupePlugin(),
+  // Webpack 1.0
+  new webpack.optimize.OccurenceOrderPlugin(),
+  // Webpack 2.0 fixed this mispelling
+  // new webpack.optimize.OccurrenceOrderPlugin(),
+  new webpack.HotModuleReplacementPlugin(),
+  new webpack.NoErrorsPlugin()
+]
+
+if (process.env.NODE_ENV === 'production') {
+  plugins = [new webpack.optimize.UglifyJsPlugin()]
+    .concat(plugins)
+}
+
 module.exports = {
   context: __dirname,
   entry: [
@@ -16,14 +31,7 @@ module.exports = {
     publicPath: config.protocol + '://' + config.domain + ':' + config.port + '/dist/',
     filename: 'bundle.js'
   },
-  plugins: [
-    // Webpack 1.0
-    new webpack.optimize.OccurenceOrderPlugin(),
-    // Webpack 2.0 fixed this mispelling
-    // new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
-  ],
+  plugins,
   module: {
     loaders: [{
       test: /\.js|\.jsx/,
