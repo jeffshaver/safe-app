@@ -3,6 +3,7 @@ import {browserHistory} from 'react-router'
 import Divider from 'material-ui/Divider'
 import Drawer from 'material-ui/Drawer'
 import ListItem from 'material-ui/List/ListItem'
+import {logoStyle} from '../styles/common'
 import {routes} from '../constants'
 import React, {Component} from 'react'
 
@@ -14,6 +15,7 @@ export class LeftNav extends Component {
         width={175}
       >
         <ListItem
+          innerDivStyle={logoStyle}
           key={0}
           onTouchTap={() => (browserHistory.push('/'))}
         >

@@ -1,3 +1,5 @@
+import {bannerText} from '../../../config'
+
 export const header = {
   backgroundColor: '#00bcd4',
   color: '#fff',
@@ -12,3 +14,7 @@ export const main = {
 export const verticalTop = {
   verticalAlign: 'top'
 }
+
+export const logoStyle = bannerText
+  ? {padding: '24px 16px'}
+  : {}
