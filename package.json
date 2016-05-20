@@ -4,7 +4,8 @@
   "description": "Safe App",
   "repository": "https://github.com/jeffshaver/safe-app",
   "scripts": {
-    "build": "webpack",
+    "build": "NODE_ENV=production webpack",
+    "build:dev": "NODE_ENV=development webpack",
     "bump:major": "node ./bin/bump.js major --commit --tag",
     "bump:minor": "node ./bin/bump.js minor --commit --tag",
     "bump:patch": "node ./bin/bump.js patch --commit --tag",
@@ -69,14 +70,14 @@
     "radium": "^0.17.1",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
-    "react-leaflet": "^0.11.4",
+    "react-leaflet": "^0.11.5",
     "react-redux": "^4.4.5",
     "react-router": "^2.4.0",
     "react-router-redux": "^4.0.4",
     "react-tap-event-plugin": "^1.0.0",
     "redux": "^3.5.2",
     "redux-thunk": "^2.0.1",
-    "safe-framework": "0.0.18",
+    "safe-framework": "0.0.19",
     "serve-static": "^1.10.2",
     "title-case": "^1.1.2"
   }

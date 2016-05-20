@@ -8,11 +8,6 @@ import FilterCriteria from './FilterCriteria'
 import {Hydrateable} from '../decorators'
 import RaisedButton from 'material-ui/RaisedButton'
 import {SelectField} from './SelectField'
-import {setCategory} from '../modules/category'
-import {setLabel} from '../modules/label'
-import {setLatitude} from '../modules/latitude'
-import {setLongitude} from '../modules/longitude'
-// import {setMapResults} from '../modules/map-results'
 import {setSource} from '../modules/source'
 import Tab from 'material-ui/Tabs/Tab'
 import Tabs from 'material-ui/Tabs/Tabs'
@@ -33,10 +28,19 @@ const style = {
     margin: '12px'
   }
 }
+const generateColumns = (data) => {
+  if (data.data.length === 0) {
+    console.error('generateColumns(): data is undefined')
 
-// const mapTitle = 'Cities'
+    return []
+  }
+
+  return Object.keys(data.data[0]).map((field) => ({
+    headerName: field.toUpperCase(),
+    field
+  }))
+}
 const size = 'col-xs-12 col-sm-12'
-// const zoomControlPosition = 'topleft'
 
 @Hydrateable('Search', ['filters', 'source'])
 class Search extends Component {
@@ -45,10 +49,6 @@ class Search extends Component {
     dispatch: PropTypes.func.isRequired,
     fields: PropTypes.object.isRequired,
     filters: PropTypes.array.isRequired,
-    // label: PropTypes.string.isRequired,
-    // latitude: PropTypes.string.isRequired,
-    // longitude: PropTypes.string.isRequired,
-    // mapResults: PropTypes.object,
     searchResults: PropTypes.object.isRequired,
     source: PropTypes.string.isRequired,
     sources: PropTypes.object.isRequired
@@ -58,45 +58,39 @@ class Search extends Component {
     super(props)
 
     this.displayName = 'Search'
-
-    this.onChangeCategory = ::this.onChangeCategory
-    this.onChangeLabel = ::this.onChangeLabel
-    this.onChangeLatitude = ::this.onChangeLatitude
-    this.onChangeLongitude = ::this.onChangeLongitude
+    this.state = {
+      columns: []
+    }
     this.onChangeSource = ::this.onChangeSource
-    this.onClickDashboard = ::this.onClickDashboard
-    this.onClickPlot = ::this.onClickPlot
     this.onClickSearch = ::this.onClickSearch
   }
 
+  updateColumns (data) {
+    if (data.data.length === 0) {
+      return
+    }
+
+    this.setState({
+      columns: generateColumns(data)
+    })
+  }
+
   componentWillMount () {
-    const {dispatch} = this.props
+    const {dispatch, searchResults} = this.props
+
+    this.updateColumns(searchResults)
 
     dispatch(fetchSources())
   }
 
-  onChangeCategory (ev, index, category) {
-    const {dispatch} = this.props
+  componentWillReceiveProps (nextProps) {
+    const {searchResults} = this.props
 
-    dispatch(setCategory(category))
-  }
+    if (searchResults === nextProps.searchResults) {
+      return
+    }
 
-  onChangeLabel (ev, index, label) {
-    const {dispatch} = this.props
-
-    dispatch(setLabel(label))
-  }
-
-  onChangeLatitude (ev, index, latitude) {
-    const {dispatch} = this.props
-
-    dispatch(setLatitude(latitude))
-  }
-
-  onChangeLongitude (ev, index, longitude) {
-    const {dispatch} = this.props
-
-    dispatch(setLongitude(longitude))
+    this.updateColumns(nextProps.searchResults)
   }
 
   onChangeSource (ev, index, source) {
@@ -107,41 +101,6 @@ class Search extends Component {
     dispatch(fetchFields(source))
   }
 
-  onClickDashboard () {
-  }
-
-  onClickPlot () {
-    // const {dispatch, label, latitude, longitude, searchResults} = this.props
-
-    // // Verify selected fields contain lat/lon values
-    // const lat = searchResults.data[0][latitude]
-    // const long = searchResults.data[0][longitude]
-
-    // if (
-    //   Number(lat) !== lat ||
-    //   Number(long) !== long ||
-    //   lat < -90 ||
-    //   lat > 90 ||
-    //   long < -180 ||
-    //   long > 180
-    // ) {
-    //   return
-    // }
-
-    // const markers = searchResults.data.map((row, i) => ({
-    //   key: i,
-    //   position: [row[latitude], row[longitude]],
-    //   children: row[label]
-    // }))
-
-    // const mapResults = {
-    //   center: [lat, long],
-    //   markers: markers
-    // }
-
-    // dispatch(setMapResults(mapResults))
-  }
-
   onClickSearch () {
     const {dispatch, filters, source} = this.props
 
@@ -150,10 +109,6 @@ class Search extends Component {
 
   render () {
     const {
-      // category,
-      // label, latitude,
-      // longitude,
-      // mapResults,
       fields,
       searchResults,
       source,
@@ -198,94 +153,24 @@ class Search extends Component {
               disabled={!source}
               label='Add to Dashboard'
               style={style.margin}
-              onTouchTap={this.onClickDashboard}
+              onTouchTap={() => {}}
             />
           </div>
           {(() => {
             if (searchResults.data && searchResults.data.length > 0) {
-              const columns = Object.keys(searchResults.data[0]).map((field) => ({
-                headerName: field.toUpperCase(),
-                field
-              }))
-
-              // const items = Object.keys(searchResults.data[0]).map((data, i) => ({
-              //   value: i,
-              //   primaryText: data
-              // }))
-
-              // const lat = searchResults.data[0][latitude]
-              // const long = searchResults.data[0][longitude]
-
-              // const isValidLatitude = latitude.length === 0 || (Number(lat) === lat && lat > -90 && lat < 90)
-              // const isValidLongitude = longitude.length === 0 || (Number(long) === long && long > -180 && long < 180)
-
               return (
                 <div className={size}>
                   <Tabs>
                     <Tab label='Data'>
                       <div style={{height: '350px'}}>
                         <DataTable
-                          columns={columns}
+                          columns={this.state.columns}
                           data={searchResults.data}
                           enableColResize='true'
                           enableSorting='true'
                         />
                       </div>
                     </Tab>
-                    {/* <Tab label='Map'>
-                      <div>
-                        <SelectField
-                          errorText={!isValidLatitude && 'Select a latitude field'}
-                          floatingLabelText='Select a Latitude'
-                          hintText='Select a Latitude'
-                          items={items}
-                          keyProp={'value'}
-                          primaryTextProp={'primaryText'}
-                          style={verticalTop}
-                          value={latitude}
-                          valueProp={'value'}
-                          onChange={this.onChangeLatitude}
-                        />
-                        <SelectField
-                          errorText={!isValidLongitude && 'Select a longitude field'}
-                          floatingLabelText='Select a Longitude'
-                          hintText='Select a Longitude'
-                          items={items}
-                          keyProp={'value'}
-                          primaryTextProp={'primaryText'}
-                          style={verticalTop}
-                          value={longitude}
-                          valueProp={'value'}
-                          onChange={this.onChangeLongitude}
-                        />
-                        <SelectField
-                          floatingLabelText='Select a Label'
-                          hintText='Select a label'
-                          items={items}
-                          keyProp={'value'}
-                          primaryTextProp={'primaryText'}
-                          style={verticalTop}
-                          value={label}
-                          valueProp={'value'}
-                          onChange={this.onChangeLabel}
-                        />
-                        <RaisedButton
-                          label='Plot'
-                          primary={true}
-                          style={style.button}
-                          onTouchTap={this.onClickPlot}
-                        />
-                      </div>
-                      <br/>
-                      <div>
-                        <Map
-                          center={mapResults.center}
-                          markers={mapResults.markers}
-                          title={mapTitle}
-                          zoomControlPosition={zoomControlPosition}
-                        />
-                      </div>
-                    </Tab>*/}
                   </Tabs>
                 </div>
               )

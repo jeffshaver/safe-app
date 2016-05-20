@@ -3,6 +3,11 @@ const webpack = require('webpack')
 const config = require('./config')
 
 let plugins = [
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+    }
+  }),
   new webpack.optimize.DedupePlugin(),
   // Webpack 1.0
   new webpack.optimize.OccurenceOrderPlugin(),
