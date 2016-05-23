@@ -1,5 +1,19 @@
 # safe-app ChangeLog
 
+## 0.0.9 (May 23, 2016)
+
+### Changes
+
+* [[711a594](https://github.com/jeffshaver/safe-app/commit/711a594)] - remove content-type headers for post requests ([jeffshaver](https://github.com/jeffshaver))
+* [[4d0bbc3](https://github.com/jeffshaver/safe-app/commit/4d0bbc3)] - change logo padding if banner exists ([jeffshaver](https://github.com/jeffshaver))
+* [[07dc67a](https://github.com/jeffshaver/safe-app/commit/07dc67a)] - fix datatable re-rendering issue ([jeffshaver](https://github.com/jeffshaver))
+* [[4763690](https://github.com/jeffshaver/safe-app/commit/4763690)] - add minification and dedupe for production builds ([jeffshaver](https://github.com/jeffshaver))
+* [[9763071](https://github.com/jeffshaver/safe-app/commit/9763071)] - remove empty filters before sending in POST request ([pml984](https://github.com/pml984))
+* [[6edea7c](https://github.com/jeffshaver/safe-app/commit/6edea7c)] - change default test reporter ([jeffshaver](https://github.com/jeffshaver))
+* [[e340cb1](https://github.com/jeffshaver/safe-app/commit/e340cb1)] - change several components from class syntax to functional syntax ([jeffshaver](https://github.com/jeffshaver))
+* [[746c5b2](https://github.com/jeffshaver/safe-app/commit/746c5b2)] - update bump script to enforce changelog updates ([jeffshaver](https://github.com/jeffshaver))
+* [[e9fadb1](https://github.com/jeffshaver/safe-app/commit/e9fadb1)] - add npm script to update config ([jeffshaver](https://github.com/jeffshaver))
+
 ## 0.0.8 (May 16, 2016)
 
 ### Changes
