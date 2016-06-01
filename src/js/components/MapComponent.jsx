@@ -1,26 +1,44 @@
 import {Map} from 'safe-framework'
-import React, {PropTypes} from 'react'
+import React, {Component, PropTypes} from 'react'
 
-export const MapComponent = ({data, metadata, type}) => {
-  const {Label, Latitude = 'Latitude', Longitude = 'Longitude'} = metadata
-  const [firstItem = {}] = data
-  const markers = data.map((row, i) => ({
-    key: i,
-    position: [row[Latitude], row[Longitude]],
-    children: row[Label]
-  }))
-  const center = [firstItem[Latitude], firstItem[Longitude]]
+export class MapComponent extends Component {
+  static propTypes = {
+    data: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.array
+    ]),
+    metadata: PropTypes.object.isRequired,
+    type: PropTypes.string.isRequired
+  }
+  
+  render () {
+    let {data} = this.props
+    const {metadata} = this.props
+    const {visualizationParams} = metadata
+    const {
+      latField = 'Latitude',
+      longField = 'Longitude'
+    } = visualizationParams
+    
+    if (Array.isArray(data)) {
+      data = {baseData: data}
+    }
+    
+    const {baseData, layers = []} = data
+    const [firstItem = {}] = baseData
+    const center = [firstItem[latField], firstItem[longField]]
 
-  return (
-    <Map
-      center={center}
-      markers={markers}
-    />
-  )
-}
-
-MapComponent.propTypes = {
-  data: PropTypes.array.isRequired,
-  metadata: PropTypes.object.isRequired,
-  type: PropTypes.string.isRequired
+    const baseLayer = {
+      data: baseData
+    }
+    
+    return (
+      <Map
+        baseLayer={baseLayer}
+        center={center}
+        dataOptions={visualizationParams}
+        layers={layers}
+      />
+    )
+  }
 }

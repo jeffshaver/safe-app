@@ -57,9 +57,11 @@ class Dashboard extends Component {
     // for each visualization's source.
     const fields = {
       data: visualizations.reduce(
-        (array, visualization) =>
-          [...array, ...visualization.source.fields],
-          []
+        (array, visualization) => {
+          const {fields = []} = visualization.source
+          
+          return [...array, ...fields]
+        }, []
       ),
       isFetching: false
     }
