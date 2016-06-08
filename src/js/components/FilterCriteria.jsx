@@ -158,6 +158,14 @@ class FilterCriteria extends Component {
       wrapperStyle
     } = this.props
 
+    if (fields.data.length === 0) {
+      return (
+        <div style={wrapperStyle}>
+          <h3>No fields found to use for filtering</h3>
+        </div>
+      )
+    }
+
     return (
       <div style={wrapperStyle}>
         <h3 style={headerStyle}>
