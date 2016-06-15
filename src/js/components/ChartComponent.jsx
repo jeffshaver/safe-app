@@ -11,7 +11,13 @@ export class ChartComponent extends Component {
   render () {
     const {data, metadata, type} = this.props
     const {visualizationParams: params = {}} = metadata
-    const {series, yAxis = 'Count', type: xAxisType, drillDownFieldName} = params
+    const {
+      drillDownFieldName,
+      series,
+      tooltipFields,
+      type: xAxisType,
+      yAxis = 'Count'
+    } = params
     const xAxisScale = xAxisType !== 'timeline' ? {} : {
       time: {
         tooltipFormat: 'dddd, MMMM Do YYYY, hh:mm'
@@ -20,7 +26,7 @@ export class ChartComponent extends Component {
     }
     const options = {
       scales: {
-        xAxis: [xAxisScale],
+        xAxes: [xAxisScale],
         yAxes: [{
           scaleLabel: {
             display: false,
@@ -39,9 +45,34 @@ export class ChartComponent extends Component {
       chartData.ySeriesFieldName = 'Value'
       chartData.ySeriesFieldValue = yAxis
     } else {
-      chartData.yAxis = [yAxis]
+      chartData.yAxis = [{
+        dataProperty: yAxis,
+        label: yAxis
+      }]
       options.legend = {
         display: false
+      }
+    }
+
+    if (tooltipFields) {
+      options.tooltips = {
+        callbacks: {
+          afterLabel: (tooltipItem, data) => {
+            const {data: dataList = [], ySeriesField} = data
+            let dataItem = dataList[tooltipItem.index]
+            let tooltipLabel = ''
+
+            if (ySeriesField) {
+              dataItem = dataItem[ySeriesField]
+            }
+
+            for (const tooltipField of tooltipFields) {
+              tooltipLabel += `${tooltipField}: ${dataItem[tooltipField]}`
+            }
+
+            return tooltipLabel
+          }
+        }
       }
     }
 
@@ -53,7 +84,7 @@ export class ChartComponent extends Component {
         drilldown={drillDownFieldName != null}
         options={options}
         ref='chart'
-        onClick={(dataItem, series, datasetIndex) => {
+        onClick={(dataItem, seriesItem) => {
           if (!drillDownFieldName) {
             return
           }
@@ -62,7 +93,7 @@ export class ChartComponent extends Component {
 
           chart.drilldown({
             ...chartData,
-            data: dataItem[drillDownFieldName]
+            data: (seriesItem || dataItem)[drillDownFieldName]
           })
         }}
       />
