@@ -1,3 +1,4 @@
+import {applicationName} from '../../../config'
 import Avatar from 'material-ui/Avatar'
 import {browserHistory} from 'react-router'
 import Divider from 'material-ui/Divider'
@@ -19,7 +20,7 @@ export class LeftNav extends Component {
           key={0}
           onTouchTap={() => (browserHistory.push('/'))}
         >
-          <h1>SAFE</h1>
+          <h1>{applicationName}</h1>
         </ListItem>
         <Divider />
         {
