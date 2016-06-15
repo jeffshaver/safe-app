@@ -1,5 +1,19 @@
 # safe-app ChangeLog
 
+## 0.0.10 (June 15, 2016)
+
+### Changes
+
+* [[f4589ac](https://github.com/jeffshaver/safe-app/commit/f4589ac)] - fix travis-ci and default-config.json error ([jeffshaver](https://github.com/jeffshaver))
+* [[54fd553](https://github.com/jeffshaver/safe-app/commit/54fd553)] - add tooltips to charts from data fields ([pml984](https://github.com/pml984))
+* [[9bde5a1](https://github.com/jeffshaver/safe-app/commit/9bde5a1)] - incorporate drilldown into charts ([pml984](https://github.com/pml984))
+* [[743306a](https://github.com/jeffshaver/safe-app/commit/743306a)] - handle time date in x-axis ([pml984](https://github.com/pml984))
+* [[236eb23](https://github.com/jeffshaver/safe-app/commit/236eb23)] - make map uri configurable ([pml984](https://github.com/pml984))
+* [[72b0bcb](https://github.com/jeffshaver/safe-app/commit/72b0bcb)] - add content-type to query request ([knorris](https://github.com/knorris))
+* [[6598464](https://github.com/jeffshaver/safe-app/commit/6598464)] - update map to work with new safe-framework ([pml984](https://github.com/pml984))
+* [[f559f22](https://github.com/jeffshaver/safe-app/commit/f559f22)] - add / to asset locations ([jeffshaver](https://github.com/jeffshaver))
+* [[449fdbb](https://github.com/jeffshaver/safe-app/commit/449fdbb)] - add backup ttf fonts ([jeffshaver](https://github.com/jeffshaver))
+
 ## 0.0.9 (May 23, 2016)
 
 ### Changes
