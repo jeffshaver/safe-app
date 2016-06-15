@@ -3,10 +3,16 @@ import React, {PropTypes} from 'react'
 
 export const ChartComponent = ({data, metadata, type}) => {
   const {visualizationParams: params = {}} = metadata
-  const {series, yAxis = 'Count'} = params
+  const {series, yAxis = 'Count', type: xAxisType} = params
+  const xAxisScale = xAxisType !== 'timeline' ? {} : {
+    time: {
+      tooltipFormat: 'dddd, MMMM Do YYYY, hh:mm'
+    },
+    type: 'time'
+  }
   const options = {
     scales: {
-      xAxis: [{}],
+      xAxis: [xAxisScale],
       yAxes: [{
         scaleLabel: {
           display: false,
