@@ -1,4 +1,5 @@
 import {Map} from 'safe-framework'
+import {mapAttribution, mapUrl} from '../../../config'
 import React, {Component, PropTypes} from 'react'
 
 export class MapComponent extends Component {
@@ -10,7 +11,7 @@ export class MapComponent extends Component {
     metadata: PropTypes.object.isRequired,
     type: PropTypes.string.isRequired
   }
-  
+
   render () {
     let {data} = this.props
     const {metadata} = this.props
@@ -19,11 +20,11 @@ export class MapComponent extends Component {
       latField = 'Latitude',
       longField = 'Longitude'
     } = visualizationParams
-    
+
     if (Array.isArray(data)) {
       data = {baseData: data}
     }
-    
+
     const {baseData, layers = []} = data
     const [firstItem = {}] = baseData
     const center = [firstItem[latField], firstItem[longField]]
@@ -31,13 +32,20 @@ export class MapComponent extends Component {
     const baseLayer = {
       data: baseData
     }
-    
+
+    const tileLayerOptions = !mapUrl ? {} : {
+      attribution: mapAttribution,
+      transparent: true,
+      url: mapUrl
+    }
+
     return (
       <Map
         baseLayer={baseLayer}
         center={center}
         dataOptions={visualizationParams}
         layers={layers}
+        tileLayerOptions={tileLayerOptions}
       />
     )
   }
