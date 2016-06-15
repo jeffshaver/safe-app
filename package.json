@@ -77,7 +77,7 @@
     "react-tap-event-plugin": "^1.0.0",
     "redux": "^3.5.2",
     "redux-thunk": "^2.0.1",
-    "safe-framework": "0.0.20",
+    "safe-framework": "0.0.21",
     "serve-static": "^1.10.2",
     "title-case": "^1.1.2"
   }
