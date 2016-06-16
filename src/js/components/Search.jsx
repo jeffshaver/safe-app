@@ -149,12 +149,6 @@ class Search extends Component {
               style={style.button}
               onTouchTap={this.onClickSearch}
             />
-            <RaisedButton
-              disabled={!source}
-              label='Add to Dashboard'
-              style={style.margin}
-              onTouchTap={() => {}}
-            />
           </div>
           {(() => {
             if (searchResults.data && searchResults.data.length > 0) {
