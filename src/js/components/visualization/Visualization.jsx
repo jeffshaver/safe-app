@@ -1,13 +1,16 @@
 import {ChartComponent} from './ChartComponent'
+import {ChartMenu} from './ChartMenu'
 import {connect} from 'react-redux'
-import {excludeEmptyFilters} from '../modules/utilities'
-import {fetchVisualizationResults} from '../modules/visualization-results'
+import {excludeEmptyFilters} from '../../modules/utilities'
+import {fetchVisualizationResults} from '../../modules/visualization-results'
 import {MapComponent} from './MapComponent'
 import {TableComponent} from './TableComponent'
+import {TableMenu} from './TableMenu'
 import VisualizationToolbar from './VisualizationToolbar'
 import React, {Component, PropTypes} from 'react'
 
 const components = {ChartComponent, MapComponent, TableComponent}
+const menus = {ChartMenu, TableMenu}
 const style = {
   container: {
     height: '80%'
@@ -56,13 +59,24 @@ class Visualization extends Component {
     }
 
     const VisualizationComponent = components[`${visualizationComponentName}Component`]
+    const VisualizationMenu = menus[`${visualizationComponentName}Menu`]
 
     return (
       <div style={style.container}>
-        <VisualizationToolbar title={name} />
+        <VisualizationToolbar title={name}>
+          {VisualizationMenu
+            ? <VisualizationMenu
+              metadata={visualization}
+              visualization={this}
+            />
+            : null
+          }
+        </VisualizationToolbar>
         <VisualizationComponent
           data={data}
           metadata={visualization}
+          name={name}
+          ref={(ref) => (this.component = ref)}
           type={visualizationTypeName}
         />
       </div>

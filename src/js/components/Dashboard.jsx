@@ -4,7 +4,7 @@ import {fetchDashboards} from '../modules/dashboards'
 import {fetchVisualizationResults} from '../modules/visualization-results'
 import FilterCriteria from './FilterCriteria'
 import {verticalTop} from '../styles/common'
-import Visualization from './Visualization'
+import Visualization from './visualization/Visualization'
 import {GridList, GridTile} from 'material-ui/GridList'
 import React, {Component, PropTypes} from 'react'
 

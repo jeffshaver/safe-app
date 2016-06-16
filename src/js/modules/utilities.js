@@ -1,3 +1,7 @@
+import changeCase from 'change-case'
+
+/* global document */
+
 export const checkFetchStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
     return response
@@ -21,6 +25,17 @@ export const excludeEmptyFilters = (filters) => (
     }).length === keys.length
   })
 )
+
+export const saveCanvas = (canvas, name) => {
+  const image = canvas.toDataURL()
+  const aLink = document.createElement('a')
+  const evt = document.createEvent('HTMLEvents')
+  
+  evt.initEvent('click')
+  aLink.download = `${changeCase.pascalCase(name)}.png`
+  aLink.href = image
+  aLink.dispatchEvent(evt)
+}
 
 export const defaultFetchOptions = {
   credentials: 'include'

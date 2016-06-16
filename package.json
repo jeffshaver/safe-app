@@ -53,6 +53,7 @@
     "webpack-hot-middleware": "^2.10.0"
   },
   "dependencies": {
+    "change-case": "^3.0.0",
     "color": "^0.11.1",
     "compression": "^1.6.2",
     "connect-mongo": "^1.1.0",
