@@ -1,24 +1,17 @@
-import {bannerText} from '../../../config'
+import {Banner} from './Banner'
 import CircularProgress from 'material-ui/CircularProgress'
 import {connect} from 'react-redux'
 import {fetchUser} from '../modules/user'
+import {Footer} from './Footer'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import {GlobalStyles} from './GlobalStyles'
 import {LeftNav} from './LeftNav'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import {Wrapper} from './Wrapper'
-import {grey800, yellow200} from 'material-ui/styles/colors'
 import Radium, {StyleRoot} from 'radium'
 import React, {Component, PropTypes} from 'react'
 
 const style = {
-  banner: {
-    background: grey800,
-    color: yellow200,
-    fontSize: '0.8rem',
-    fontWeight: 400,
-    textAlign: 'center'
-  },
   flexWrapper: {
     flex: 1
   },
@@ -55,9 +48,6 @@ class App extends Component {
 
   render () {
     const {children, user} = this.props
-    const banner = bannerText
-      ? <div style={style.banner}>{bannerText}</div>
-      : null
     let content
 
     if (user.isFetching) {
@@ -88,11 +78,12 @@ class App extends Component {
         <div>
           <LeftNav />
           <Wrapper style={style.wrapper}>
-            {banner}
+            <Banner />
             <div style={style.flexWrapper}>
               {children}
             </div>
-            {banner}
+            <Footer />
+            <Banner />
           </Wrapper>
         </div>
       )
