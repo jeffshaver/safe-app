@@ -1,16 +1,14 @@
-/* globals window */
-
+import logger from 'redux-logger'
 import {rootReducer} from './modules'
 import thunk from 'redux-thunk'
 import {applyMiddleware, compose, createStore} from 'redux'
 
-const enhancer = compose(
-  applyMiddleware(thunk),
-  window.devToolsExtension ? window.devToolsExtension() : (f) => f
-)
-
 export const configureStore = (initialState) => {
-  const store = createStore(rootReducer, initialState, enhancer)
+  const middlewares = [thunk]
+
+  if (process.env !== 'production') {
+    middlewares.push(logger())
+  }
 
   if (module.hot) {
     module.hot.accept('./modules', () => {
@@ -19,6 +17,12 @@ export const configureStore = (initialState) => {
       store.replaceReducer(nextReducer)
     })
   }
+
+  const enhancer = compose(
+    applyMiddleware(...middlewares),
+    window.devToolsExtension ? window.devToolsExtension() : (f) => f
+  )
+  const store = createStore(rootReducer, initialState, enhancer)
 
   return store
 }
