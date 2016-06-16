@@ -16,6 +16,11 @@ let plugins = [
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoErrorsPlugin()
 ]
+let entry = ['./src/js/index.jsx']
+
+if (process.env.NODE_ENV === 'development') {
+  entry = entry.concat(['webpack-hot-middleware/client'])
+}
 
 if (process.env.NODE_ENV === 'production') {
   plugins = [new webpack.optimize.UglifyJsPlugin()]
@@ -24,10 +29,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   context: __dirname,
-  entry: [
-    './src/js/index.jsx',
-    'webpack-hot-middleware/client'
-  ],
+  entry,
   resolve: {
     extensions: ['', '.js', '.jsx']
   },
