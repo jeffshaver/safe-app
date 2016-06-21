@@ -3,14 +3,13 @@ import {connect} from 'react-redux'
 import {excludeEmptyFilters} from '../modules/utilities'
 import {fetchVisualizationResults} from '../modules/visualization-results'
 import {MapComponent} from './MapComponent'
-import {Paper} from 'material-ui'
 import {TableComponent} from './TableComponent'
 import VisualizationToolbar from './VisualizationToolbar'
 import React, {Component, PropTypes} from 'react'
 
 const components = {ChartComponent, MapComponent, TableComponent}
-const styles = {
-  paper: {
+const style = {
+  container: {
     height: '80%'
   }
 }
@@ -59,14 +58,14 @@ class Visualization extends Component {
     const VisualizationComponent = components[`${visualizationComponentName}Component`]
 
     return (
-      <Paper style={styles.paper}>
+      <div style={style.container}>
         <VisualizationToolbar title={name} />
         <VisualizationComponent
           data={data}
           metadata={visualization}
           type={visualizationTypeName}
         />
-      </Paper>
+      </div>
     )
   }
 }

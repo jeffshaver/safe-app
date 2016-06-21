@@ -19,10 +19,10 @@ cache:
 node_js:
   - "6.1.0"
 before_script:
-  - "npm run update:config"
-  - "npm install"
+  - "npm install --ignore-scripts"
 script:
+  - "npm run update:config"
   - "npm run lint"
-  - "npm run test"
+  - "npm test"
 notifications:
   slack: safe-framework:T16U0obIrMOaKlGWuHXaJeij

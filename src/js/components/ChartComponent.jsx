@@ -1,6 +1,12 @@
 import * as Components from 'safe-framework'
 import React, {Component, PropTypes} from 'react'
 
+const style = {
+  canvas: {
+    margin: '1em 0'
+  }
+}
+
 export class ChartComponent extends Component {
   static propTypes = {
     data: PropTypes.array.isRequired,
@@ -84,6 +90,7 @@ export class ChartComponent extends Component {
         drilldown={drillDownFieldName != null}
         options={options}
         ref='chart'
+        style={style.canvas}
         onClick={(dataItem, seriesItem) => {
           if (!drillDownFieldName) {
             return

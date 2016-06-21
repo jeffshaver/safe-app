@@ -2,9 +2,9 @@ import {connect} from 'react-redux'
 import {excludeEmptyFilters} from '../modules/utilities'
 import {fetchVisualizationResults} from '../modules/visualization-results'
 import FilterCriteria from './FilterCriteria'
-import {GridList} from 'material-ui'
 import {verticalTop} from '../styles/common'
 import Visualization from './Visualization'
+import {GridList, GridTile} from 'material-ui/GridList'
 import React, {Component, PropTypes} from 'react'
 
 const styles = {
@@ -52,14 +52,15 @@ class Dashboard extends Component {
 
   render () {
     const {dispatch, dashboard} = this.props
-    const {visualizations = []} = dashboard
+    const {visualizations = [], dashboardParams = {}} = dashboard
+    const {size = 2, visualizationSizes = []} = dashboardParams
     // Populate the Fields based off of the fields
     // for each visualization's source.
     const fields = {
       data: visualizations.reduce(
         (array, visualization) => {
           const {fields = []} = visualization.source
-          
+
           return [...array, ...fields]
         }, []
       ),
@@ -82,18 +83,22 @@ class Dashboard extends Component {
         />
         <GridList
           cellHeight={500}
-          cols={visualizations.length > 1 ? 2 : 1}
+          cols={visualizations.length > 1 ? size : 1}
           padding={20}
           ref='gridList'
           style={styles.gridList}
         >
           {
             visualizations.map((visualization) => (
-              <Visualization
-                dispatch={dispatch}
+              <GridTile
+                cols={visualizationSizes[visualization._id]}
                 key={visualization._id}
-                visualization={visualization}
-              />
+              >
+                <Visualization
+                  dispatch={dispatch}
+                  visualization={visualization}
+                />
+              </GridTile>
             ))
           }
         </GridList>
