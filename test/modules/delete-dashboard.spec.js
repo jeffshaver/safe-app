@@ -2,7 +2,6 @@
 
 import {apiUri} from '../../config.js'
 import configureStore from 'redux-mock-store'
-import {RESET as DASHBOARD_RESET} from '../../src/js/modules/dashboard'
 import {REQUEST as DASHBOARDS_REQUEST} from '../../src/js/modules/dashboards'
 import expect from 'expect'
 import nock from 'nock'
@@ -76,9 +75,6 @@ describe('deleteDashboard actions', () => {
         },
         receivedAt: null
       }
-      const dashboardResetAction = {
-        type: DASHBOARD_RESET
-      }
       const dashboardsRequestAction = {
         type: DASHBOARDS_REQUEST
       }
@@ -90,7 +86,6 @@ describe('deleteDashboard actions', () => {
           const expectedActions = [
             requestAction,
             recieveAction,
-            dashboardResetAction,
             dashboardsRequestAction
           ]
 

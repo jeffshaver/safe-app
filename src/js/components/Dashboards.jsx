@@ -1,3 +1,4 @@
+import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 import {createDashboard} from '../modules/create-dashboard'
 import Dashboard from './Dashboard'
@@ -6,9 +7,9 @@ import Dialog from 'material-ui/Dialog'
 import {editDashboard} from '../modules/edit-dashboard'
 import {fetchDashboards} from '../modules/dashboards'
 import FlatButton from 'material-ui/FlatButton'
+import {getDashboardById} from '../constants'
 import {Hydrateable} from '../decorators'
 import {SelectField} from './SelectField'
-import {setDashboard} from '../modules/dashboard'
 import TextField from 'material-ui/TextField'
 import {
   changeCreateDialog,
@@ -29,25 +30,11 @@ const style = {
   width: '400px'
 }
 
-const getDashboardById = (dashboards, id) => {
-  let dashboard
-
-  dashboards.forEach((currentDashboard) => {
-    if (currentDashboard._id !== id) {
-      return
-    }
-
-    dashboard = currentDashboard
-  })
-
-  return dashboard
-}
-
 @Hydrateable('Dashboards', ['filters'])
 class Dashboards extends Component {
   static propTypes = {
     createDashboardDialog: PropTypes.object.isRequired,
-    dashboard: PropTypes.object.isRequired,
+    dashboardId: PropTypes.string,
     dashboards: PropTypes.object.isRequired,
     deleteDashboardDialog: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -96,7 +83,8 @@ class Dashboards extends Component {
   }
 
   changeEditDialog (property, event) {
-    const {dashboard, dispatch} = this.props
+    const {dashboardId, dashboards, dispatch} = this.props
+    const dashboard = getDashboardById(dashboards.data, dashboardId)
     const {subtitle, title} = dashboard
     const value = event && event.target && event.target.value || event
 
@@ -116,31 +104,29 @@ class Dashboards extends Component {
   }
 
   deleteDashboard () {
-    const {dispatch, dashboard} = this.props
-    const {id} = dashboard
+    const {dashboardId, dispatch} = this.props
 
-    if (!id) {
+    if (!dashboardId) {
       console.error('Cannot delete a dashboard that is not selected')
 
       return
     }
 
-    dispatch(deleteDashboard(id))
+    dispatch(deleteDashboard(dashboardId))
     dispatch(resetDeleteDialog())
   }
 
   editDashboard (event) {
-    const {dispatch, dashboard, editDashboardDialog} = this.props
-    const {id} = dashboard
+    const {dashboardId, dispatch, editDashboardDialog} = this.props
     const {subtitle, title} = editDashboardDialog
 
-    if (!id) {
+    if (!dashboardId) {
       console.error('Cannot edit a dashboard that is not selected')
 
       return
     }
 
-    dispatch(editDashboard(id, subtitle, title))
+    dispatch(editDashboard(dashboardId, subtitle, title))
     dispatch(resetEditDialog())
   }
 
@@ -162,21 +148,19 @@ class Dashboards extends Component {
   }
 
   selectDashboard (event, index, id) {
-    const {dispatch, dashboards} = this.props
-    const dashboard = getDashboardById(dashboards.data, id)
-
-    dispatch(setDashboard(dashboard))
+    browserHistory.push(`/dashboards/${id}`)
   }
 
   render () {
     const {
       createDashboardDialog,
-      dashboard,
+      dashboardId = '',
       dashboards,
       deleteDashboardDialog,
       editDashboardDialog
     } = this.props
-    const {id = '', title} = dashboard
+    const dashboard = getDashboardById(dashboards.data, dashboardId)
+    const {title} = dashboard || {}
     const {
       subtitle: createSubtitle,
       title: createTitle,
@@ -208,7 +192,7 @@ class Dashboards extends Component {
             keyProp={'_id'}
             primaryTextProp={'title'}
             style={{display: 'block'}}
-            value={id}
+            value={dashboardId}
             valueProp={'_id'}
             onChange={this.selectDashboard}
           />
@@ -227,7 +211,17 @@ class Dashboards extends Component {
             primary={true}
             onTouchTap={this.showCreateDialog}
           /> */}
-          <Dashboard/>
+          {(() => {
+            if (!dashboardId || dashboards.data.length === 0 || dashboards.isFetching || dashboards.error) {
+              return null
+            }
+
+            return (
+              <Dashboard
+                dashboard={dashboard}
+              />
+            )
+          })()}
         </main>
         {/* Dialog Definitions */}
         <Dialog
@@ -283,9 +277,11 @@ class Dashboards extends Component {
   }
 }
 
-export default connect((state) => ({
+export default connect((state, ownProps) => ({
   createDashboardDialog: state.createDashboardDialog,
-  dashboard: state.dashboard,
+  dashboardId: ownProps.params
+    ? ownProps.params.dashboardId
+    : '',
   dashboards: state.dashboards,
   deleteDashboardDialog: state.deleteDashboardDialog,
   editDashboardDialog: state.editDashboardDialog

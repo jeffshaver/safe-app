@@ -1,7 +1,6 @@
 import {apiUri} from '../../../config'
 import fetch from 'isomorphic-fetch'
 import {fetchDashboards} from './dashboards'
-import {resetDashboard} from './dashboard'
 import {checkFetchStatus, defaultFetchOptions} from './utilities'
 
 export const FAILURE = 'safe-app/delete-dashboard/FAILURE'
@@ -39,9 +38,10 @@ export const deleteDashboard = (id) =>
     .then((response) => response.json())
     .then((json) => {
       dispatch(deleteDashboardSuccess(json))
-      dispatch(resetDashboard())
       // FUTURE: OPTIMISTIC UPDATE INSTEAD
       dispatch(fetchDashboards())
+
+      return Promise.resolve('')
     })
     .catch((error) => dispatch(deleteDashboardFailure(error)))
   }

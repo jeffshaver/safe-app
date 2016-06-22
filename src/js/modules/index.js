@@ -3,7 +3,6 @@ import category from './category'
 import {combineReducers} from 'redux'
 import createDashboard from './create-dashboard'
 import createDashboardDialog from './create-dashboard-dialog'
-import dashboard from './dashboard'
 import dashboards from './dashboards'
 import deleteDashboard from './delete-dashboard'
 import deleteDashboardDialog from './delete-dashboard-dialog'
@@ -53,7 +52,6 @@ export const rootReducer = combineReducers({
   category,
   createDashboard,
   createDashboardDialog,
-  dashboard,
   dashboards,
   deleteDashboard,
   deleteDashboardDialog,

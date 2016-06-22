@@ -14,6 +14,35 @@ import {browserHistory, IndexRoute, Route, Router} from 'react-router'
 injectTapEventPlugin()
 
 const history = syncHistoryWithStore(browserHistory, store)
+const generateRoutes = (routes) => {
+  if (!routes) {
+    return null
+  }
+
+  return routes.map((route) => {
+    if (!route.enabled) return null
+
+    if (!route.subRoutes) {
+      return (
+        <Route
+          component={route.component}
+          key={route.name}
+          path={route.path}
+        />
+      )
+    }
+
+    return (
+      <Route
+        component={route.component}
+        key={route.name}
+        path={route.path}
+      >
+        {generateRoutes(route.subRoutes)}
+      </Route>
+    )
+  })
+}
 
 ReactDOM.render((
   <Provider store={store}>
@@ -23,19 +52,7 @@ ReactDOM.render((
         path='/'
       >
         <IndexRoute component={Home} />
-        {
-          routes.map((route) => {
-            if (!route.enabled) return
-
-            return (
-              <Route
-                component={route.component}
-                key={route.name}
-                path={route.path}
-              />
-            )
-          })
-        }
+        {generateRoutes(routes)}
       </Route>
       <Route
         component={App}

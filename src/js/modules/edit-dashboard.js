@@ -1,7 +1,6 @@
 import {apiUri} from '../../../config'
 import fetch from 'isomorphic-fetch'
 import {fetchDashboards} from './dashboards'
-import {setDashboard} from './dashboard'
 import {checkFetchStatus, defaultFetchOptions} from './utilities'
 
 export const FAILURE = 'safe-app/edit-dashboard/FAILURE'
@@ -43,11 +42,8 @@ export const editDashboard = (id, subtitle, title) =>
         dispatch(editDashboardSuccess(json))
         // FUTURE: OPTIMISTIC UPDATE INSTEAD
         dispatch(fetchDashboards())
-          .then(() => {
-            const {_id: id, subtitle, title} = json
 
-            dispatch(setDashboard(id, subtitle, title))
-          })
+        return Promise.resolve(id)
       })
       .catch((error) => dispatch(editDashboardFailure(error)))
   }

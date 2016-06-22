@@ -3,6 +3,7 @@ import ActionDashboard from 'material-ui/svg-icons/action/dashboard'
 import ActionSearch from 'material-ui/svg-icons/action/search'
 import ActionSettings from 'material-ui/svg-icons/action/settings'
 import Analytics from './components/Analytics'
+import Dashboard from './components/Dashboard'
 import Dashboards from './components/Dashboards'
 import {disabledRoutes} from '../../config'
 import FileFolder from 'material-ui/svg-icons/file/folder'
@@ -19,7 +20,13 @@ export const routes = [{
   component: Dashboards,
   enabled: isRouteEnabled('Dashboards'),
   name: 'Dashboards',
-  path: 'dashboards'
+  path: 'dashboards',
+  subRoutes: [{
+    component: Dashboard,
+    enabled: isRouteEnabled('Dashboard'),
+    name: 'Dashboard',
+    path: ':dashboardId'
+  }]
 }, {
   avatar: ActionSearch,
   component: Search,
@@ -45,3 +52,17 @@ export const routes = [{
   name: 'Settings',
   path: 'settings'
 }]
+
+export const getDashboardById = (dashboards, id) => {
+  let dashboard
+
+  dashboards.forEach((currentDashboard) => {
+    if (currentDashboard._id !== id) {
+      return
+    }
+
+    dashboard = currentDashboard
+  })
+
+  return dashboard
+}

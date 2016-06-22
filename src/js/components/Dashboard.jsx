@@ -1,5 +1,6 @@
 import {connect} from 'react-redux'
 import {excludeEmptyFilters} from '../modules/utilities'
+import {fetchDashboards} from '../modules/dashboards'
 import {fetchVisualizationResults} from '../modules/visualization-results'
 import FilterCriteria from './FilterCriteria'
 import {verticalTop} from '../styles/common'
@@ -22,6 +23,7 @@ const styles = {
 class Dashboard extends Component {
   static propTypes = {
     dashboard: PropTypes.object.isRequired,
+    dashboards: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     filters: PropTypes.array.isRequired
   }
@@ -30,6 +32,17 @@ class Dashboard extends Component {
     super(props)
 
     this.onClickFilter = ::this.onClickFilter
+  }
+
+  componentWillMount () {
+    const {dashboards, dispatch} = this.props
+    const {isFetching} = dashboards
+
+    if (this.props.dashboards || isFetching) {
+      return
+    }
+
+    dispatch(fetchDashboards())
   }
 
   onClickFilter () {
@@ -51,7 +64,13 @@ class Dashboard extends Component {
   }
 
   render () {
-    const {dispatch, dashboard} = this.props
+    const {dashboard} = this.props
+
+    if (!dashboard) {
+      return null
+    }
+
+    const {dispatch} = this.props
     const {visualizations = [], dashboardParams = {}} = dashboard
     const {size = 2, visualizationSizes = []} = dashboardParams
     // Populate the Fields based off of the fields
@@ -107,7 +126,7 @@ class Dashboard extends Component {
   }
 }
 
-export default connect((state) => ({
-  dashboard: state.dashboard,
+export default connect((state, ownProps) => ({
+  dashboards: state.dashboards,
   filters: state.filters
 }))(Dashboard)

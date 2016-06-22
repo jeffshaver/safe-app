@@ -14,10 +14,6 @@ require('./modules/create-dashboard.spec')
 
 require('./modules/create-dashboard-dialog.spec')
 
-// dashboard
-
-require('./modules/dashboard.spec')
-
 // dashboards
 
 require('./modules/dashboards.spec')
