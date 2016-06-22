@@ -1,5 +1,6 @@
 import {ChartComponent} from './ChartComponent'
 import {ChartMenu} from './ChartMenu'
+import CircularProgress from 'material-ui/CircularProgress'
 import {connect} from 'react-redux'
 import {excludeEmptyFilters} from '../../modules/utilities'
 import {fetchVisualizationResults} from '../../modules/visualization-results'
@@ -44,12 +45,36 @@ class Visualization extends Component {
 
   render () {
     const {visualization, visualizationResults} = this.props
-    const {name, visualizationType} = visualization
-    const data = visualizationResults.data[visualization._id] || []
+    const {_id, name, visualizationType} = visualization
+
+    if (!visualizationResults || !visualizationResults[_id]) {
+      return null
+    }
+
+    if (visualizationResults[_id].isFetching) {
+      return (
+        <span style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          'transform': 'translate(-50%, -50%)'
+        }}>
+        <CircularProgress
+          size={0.5}
+          style={{
+            left: '.5em',
+            top: '1.2em'
+          }}
+        /> Loading...
+        </span>
+      )
+    }
+
+    const {data = []} = visualizationResults[_id]
     const {name: visualizationTypeName} = visualizationType
 
     if (data.length === 0) {
-      return <div/>
+      return <div />
     }
 
     let visualizationComponentName = visualizationTypeName

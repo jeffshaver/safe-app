@@ -7,26 +7,27 @@ export const FAILURE = 'safe-app/visualization-results/FAILURE'
 export const REQUEST = 'safe-app/visualization-results/REQUEST'
 export const SUCCESS = 'safe-app/visualization-results/SUCCESS'
 
-export const fetchVisualizationResultsFailure = (error) => ({
-  payload: {error},
+export const fetchVisualizationResultsFailure = (error, id) => ({
+  payload: {error, id},
   type: FAILURE
 })
 
-export const fetchVisualizationResultsRequest = () => ({
+export const fetchVisualizationResultsRequest = (id) => ({
+  payload: {id},
   type: REQUEST
 })
 
-export const fetchVisualizationResultsSuccess = (data, visualizationId) => ({
-  payload: {data, visualizationId},
-  recievedAt: Date.now(),
+export const fetchVisualizationResultsSuccess = (data, id) => ({
+  payload: {data, id},
+  receivedAt: Date.now(),
   type: SUCCESS
 })
 
-export const fetchVisualizationResults = (visualizationId, filters) =>
+export const fetchVisualizationResults = (id, filters) =>
   (dispatch) => {
-    dispatch(fetchVisualizationResultsRequest())
+    dispatch(fetchVisualizationResultsRequest(id))
 
-    return fetch(`${apiUri}/execute/${visualizationId}`, {
+    return fetch(`${apiUri}/execute/${id}`, {
       ...defaultFetchOptions,
       method: 'POST',
       headers: {
@@ -38,11 +39,11 @@ export const fetchVisualizationResults = (visualizationId, filters) =>
     .then(checkFetchStatus)
     .then((response) => response.json())
     .then((json) => {
-      dispatch(fetchVisualizationResultsSuccess(json, visualizationId))
+      dispatch(fetchVisualizationResultsSuccess(json, id))
 
       return Promise.resolve()
     })
-    .catch((error) => dispatch(fetchVisualizationResultsFailure(error)))
+    .catch((error) => dispatch(fetchVisualizationResultsFailure(error, id)))
   }
 
 export const removeVisualizationResults = (visualization) => ({
@@ -50,51 +51,49 @@ export const removeVisualizationResults = (visualization) => ({
   type: REMOVE
 })
 
-const initialState = {
-  data: {},
+const initialState = {}
+// This is used in the REQUEST part of the reducer
+const resultsInitialState = {
+  data: [],
   error: undefined,
   isFetching: false,
   lastUpdated: null
 }
 
 export default (state = initialState, {payload = {}, type, ...action}) => {
-  const {data: payloadData, error, visualizationId} = payload
+  const {data, error, id} = payload
 
   switch (type) {
-    case REMOVE:
-      // let {data = {}} = state
-      // data = {...data}
-      // delete data[visualizationId]
-      return {
-        ...state,
-        data,
-        error: undefined,
-        isFetching: true
-      }
     case FAILURE:
       return {
         ...state,
-        error,
-        isFetching: false
+        [id]: {
+          ...resultsInitialState,
+          ...state[id],
+          error,
+          isFetching: false
+        }
       }
     case REQUEST:
       return {
         ...state,
-        error: undefined,
-        isFetching: true
+        [id]: {
+          ...resultsInitialState,
+          error: undefined,
+          isFetching: true
+        }
       }
     case SUCCESS:
-      const data = {
-        ...state.data,
-        [visualizationId]: payloadData
-      }
-
       return {
         ...state,
-        data,
-        error,
-        isFetching: false,
-        lastUpdated: action.recievedAt
+        [id]: {
+          ...resultsInitialState,
+          ...state[id],
+          data,
+          error: undefined,
+          isFetching: false,
+          lastUpdated: action.recievedAt
+        }
       }
     default:
       return state

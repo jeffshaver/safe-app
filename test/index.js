@@ -89,6 +89,10 @@ require('./modules/user.spec')
 
 require('./modules/visualization.spec')
 
+// visualization-results
+
+require('./modules/visualization-results.spec')
+
 // visualizations
 
 require('./modules/visualization-types.spec')
