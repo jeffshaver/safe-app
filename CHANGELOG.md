@@ -1,5 +1,35 @@
 # safe-app ChangeLog
 
+## 0.0.11 (June 23, 2016)
+
+### Changes
+
+* [[d38f329](https://github.com/jeffshaver/safe-app/commit/d38f329)] - fix visualization toolbar popover styling issue ([jeffshaver](https://github.com/jeffshaver))
+* [[9bfaa62](https://github.com/jeffshaver/safe-app/commit/9bfaa62)] - fix padding on visualizations and positioning of visualization toolbar button ([jeffshaver](https://github.com/jeffshaver))
+* [[f19b7a5](https://github.com/jeffshaver/safe-app/commit/f19b7a5)] - add LogMetrics decorator to send metrics ([knorris](https://github.com/knorris))
+* [[cda3d79](https://github.com/jeffshaver/safe-app/commit/cda3d79)] - show loading message for each visualization in a dashboard ([jeffshaver](https://github.com/jeffshaver))
+* [[868314a](https://github.com/jeffshaver/safe-app/commit/868314a)] - add help menu to left nav ([jpkeyw](https://github.com/jpkeyw))
+* [[c34ed1b](https://github.com/jeffshaver/safe-app/commit/c34ed1b)] - fix material select field and update material-ui ([jeffshaver](https://github.com/jeffshaver))
+* [[170d51b](https://github.com/jeffshaver/safe-app/commit/170d51b)] - add visualization menu ([pml984](https://github.com/pml984))
+* [[558c27b](https://github.com/jeffshaver/safe-app/commit/558c27b)] - add /dashboards/:dashboardId route ([jeffshaver](https://github.com/jeffshaver))
+* [[0a58ed6](https://github.com/jeffshaver/safe-app/commit/0a58ed6)] - small visualization styling. allow visualizations to be different widths ([jeffshaver](https://github.com/jeffshaver))
+* [[e9c6890](https://github.com/jeffshaver/safe-app/commit/e9c6890)] - add left and right footers ([jpkeyw](https://github.com/jpkeyw))
+* [[284b8d5](https://github.com/jeffshaver/safe-app/commit/284b8d5)] - fix another bug in update:config script ([jeffshaver](https://github.com/jeffshaver))
+* [[6949fe3](https://github.com/jeffshaver/safe-app/commit/6949fe3)] - fix bug in update:config script ([jeffshaver](https://github.com/jeffshaver))
+* [[c0284a7](https://github.com/jeffshaver/safe-app/commit/c0284a7)] - remove add to dashboard button ([knorris](https://github.com/knorris))
+* [[3012e6a](https://github.com/jeffshaver/safe-app/commit/3012e6a)] - add redux logging while in development ([jeffshaver](https://github.com/jeffshaver))
+* [[24e85f4](https://github.com/jeffshaver/safe-app/commit/24e85f4)] - only use webpack-hot-middleware in development ([jeffshaver](https://github.com/jeffshaver))
+* [[010e212](https://github.com/jeffshaver/safe-app/commit/010e212)] - hide filters if no fields exist in dataset ([jpkeyw](https://github.com/jpkeyw))
+* [[0e840a7](https://github.com/jeffshaver/safe-app/commit/0e840a7)] - added config options for app name ([jpkeyw](https://github.com/jpkeyw))
+
+### Dependency updates
+
+* add `change-case` at `3.0.0`
+* add `jsesc` at `2.2.0`
+* add `redux-logger` at `2.6.1`
+* update `material-ui` to `0.15.1`
+* update `safe-framework` to `0.0.25`
+
 ## 0.0.10 (June 15, 2016)
 
 ### Changes
