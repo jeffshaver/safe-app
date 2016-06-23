@@ -11,6 +11,9 @@ rules:
   array-bracket-spacing:
     - 2
     - "never"
+  block-spacing:
+    - 2
+    - "never"
   eol-last: 0
   newline-before-return: 2
   newline-after-var:
