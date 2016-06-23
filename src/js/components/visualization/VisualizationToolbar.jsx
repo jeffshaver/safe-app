@@ -35,7 +35,7 @@ class VisualizationToolbar extends Component {
           {/* Icons to float to right */}
           {children
             ? <IconMenu
-              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+              anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
               iconButtonElement={
                 <IconButton
                   style={style.iconButton}
@@ -44,6 +44,7 @@ class VisualizationToolbar extends Component {
                   <NavigationMenu />
                 </IconButton>
               }
+              targetOrigin={{vertical: 'top', horizontal: 'right'}}
             >
               {children}
             </IconMenu>
