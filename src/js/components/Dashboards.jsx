@@ -191,7 +191,6 @@ class Dashboards extends Component {
             items={dashboards.data}
             keyProp={'_id'}
             primaryTextProp={'title'}
-            style={{display: 'block'}}
             value={dashboardId}
             valueProp={'_id'}
             onChange={this.selectDashboard}

@@ -18,9 +18,6 @@ const style = {
   hidden: {
     display: 'none'
   },
-  sourceSelect: {
-    display: 'block'
-  },
   button: {
     margin: '1.5em 0'
   },
@@ -131,7 +128,7 @@ class Search extends Component {
             items={sources.data}
             keyProp={'_id'}
             primaryTextProp={'name'}
-            style={{...verticalTop, ...style.sourceSelect}}
+            style={verticalTop}
             value={source}
             valueProp={'_id'}
             onChange={this.onChangeSource}
