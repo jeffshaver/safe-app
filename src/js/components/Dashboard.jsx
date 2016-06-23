@@ -103,22 +103,40 @@ class Dashboard extends Component {
         <GridList
           cellHeight={500}
           cols={visualizations.length > 1 ? size : 1}
-          padding={20}
+          padding={0}
           ref='gridList'
           style={styles.gridList}
         >
           {
-            visualizations.map((visualization) => (
-              <GridTile
-                cols={visualizationSizes[visualization._id]}
-                key={visualization._id}
-              >
-                <Visualization
-                  dispatch={dispatch}
-                  visualization={visualization}
-                />
-              </GridTile>
-            ))
+            visualizations.map((visualization, i) => {
+              const isFirst = i === 0
+              const isFirstTwo = isFirst || i === 1
+              const isLast = i === visualizations.length - 1
+              const isLastTwo = isLast || i === visualizations.length - 2
+              const size = visualizationSizes[visualization._id]
+              let padding = '10px'
+
+              if (isFirst && size === 2 || isFirstTwo && size === 1) {
+                padding = '0px 10px 10px 10px'
+              }
+
+              if (isLast && size === 2 || isLastTwo && size === 1) {
+                padding = '10px 10px 0px 10px'
+              }
+
+              return (
+                <GridTile
+                  cols={size}
+                  key={visualization._id}
+                  style={{padding}}
+                >
+                  <Visualization
+                    dispatch={dispatch}
+                    visualization={visualization}
+                  />
+                </GridTile>
+              )
+            })
           }
         </GridList>
       </div>

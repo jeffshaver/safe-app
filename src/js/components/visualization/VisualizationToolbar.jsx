@@ -7,6 +7,12 @@ import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup'
 import ToolbarTitle from 'material-ui/Toolbar/ToolbarTitle'
 import React, {Component, PropTypes} from 'react'
 
+const style = {
+  iconButton: {
+    margin: '0.35rem -0.75rem 0 0'
+  }
+}
+
 class VisualizationToolbar extends Component {
   static propTypes = {
     children: React.PropTypes.element,
@@ -31,7 +37,10 @@ class VisualizationToolbar extends Component {
             ? <IconMenu
               anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
               iconButtonElement={
-                <IconButton touch={true}>
+                <IconButton
+                  style={style.iconButton}
+                  touch={true}
+                >
                   <NavigationMenu />
                 </IconButton>
               }
