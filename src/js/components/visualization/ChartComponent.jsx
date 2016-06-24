@@ -66,17 +66,17 @@ export class ChartComponent extends Component {
           afterLabel: (tooltipItem, data) => {
             const {data: dataList = [], ySeriesField} = data
             let dataItem = dataList[tooltipItem.index]
-            let tooltipLabel = ''
+            const tooltipLabels = []
 
             if (ySeriesField) {
-              dataItem = dataItem[ySeriesField]
+              dataItem = dataItem[ySeriesField][tooltipItem.datasetIndex]
             }
 
             for (const tooltipField of tooltipFields) {
-              tooltipLabel += `${tooltipField}: ${dataItem[tooltipField]}`
+              tooltipLabels.push(`${tooltipField}: ${dataItem[tooltipField]}`)
             }
 
-            return tooltipLabel
+            return tooltipLabels
           }
         }
       }

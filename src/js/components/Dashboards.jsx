@@ -151,7 +151,7 @@ class Dashboards extends Component {
   selectDashboard (event, index, id) {
     browserHistory.push(`/dashboards/${id}`)
   }
-
+  
   render () {
     const {
       createDashboardDialog,
@@ -186,10 +186,13 @@ class Dashboards extends Component {
         </header>
         <main style={main}>
           <SelectField
+            autoWidth={true}
             floatingLabelText='Select a dashboard'
             hintText='Select a dashboard'
             isFetching={dashboards.isFetching}
-            items={dashboards.data}
+            items={(dashboards.data || []).sort((a, b) => (
+              a.title.localeCompare(b.title)
+            ))}
             keyProp={'_id'}
             primaryTextProp={'title'}
             value={dashboardId}
