@@ -18,7 +18,8 @@ export class MapComponent extends Component {
     const {visualizationParams} = metadata
     const {
       latField = 'Latitude',
-      longField = 'Longitude'
+      longField = 'Longitude',
+      title
     } = visualizationParams
 
     if (Array.isArray(data)) {
@@ -46,6 +47,7 @@ export class MapComponent extends Component {
         dataOptions={visualizationParams}
         layers={layers}
         tileLayerOptions={tileLayerOptions}
+        title={title}
       />
     )
   }

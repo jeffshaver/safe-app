@@ -12,10 +12,10 @@ export class TableMenu extends Component {
 
     this.onTouchTap = ::this.onTouchTap
   }
-  
-  function (event) {
+
+  onTouchTap (event) {
     const {visualization} = this.props
-    
+
     visualization.component.table.exportToCSV()
   }
 
