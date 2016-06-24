@@ -1,5 +1,12 @@
 # safe-app ChangeLog
 
+## 0.0.12 (June 24, 2016)
+
+### Changes
+
+* [[9d263e3](https://github.com/jeffshaver/safe-app/commit/9d263e3)] -  Add capability to show child rows in data tables. ([pml984](https://github.com/pml984))
+* [[f6b5339](https://github.com/jeffshaver/safe-app/commit/f6b5339)] - fix bug with map having no title. fix bug where you couldn't open a tables menu ([jeffshaver](https://github.com/jeffshaver))
+
 ## 0.0.11 (June 23, 2016)
 
 ### Changes
