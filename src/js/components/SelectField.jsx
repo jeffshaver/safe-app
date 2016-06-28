@@ -4,6 +4,11 @@ import MenuItem from 'material-ui/MenuItem'
 import React, {PropTypes} from 'react'
 
 const style = {
+  label: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap'
+  },
   progress: {
     left: '-15px',
     top: '-15px'
@@ -24,7 +29,7 @@ export const SelectField = (props) => {
     items,
     keyProp,
     primaryTextProp,
-    style,
+    style: selectStyle,
     value,
     valueProp,
     onChange
@@ -41,7 +46,8 @@ export const SelectField = (props) => {
       floatingLabelStyle={{pointerEvents: 'none'}}
       floatingLabelText={text}
       items={items}
-      style={style}
+      labelStyle={style.label}
+      style={selectStyle}
       value={value}
       onChange={onChange}
     >
