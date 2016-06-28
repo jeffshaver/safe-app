@@ -12,5 +12,8 @@
   "mapAttribution": "<a href='http://www.esri.com/'>Esri</a>",
   "mapUrl":"http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
   "port": 80,
-  "protocol": "http"
+  "protocol": "http",
+  "serverCertificate": null,
+  "serverCertificateAuthority": null,
+  "serverKey": null
 }
