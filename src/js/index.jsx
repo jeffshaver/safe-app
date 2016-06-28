@@ -1,6 +1,7 @@
 import 'babel-polyfill'
 import App from './components/App'
 import {Home} from './components/Home'
+import {homeRoute} from '../../config'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import {NotFound} from './components/NotFound'
 import {Provider} from 'react-redux'
@@ -14,34 +15,51 @@ import {browserHistory, IndexRoute, Route, Router} from 'react-router'
 injectTapEventPlugin()
 
 const history = syncHistoryWithStore(browserHistory, store)
-const generateRoutes = (routes) => {
-  if (!routes) {
-    return null
+const generateRoutes = (routeConfig, computeHome) => {
+  if (!routeConfig) return null
+
+  const routeNames = Object.keys(routeConfig)
+  let homeRouteComponent = null
+
+  if (routeConfig[homeRoute]) {
+    const HomeComponent = routeConfig[homeRoute].component
+
+    homeRouteComponent = (
+      <IndexRoute
+        component={HomeComponent}
+        key={'Home'}
+      />
+    )
   }
 
-  return routes.map((route) => {
-    if (!route.enabled) return null
+  return [
+    homeRouteComponent,
+    routeNames.map((routeName) => {
+      const route = routeConfig[routeName]
 
-    if (!route.subRoutes) {
+      if (!route.enabled) return null
+
+      if (!route.subRoutes) {
+        return (
+          <Route
+            component={route.component}
+            key={routeName}
+            path={route.path}
+          />
+        )
+      }
+
       return (
         <Route
           component={route.component}
-          key={route.name}
+          key={routeName}
           path={route.path}
-        />
+        >
+          {generateRoutes(route.subRoutes)}
+        </Route>
       )
-    }
-
-    return (
-      <Route
-        component={route.component}
-        key={route.name}
-        path={route.path}
-      >
-        {generateRoutes(route.subRoutes)}
-      </Route>
-    )
-  })
+    })
+  ]
 }
 
 ReactDOM.render((

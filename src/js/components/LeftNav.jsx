@@ -21,6 +21,8 @@ const openInNewTab = (url) => {
 
 export class LeftNav extends Component {
   render () {
+    const routeNames = Object.keys(routes)
+
     return (
       <Drawer
         ref='leftNav'
@@ -35,10 +37,11 @@ export class LeftNav extends Component {
         </ListItem>
         <Divider />
         {
-          routes.map((route, i) => {
+          routeNames.map((routeName, i) => {
+            const route = routes[routeName]
             const AvatarComponent = route.avatar
 
-            if (!route.enabled) return
+            if (!route.enabled || routeName === 'Home') return
 
             return (
               <ListItem
@@ -50,7 +53,7 @@ export class LeftNav extends Component {
                 }
                 onTouchTap={() => (browserHistory.push(`/${route.path}`))}
               >
-                {route.name}
+                {routeName}
               </ListItem>
             )
           })
