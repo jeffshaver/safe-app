@@ -1,5 +1,18 @@
 # safe-app ChangeLog
 
+## 0.0.13 (June 29, 2016)
+
+### Changes
+
+* [[a6a0677](https://github.com/jeffshaver/safe-app/commit/a6a0677)] - refactor server to fix bugs and remove mongo ([jeffshaver](https://github.com/jeffshaver))
+* [[98a397c](https://github.com/jeffshaver/safe-app/commit/98a397c)] - change nav to be icons with tooltips ([jeffshaver](https://github.com/jeffshaver))
+* [[dbbdade](https://github.com/jeffshaver/safe-app/commit/dbbdade)] - add config option to choose component that gets rendered on the index route ([jeffshaver](https://github.com/jeffshaver))
+* [[fb004ba](https://github.com/jeffshaver/safe-app/commit/fb004ba)] - force select field to ellipsis long text ([jeffshaver](https://github.com/jeffshaver))
+
+### Dependency updates
+
+* update `safe-framework` to `0.0.27`
+
 ## 0.0.12 (June 24, 2016)
 
 ### Changes
