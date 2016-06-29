@@ -5,12 +5,13 @@ import {connect} from 'react-redux'
 import {excludeEmptyFilters} from '../../modules/utilities'
 import {fetchVisualizationResults} from '../../modules/visualization-results'
 import {MapComponent} from './MapComponent'
+import {SummaryComponent} from './SummaryComponent'
 import {TableComponent} from './TableComponent'
 import {TableMenu} from './TableMenu'
 import VisualizationToolbar from './VisualizationToolbar'
 import React, {Component, PropTypes} from 'react'
 
-const components = {ChartComponent, MapComponent, TableComponent}
+const components = {ChartComponent, MapComponent, SummaryComponent, TableComponent}
 const menus = {ChartMenu, TableMenu}
 const style = {
   container: {
@@ -80,7 +81,7 @@ class Visualization extends Component {
 
     let visualizationComponentName = visualizationTypeName
 
-    if (visualizationTypeName !== 'Map' && visualizationTypeName !== 'Table') {
+    if (!['Map', 'Table', 'Summary'].includes(visualizationTypeName)) {
       visualizationComponentName = 'Chart'
     }
 
