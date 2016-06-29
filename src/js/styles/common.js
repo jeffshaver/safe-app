@@ -3,7 +3,7 @@ import {bannerText} from '../../../config'
 export const header = {
   backgroundColor: '#00bcd4',
   color: '#fff',
-  height: '64px',
+  height: '65px',
   padding: '1.7em 0 0 1.25em'
 }
 
