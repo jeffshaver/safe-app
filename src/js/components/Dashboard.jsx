@@ -46,12 +46,11 @@ class Dashboard extends Component {
   }
 
   onClickFilter () {
-    const {dispatch, filters} = this.props
-    const {gridList} = this.refs
-    const {children} = gridList.props
+    const {dispatch, filters, dashboard} = this.props
+    const {visualizations} = dashboard
 
-    React.Children.forEach(children, (child) => {
-      const {_id = null} = child.props.visualization
+    for (const visualization of visualizations) {
+      const {_id = null} = visualization
 
       if (!_id) {
         return
@@ -60,7 +59,7 @@ class Dashboard extends Component {
       dispatch(fetchVisualizationResults(
         _id, excludeEmptyFilters(filters))
       )
-    })
+    }
   }
 
   render () {
@@ -104,7 +103,6 @@ class Dashboard extends Component {
           cellHeight={500}
           cols={visualizations.length > 1 ? size : 1}
           padding={0}
-          ref='gridList'
           style={styles.gridList}
         >
           {

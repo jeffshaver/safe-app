@@ -16,19 +16,13 @@ export class MapComponent extends Component {
     let {data} = this.props
     const {metadata} = this.props
     const {visualizationParams} = metadata
-    const {
-      latField = 'Latitude',
-      longField = 'Longitude',
-      title
-    } = visualizationParams
+    const {title} = visualizationParams
 
     if (Array.isArray(data)) {
       data = {baseData: data}
     }
 
     const {baseData, layers = []} = data
-    const [firstItem = {}] = baseData
-    const center = [firstItem[latField], firstItem[longField]]
 
     const baseLayer = {
       data: baseData
@@ -43,7 +37,6 @@ export class MapComponent extends Component {
     return (
       <Map
         baseLayer={baseLayer}
-        center={center}
         dataOptions={visualizationParams}
         layers={layers}
         tileLayerOptions={tileLayerOptions}
