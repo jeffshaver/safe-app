@@ -12,22 +12,18 @@ import React, {Component, PropTypes} from 'react'
 
 const components = {ChartComponent, MapComponent, TableComponent}
 const menus = {ChartMenu, TableMenu}
-const style = {
-  container: {
-    height: '80%'
-  }
-}
 
 class Visualization extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     filters: PropTypes.array,
-    visualization: PropTypes.object.isRequired,
-    visualizationResults: PropTypes.object.isRequired
+    results: PropTypes.object,
+    visualization: PropTypes.object.isRequired
   }
 
   static defaultProps = {
-    filters: []
+    filters: [],
+    results: {}
   }
 
   componentWillMount () {
@@ -44,14 +40,14 @@ class Visualization extends Component {
   }
 
   render () {
-    const {visualization, visualizationResults} = this.props
-    const {_id, name, visualizationType} = visualization
+    const {visualization, results} = this.props
+    const {name, visualizationType} = visualization
 
-    if (!visualizationResults || !visualizationResults[_id]) {
+    if (!results) {
       return null
     }
 
-    if (visualizationResults[_id].isFetching) {
+    if (results.isFetching) {
       return (
         <span style={{
           position: 'absolute',
@@ -70,7 +66,7 @@ class Visualization extends Component {
       )
     }
 
-    const {data = []} = visualizationResults[_id]
+    const {data = []} = results
     const {name: visualizationTypeName} = visualizationType
 
     if (data.length === 0) {
@@ -87,7 +83,7 @@ class Visualization extends Component {
     const VisualizationMenu = menus[`${visualizationComponentName}Menu`]
 
     return (
-      <div style={style.container}>
+      <div>
         <VisualizationToolbar title={name}>
           {VisualizationMenu
             ? <VisualizationMenu
@@ -109,6 +105,4 @@ class Visualization extends Component {
   }
 }
 
-export default connect((state) => ({
-  visualizationResults: state.visualizationResults
-}))(Visualization)
+export default connect()(Visualization)

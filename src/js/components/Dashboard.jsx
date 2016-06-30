@@ -8,12 +8,15 @@ import Visualization from './visualization/Visualization'
 import {GridList, GridTile} from 'material-ui/GridList'
 import React, {Component, PropTypes} from 'react'
 
-const styles = {
+const style = {
   gridList: {
     width: '100%',
     height: '60%',
     overflowY: 'auto',
     marginBottom: 24
+  },
+  gridTile: {
+    height: 'auto'
   },
   visualization: {
     height: '100%'
@@ -25,7 +28,8 @@ class Dashboard extends Component {
     dashboard: PropTypes.object.isRequired,
     dashboards: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    filters: PropTypes.array.isRequired
+    filters: PropTypes.array.isRequired,
+    visualizationResults: PropTypes.object.isRequired
   }
 
   constructor (props) {
@@ -69,8 +73,8 @@ class Dashboard extends Component {
       return null
     }
 
-    const {dispatch} = this.props
-    const {visualizations = [], dashboardParams = {}} = dashboard
+    const {dispatch, visualizationResults} = this.props
+    const {dashboardParams = {}, visualizations = []} = dashboard
     const {size = 2, visualizationSizes = []} = dashboardParams
     // Populate the Fields based off of the fields
     // for each visualization's source.
@@ -103,7 +107,7 @@ class Dashboard extends Component {
           cellHeight={500}
           cols={visualizations.length > 1 ? size : 1}
           padding={0}
-          style={styles.gridList}
+          style={style.gridList}
         >
           {
             visualizations.map((visualization, i) => {
@@ -112,6 +116,7 @@ class Dashboard extends Component {
               const isLast = i === visualizations.length - 1
               const isLastTwo = isLast || i === visualizations.length - 2
               const size = visualizationSizes[visualization._id]
+              const results = visualizationResults[visualization._id]
               let padding = '10px'
 
               if (isFirst && size === 2 || isFirstTwo && size === 1) {
@@ -126,10 +131,14 @@ class Dashboard extends Component {
                 <GridTile
                   cols={size}
                   key={visualization._id}
-                  style={{padding}}
+                  style={{
+                    ...(results && results.isFetching ? {} : style.gridTile),
+                    padding
+                  }}
                 >
                   <Visualization
                     dispatch={dispatch}
+                    results={results}
                     visualization={visualization}
                   />
                 </GridTile>
@@ -144,5 +153,6 @@ class Dashboard extends Component {
 
 export default connect((state, ownProps) => ({
   dashboards: state.dashboards,
-  filters: state.filters
+  filters: state.filters,
+  visualizationResults: state.visualizationResults
 }))(Dashboard)
