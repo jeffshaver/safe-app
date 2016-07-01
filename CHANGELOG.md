@@ -1,5 +1,12 @@
 # safe-app ChangeLog
 
+## 0.0.14 (July 01, 2016)
+
+* [[18dc107](https://github.com/jeffshaver/safe-app/commit/18dc107)] - fix error when switching between dashboards ([jeffshaver](https://github.com/jeffshaver))
+* [[6bfc4db](https://github.com/jeffshaver/safe-app/commit/6bfc4db)] - fix more issues with chart height ([jeffshaver](https://github.com/jeffshaver))
+* [[16402c1](https://github.com/jeffshaver/safe-app/commit/16402c1)] - fix issues with chart height ([jeffshaver](https://github.com/jeffshaver))
+* [[d4ad641](https://github.com/jeffshaver/safe-app/commit/d4ad641)] - fix dashboard filters ([pml984](https://github.com/pml984))
+
 ## 0.0.13 (June 29, 2016)
 
 ### Changes
