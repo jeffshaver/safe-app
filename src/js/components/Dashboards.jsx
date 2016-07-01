@@ -151,7 +151,7 @@ class Dashboards extends Component {
   selectDashboard (event, index, id) {
     browserHistory.push(`/dashboards/${id}`)
   }
-  
+
   render () {
     const {
       createDashboardDialog,
@@ -222,6 +222,7 @@ class Dashboards extends Component {
             return (
               <Dashboard
                 dashboard={dashboard}
+                key={dashboardId}
               />
             )
           })()}
