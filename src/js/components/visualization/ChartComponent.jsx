@@ -4,6 +4,9 @@ import React, {Component, PropTypes} from 'react'
 const style = {
   canvas: {
     margin: '1em 0'
+  },
+  container: {
+    height: '85%'
   }
 }
 
@@ -86,6 +89,7 @@ export class ChartComponent extends Component {
 
     return (
       <ChartType
+        containerStyle={style.container}
         data={chartData}
         drilldown={drillDownFieldName != null}
         options={options}

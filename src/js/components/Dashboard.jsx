@@ -16,7 +16,8 @@ const style = {
     marginBottom: 24
   },
   gridTile: {
-    height: 'auto'
+    boxSizing: 'border-box',
+    height: '500px'
   },
   visualization: {
     height: '100%'

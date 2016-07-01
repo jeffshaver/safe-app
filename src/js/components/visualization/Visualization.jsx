@@ -12,6 +12,11 @@ import React, {Component, PropTypes} from 'react'
 
 const components = {ChartComponent, MapComponent, TableComponent}
 const menus = {ChartMenu, TableMenu}
+const style = {
+  container: {
+    height: '100%'
+  }
+}
 
 class Visualization extends Component {
   static propTypes = {
@@ -83,7 +88,7 @@ class Visualization extends Component {
     const VisualizationMenu = menus[`${visualizationComponentName}Menu`]
 
     return (
-      <div>
+      <div style={style.container}>
         <VisualizationToolbar title={name}>
           {VisualizationMenu
             ? <VisualizationMenu
