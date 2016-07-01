@@ -16,12 +16,13 @@
 
 import {actions} from '../modules/'
 import {connect} from 'react-redux'
+import {getValueByPath} from '../modules/utilities'
 import React, {Component, PropTypes} from 'react'
 
 const localState = {}
 
 @connect()
-export const Hydrateable = (displayName, hydrateableProps) => {
+export const Hydrateable = (displayName, hydrateableProps, uniquePropPath = '') => {
   return (TargetComponent) => {
     return class HydrateableComponent extends Component {
       static propTypes = {
@@ -30,7 +31,9 @@ export const Hydrateable = (displayName, hydrateableProps) => {
 
       componentWillMount () {
         const {dispatch} = this.props
-        const componentState = localState[displayName] || {}
+        const uniqueKey = getValueByPath(this.props, uniquePropPath)
+        const stateKey = displayName + (uniqueKey ? `_${uniqueKey}` : '')
+        const componentState = localState[stateKey] || {}
 
         hydrateableProps.forEach((prop) => {
           const actionName = `hydrate${prop.charAt(0).toUpperCase()}${prop.substring(1)}`
@@ -42,12 +45,14 @@ export const Hydrateable = (displayName, hydrateableProps) => {
       componentWillUnmount () {
         const currentState = this.refs.target.props
         const newLocalState = {}
+        const uniqueKey = getValueByPath(this.props, uniquePropPath) || ''
+        const stateKey = displayName + (uniqueKey ? `_${uniqueKey}` : '')
 
         hydrateableProps.forEach((prop) => {
           newLocalState[prop] = currentState[prop]
         })
 
-        localState[displayName] = newLocalState
+        localState[stateKey] = newLocalState
       }
 
       render () {

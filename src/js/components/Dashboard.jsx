@@ -3,6 +3,7 @@ import {excludeEmptyFilters} from '../modules/utilities'
 import {fetchDashboards} from '../modules/dashboards'
 import {fetchVisualizationResults} from '../modules/visualization-results'
 import FilterCriteria from './FilterCriteria'
+import {Hydrateable} from '../decorators/Hydrateable'
 import {verticalTop} from '../styles/common'
 import Visualization from './visualization/Visualization'
 import {GridList, GridTile} from 'material-ui/GridList'
@@ -24,6 +25,7 @@ const style = {
   }
 }
 
+@Hydrateable('Dashboard', ['filters'], 'dashboard._id')
 class Dashboard extends Component {
   static propTypes = {
     dashboard: PropTypes.object.isRequired,

@@ -30,7 +30,7 @@ export const saveCanvas = (canvas, name) => {
   const image = canvas.toDataURL()
   const aLink = document.createElement('a')
   const evt = document.createEvent('HTMLEvents')
-  
+
   evt.initEvent('click')
   aLink.download = `${changeCase.pascalCase(name)}.png`
   aLink.href = image
@@ -39,4 +39,23 @@ export const saveCanvas = (canvas, name) => {
 
 export const defaultFetchOptions = {
   credentials: 'include'
+}
+
+export const getValueByPath = (object, path) => {
+  const paths = path.split('.')
+  let currentValue = object
+
+  if (paths.length === 1 && paths[0] === '') {
+    return null
+  }
+
+  paths.forEach((path) => {
+    if (!currentValue[path]) {
+      throw new Error(`getValueByPath(): ${path} is not valid for the given object`)
+    }
+
+    currentValue = currentValue[path]
+  })
+
+  return currentValue
 }
