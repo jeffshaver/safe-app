@@ -9,8 +9,12 @@
   "helpMenuItems": [],
   "homeRoute": "Home",
   "hotModuleReloadUri": "localhost",
-  "mapAttribution": "<a href='http://www.esri.com/'>Esri</a>",
-  "mapUrl":"http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+  "mapTileLayer": {
+    "attribution": "<a href='http://www.esri.com/'>Esri</a>",
+    "layers": "0",
+    "url": "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    "wms": false
+  },
   "port": 80,
   "protocol": "http",
   "serverCertificate": null,
