@@ -50,8 +50,10 @@ export const getValueByPath = (object, path) => {
   }
 
   paths.forEach((path) => {
-    if (!currentValue[path]) {
-      throw new Error(`getValueByPath(): ${path} is not valid for the given object`)
+    if (!currentValue || !currentValue[path]) {
+      currentValue = undefined
+
+      return
     }
 
     currentValue = currentValue[path]

@@ -1,9 +1,9 @@
 import {connect} from 'react-redux'
 import {excludeEmptyFilters} from '../modules/utilities'
-import {fetchDashboards} from '../modules/dashboards'
 import {fetchVisualizationResults} from '../modules/visualization-results'
 import FilterCriteria from './FilterCriteria'
 import {Hydrateable} from '../decorators/Hydrateable'
+import {setDefaultFilters} from '../modules/filters'
 import {verticalTop} from '../styles/common'
 import Visualization from './visualization/Visualization'
 import {GridList, GridTile} from 'material-ui/GridList'
@@ -42,14 +42,14 @@ class Dashboard extends Component {
   }
 
   componentWillMount () {
-    const {dashboards, dispatch} = this.props
-    const {isFetching} = dashboards
+    const {dashboard, dispatch} = this.props
 
-    if (this.props.dashboards || isFetching) {
-      return
+    const {dashboardParams = {}} = dashboard
+    const {filters: dashboardFilters = []} = dashboardParams
+
+    if (dashboardFilters && dashboardFilters.length > 0) {
+      dispatch(setDefaultFilters(dashboardFilters))
     }
-
-    dispatch(fetchDashboards())
   }
 
   onClickFilter () {

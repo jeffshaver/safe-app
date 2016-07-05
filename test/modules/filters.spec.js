@@ -13,7 +13,9 @@ import {
   REMOVE,
   removeFilter,
   RESET,
-  resetFilters
+  resetFilters,
+  SET_DEFAULT,
+  setDefaultFilters
 } from '../../src/js/modules/filters'
 
 describe('filter actions', () => {
@@ -68,12 +70,27 @@ describe('filter actions', () => {
     expect(removeFilter(index)).toEqual(expectedAction)
   })
 
-  it('resetFilters should createa RESET action', () => {
+  it('resetFilters should create a RESET action', () => {
     const expectedAction = {
       type: RESET
     }
 
     expect(resetFilters()).toEqual(expectedAction)
+  })
+
+  it('setDefaultFilters should create a SET_DEFAULT action', () => {
+    const filters = [{
+      id: 0,
+      field: 'FieldA',
+      operator: '=',
+      value: 'FieldAValue'
+    }]
+    const expectedAction = {
+      type: SET_DEFAULT,
+      payload: {filters}
+    }
+
+    expect(setDefaultFilters(filters)).toEqual(expectedAction)
   })
 })
 
@@ -195,6 +212,56 @@ describe('filters reducer', () => {
       type: RESET
     }
     const stateAfter = []
+
+    deepFreeze(stateBefore)
+    deepFreeze(action)
+
+    expect(reducer(stateBefore, action)).toEqual(stateAfter)
+  })
+
+  it('should handle SET_DEFAULT when no filters exist', () => {
+    const stateBefore = [{
+      id: 0,
+      field: '',
+      operator: '',
+      value: ''
+    }]
+    const filters = [{
+      id: 0,
+      field: 'FieldA',
+      operator: '=',
+      value: 'FieldAValue'
+    }]
+    const action = {
+      payload: {filters},
+      type: SET_DEFAULT
+    }
+    const stateAfter = [...filters]
+
+    deepFreeze(stateBefore)
+    deepFreeze(action)
+
+    expect(reducer(stateBefore, action)).toEqual(stateAfter)
+  })
+
+  it('should handle SET_DEFAULT when filters exist', () => {
+    const stateBefore = [{
+      id: 0,
+      field: 'FieldB',
+      operator: '=',
+      value: 'FieldBValue'
+    }]
+    const filters = [{
+      id: 0,
+      field: 'FieldA',
+      operator: '=',
+      value: 'FieldAValue'
+    }]
+    const action = {
+      payload: {filters},
+      type: SET_DEFAULT
+    }
+    const stateAfter = [...stateBefore]
 
     deepFreeze(stateBefore)
     deepFreeze(action)

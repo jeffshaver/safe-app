@@ -8,6 +8,7 @@ import {editDashboard} from '../modules/edit-dashboard'
 import {fetchDashboards} from '../modules/dashboards'
 import FlatButton from 'material-ui/FlatButton'
 import {getDashboardById} from '../constants'
+import {LogMetrics} from '../decorators'
 import {SelectField} from './SelectField'
 import TextField from 'material-ui/TextField'
 import {
@@ -23,7 +24,6 @@ import {
   resetEditDialog
 } from '../modules/edit-dashboard-dialog'
 import {header, main} from '../styles/common'
-import {Hydrateable, LogMetrics} from '../decorators'
 import React, {Component, PropTypes} from 'react'
 
 const style = {
@@ -31,7 +31,6 @@ const style = {
 }
 
 @LogMetrics('pageView', 'Dashboards')
-@Hydrateable('Dashboards', ['filters'])
 class Dashboards extends Component {
   static propTypes = {
     createDashboardDialog: PropTypes.object.isRequired,
@@ -64,7 +63,11 @@ class Dashboards extends Component {
   }
 
   componentWillMount () {
-    const {dispatch} = this.props
+    const {dashboards, dispatch} = this.props
+
+    if (!dashboards.error && (dashboards.isFetching || dashboards.data.length !== 0)) {
+      return
+    }
 
     dispatch(fetchDashboards())
   }

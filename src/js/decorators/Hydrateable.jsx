@@ -21,10 +21,18 @@ import React, {Component, PropTypes} from 'react'
 
 const localState = {}
 
-@connect()
 export const Hydrateable = (displayName, hydrateableProps, uniquePropPath = '') => {
   return (TargetComponent) => {
-    return class HydrateableComponent extends Component {
+    @connect((state) => {
+      const stateMap = {}
+
+      hydrateableProps.forEach((prop) => {
+        stateMap[prop] = state[prop]
+      })
+
+      return stateMap
+    })
+    class HydrateableComponent extends Component {
       static propTypes = {
         dispatch: PropTypes.func.isRequired
       }
@@ -32,8 +40,10 @@ export const Hydrateable = (displayName, hydrateableProps, uniquePropPath = '') 
       componentWillMount () {
         const {dispatch} = this.props
         const uniqueKey = getValueByPath(this.props, uniquePropPath)
-        const stateKey = displayName + (uniqueKey ? `_${uniqueKey}` : '')
-        const componentState = localState[stateKey] || {}
+
+        this._stateKey = displayName + (uniqueKey ? `_${uniqueKey}` : '')
+
+        const componentState = localState[this._stateKey] || {}
 
         hydrateableProps.forEach((prop) => {
           const actionName = `hydrate${prop.charAt(0).toUpperCase()}${prop.substring(1)}`
@@ -43,26 +53,26 @@ export const Hydrateable = (displayName, hydrateableProps, uniquePropPath = '') 
       }
 
       componentWillUnmount () {
-        const currentState = this.refs.target.props
+        const currentState = this.props
         const newLocalState = {}
-        const uniqueKey = getValueByPath(this.props, uniquePropPath) || ''
-        const stateKey = displayName + (uniqueKey ? `_${uniqueKey}` : '')
 
         hydrateableProps.forEach((prop) => {
           newLocalState[prop] = currentState[prop]
         })
 
-        localState[stateKey] = newLocalState
+        localState[this._stateKey] = newLocalState
+        this._stateKey = undefined
       }
 
       render () {
         return (
           <TargetComponent
             {...this.props}
-            ref='target'
           />
         )
       }
     }
+
+    return HydrateableComponent
   }
 }

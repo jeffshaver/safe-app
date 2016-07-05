@@ -110,4 +110,6 @@ class Visualization extends Component {
   }
 }
 
-export default connect()(Visualization)
+export default connect((state, ownProps) => ({
+  filters: state.filters
+}))(Visualization)

@@ -4,6 +4,7 @@ import {checkFetchStatus, defaultFetchOptions} from './utilities'
 
 export const FAILURE = 'safe-app/dashboards/FAILURE'
 export const REQUEST = 'safe-app/dashboards/REQUEST'
+export const RESET = 'safe-app/dashboards/RESET'
 export const SUCCESS = 'safe-app/dashboards/SUCCESS'
 
 export const fetchDashboardsFailure = (error) => ({
@@ -13,6 +14,10 @@ export const fetchDashboardsFailure = (error) => ({
 
 export const fetchDashboardsRequest = () => ({
   type: REQUEST
+})
+
+export const fetchDashboardsReset = () => ({
+  type: RESET
 })
 
 export const fetchDashboardsSuccess = (data) => ({
@@ -59,6 +64,8 @@ export default (state = initialState, {payload = {}, type, ...action}) => {
         error: undefined,
         isFetching: true
       }
+    case RESET:
+      return initialState
     case SUCCESS:
       return {
         ...state,
