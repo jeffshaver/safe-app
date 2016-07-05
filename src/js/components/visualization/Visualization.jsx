@@ -102,7 +102,7 @@ class Visualization extends Component {
           data={data}
           metadata={visualization}
           name={name}
-          ref={(ref) => (this.component = ref)}
+          ref={(ref) => (this._component = ref)}
           type={visualizationTypeName}
         />
       </div>

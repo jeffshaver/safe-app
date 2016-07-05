@@ -16,7 +16,7 @@ export class TableMenu extends Component {
   onTouchTap (event) {
     const {visualization} = this.props
 
-    visualization.component.table.exportToCSV()
+    visualization._component._table.exportToCSV()
   }
 
   render () {

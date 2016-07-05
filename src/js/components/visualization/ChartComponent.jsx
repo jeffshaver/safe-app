@@ -93,14 +93,14 @@ export class ChartComponent extends Component {
         data={chartData}
         drilldown={drillDownFieldName != null}
         options={options}
-        ref={(ref) => (this.chart = ref)}
+        ref={(ref) => (this._chart = ref)}
         style={style.canvas}
         onClick={(dataItem, seriesItem) => {
           if (!drillDownFieldName) {
             return
           }
 
-          this.chart.drilldown({
+          this._chart.drilldown({
             ...chartData,
             data: (seriesItem || dataItem)[drillDownFieldName]
           })

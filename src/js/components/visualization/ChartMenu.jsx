@@ -18,11 +18,11 @@ export class ChartMenu extends Component {
 
   onTouchTap (event) {
     const {metadata, visualization} = this.props
-    const {chart} = visualization.component
+    const {_chart} = visualization._component
     const {name} = metadata
-    
+
     saveCanvas(
-      chart.getChartCanvas(),
+      _chart.getChartCanvas(),
       changeCase.pascalCase(name) + '.png'
     )
   }
