@@ -1,6 +1,23 @@
 # safe-app ChangeLog
 
+## 0.0.15 (July 06, 2016)
+
+### Changes
+
+* [[31adc5a](https://github.com/jeffshaver/safe-app/commit/18dc107)] - add ability for dashboard to provide default filters ([jeffshaver](https://github.com/jeffshaver))
+* [[a092a87](https://github.com/jeffshaver/safe-app/commit/a092a87)] - fix table height issue ([jeffshaver](https://github.com/jeffshaver))
+* [[5fa2abf](https://github.com/jeffshaver/safe-app/commit/5fa2abf)] - update react and fix ref issue ([jeffshaver](https://github.com/jeffshaver))
+* [[fb4db59](https://github.com/jeffshaver/safe-app/commit/fb4db59)] - allow the same component to hydrate based on a unique key ([jeffshaver](https://github.com/jeffshaver))
+* [[6872066](https://github.com/jeffshaver/safe-app/commit/6872066)] - make map tile layer more generic ([pml984](https://github.com/pml984))
+* [[79f75a3](https://github.com/jeffshaver/safe-app/commit/79f75a3)] - nested array and object support in update:config script ([jeffshaver](https://github.com/jeffshaver))
+
+### Dependency updates
+
+* update `safe-framework` to `0.0.31`
+
 ## 0.0.14 (July 01, 2016)
+
+### Changes
 
 * [[18dc107](https://github.com/jeffshaver/safe-app/commit/18dc107)] - fix error when switching between dashboards ([jeffshaver](https://github.com/jeffshaver))
 * [[6bfc4db](https://github.com/jeffshaver/safe-app/commit/6bfc4db)] - fix more issues with chart height ([jeffshaver](https://github.com/jeffshaver))
