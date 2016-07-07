@@ -48,6 +48,18 @@ export class ChartComponent extends Component {
       data,
       xAxis: ['Value']
     }
+    
+    if (xAxisType === 'timeline') {
+      options.pan = {
+        enabled: true,
+        mode: 'xy'
+      }
+      
+      options.zoom = {
+        enabled: true,
+        mode: 'xy'
+      }
+    }
 
     if (series) {
       chartData.ySeriesField = 'Details'
