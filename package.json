@@ -64,6 +64,7 @@
     "isomorphic-fetch": "^2.2.1",
     "jsesc": "^2.2.0",
     "leaflet": "^0.7.7",
+    "leaflet-fullscreen": "^1.0.1",
     "material-ui": "^0.15.0",
     "morgan": "^1.7.0",
     "numeral": "^1.5.3",
@@ -79,7 +80,7 @@
     "redux": "^3.5.2",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.0.1",
-    "safe-framework": "0.0.31",
+    "safe-framework": "0.0.32",
     "serve-static": "^1.10.2",
     "title-case": "^1.1.2"
   }
