@@ -5,6 +5,7 @@ import {fetchUser} from '../modules/user'
 import {Footer} from './Footer'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import {GlobalStyles} from './GlobalStyles'
+import {Header} from './Header'
 import {LeftNav} from './LeftNav'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import {Wrapper} from './Wrapper'
@@ -79,6 +80,7 @@ class App extends Component {
           <LeftNav />
           <Wrapper style={style.wrapper}>
             <Banner />
+            <Header />
             <div style={style.flexWrapper}>
               {children}
             </div>

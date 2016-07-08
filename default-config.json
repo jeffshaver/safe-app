@@ -6,6 +6,8 @@
   "domain": "localhost",
   "footerLeftText": [],
   "footerRightText": [],
+  "headerStyle": {},
+  "headerText": "",
   "helpMenuItems": [],
   "homeRoute": "Home",
   "hotModuleReloadUri": "localhost",
