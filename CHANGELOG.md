@@ -1,5 +1,24 @@
 # safe-app ChangeLog
 
+## 0.0.16 (July 08, 2016)
+
+### Changes
+
+* [[273cac7](https://github.com/jeffshaver/safe-app/commit/273cac7)] - add ability for autocomplete in filters ([jeffshaver](https://github.com/jeffshaver))
+* [[978ba01](https://github.com/jeffshaver/safe-app/commit/978ba01)] - fix help menu ([jeffshaver](https://github.com/jeffshaver))
+* [[f1fe13f](https://github.com/jeffshaver/safe-app/commit/f1fe13f)] - add header component ([jeffshaver](https://github.com/jeffshaver))
+* [[591088e](https://github.com/jeffshaver/safe-app/commit/591088e)] - zoom only the x axis ([jeffshaver](https://github.com/jeffshaver))
+* [[27d95b1](https://github.com/jeffshaver/safe-app/commit/27d95b1)] - add fullscreen to maps ([jeffshaver](https://github.com/jeffshaver))
+* [[e67b719](https://github.com/jeffshaver/safe-app/commit/e67b719)] - add zoom for timeline charts ([jeffshaver](https://github.com/jeffshaver))
+* [[85f5396](https://github.com/jeffshaver/safe-app/commit/85f5396)] - create summary count visualization ([jeffshaver](https://github.com/jeffshaver))
+
+### Dependency updates
+
+* add `leaflet-fullscreen` at `1.0.1`
+* add `numeral` at `1.5.3`
+* update `react-leaflet` to `0.12.1`
+* update `safe-framework` to `0.0.33`
+
 ## 0.0.15 (July 06, 2016)
 
 ### Changes
@@ -153,7 +172,7 @@
 * [[3036bf9](https://github.com/jeffshaver/safe-app/commit/3036bf9)] - add hydrateable decorator ([jpkeyw](https://github.com/jpkeyw)) [#66](https://github.com/jeffshaver/safe-app/pull/66)
 * [[29835d4](https://github.com/jeffshaver/safe-app/commit/29835d4)] - allow filters to be deleted ([knorris](https://github.com/knorris))
 
-### Depedency updates
+### Dependency updates
   * update `babel-cli` to `6.7.5`
   * update `babel-core` to `6.7.6`
   * update `babel-eslint` to `6.0.2`
@@ -196,7 +215,7 @@
 * [[22993ac](https://github.com/jeffshaver/safe-app/commit/22993ac)] - es2015 changes for server.js ([jeffshaver](https://github.com/jeffshaver))
 * [[bb33c8f](https://github.com/jeffshaver/safe-app/commit/bb33c8f)] - update server.js. move dispatch calls to componentWillMount ([jeffshaver](https://github.com/jeffshaver))
 
-### Depedency updates
+### Dependency updates
 
 * update `babel-core` to `6.7.4`
 * update `babel-eslint` to `6.0.0`
@@ -250,7 +269,7 @@
 * [[5bb6ed0](https://github.com/jeffshaver/safe-app/commit/5bb6ed0)] - initial redux and testing implementation ([jeffshaver](https://github.com/jeffshaver))
 * [[c6ad16d](https://github.com/jeffshaver/safe-app/commit/c6ad16d)] - add initial server implementation ([cafedavid](https://github.com/cafedavid))
 
-### Depedency updates
+### Dependency updates
 
 * update `babel-cli` to `6.6.5`
 * update `babel-core` to `6.7.2`
