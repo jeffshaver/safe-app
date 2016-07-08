@@ -1,3 +1,4 @@
+import AutoComplete from 'material-ui/AutoComplete/AutoComplete'
 import CardExpandable from 'material-ui/Card/CardExpandable'
 import {connect} from 'react-redux'
 import ContentAdd from 'material-ui/svg-icons/content/add'
@@ -36,6 +37,7 @@ const styles = {
 
 class FilterCriteria extends Component {
   static propTypes = {
+    criteriaDataProperty: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     fields: PropTypes.object.isRequired,
     filters: PropTypes.array.isRequired,
@@ -47,6 +49,7 @@ class FilterCriteria extends Component {
   }
 
   static defaultProps = {
+    criteriaDataProperty: 'data',
     headerStyle: {},
     headerText: 'Select filter criteria (optional)',
     onClickFilter: null,
@@ -79,10 +82,13 @@ class FilterCriteria extends Component {
     }))
   }
 
-  onChangeField (ev, index, field) {
+  onChangeField (ev, index, field, fieldIndex) {
     const {dispatch} = this.props
 
-    dispatch(editFilter(index, {field}))
+    dispatch(editFilter(index, {
+      field,
+      fieldIndex
+    }))
   }
 
   onChangeOperator (ev, index, operator) {
@@ -149,6 +155,7 @@ class FilterCriteria extends Component {
 
   render () {
     const {
+      criteriaDataProperty,
       fields,
       filters,
       headerStyle,
@@ -187,74 +194,82 @@ class FilterCriteria extends Component {
           : null}
         </h3>
         {this.state.expanded
-          ? filters.map((filter, i) => (
-            <div key={i}>
-              <SelectField
-                floatingLabelText='Select a field'
-                hintText='Select a field'
-                isFetching={fields.isFetching}
-                items={fields.data}
-                keyProp={'name'}
-                primaryTextProp={'name'}
-                style={verticalTop}
-                value={filter.field}
-                valueProp={'name'}
-                onChange={(ev, index, value) => this.onChangeField(ev, i, value)}
-              />
-              <SelectField
-                floatingLabelText='Select an operator'
-                hintText='Select an operator'
-                items={operators}
-                keyProp={'value'}
-                primaryTextProp={'primaryText'}
-                style={verticalTop}
-                value={filter.operator}
-                valueProp={'value'}
-                onChange={(ev, index, value) => this.onChangeOperator(ev, i, value)}
-              />
-              <TextField
-                floatingLabelText='Filter Criteria'
-                hintText='Filter Criteria'
-                style={style}
-                value={filter.value}
-                onChange={(ev) => this.onChangeValue(ev, i)}
-              />
-              {(() => {
-                if (filters.length !== 1) {
-                  return (
-                    <FloatingActionButton
-                      mini={true}
-                      primary={true}
-                      style={{
-                        ...style,
-                        margin: '1em 0 0 1em'
-                      }}
-                      onTouchTap={(ev) => this.onRemoveFilter(ev, i)}
-                    >
-                      <ContentRemove />
-                    </FloatingActionButton>
-                  )
-                }
-              })()}
-              {(() => {
-                if (i === filters.length - 1) {
-                  return (
-                    <FloatingActionButton
-                      mini={true}
-                      secondary={true}
-                      style={{
-                        ...style,
-                        margin: '1em 0 0 1em'
-                      }}
-                      onTouchTap={this.onAddFilter}
-                    >
-                      <ContentAdd />
-                    </FloatingActionButton>
-                  )
-                }
-              })()}
-            </div>
-          ))
+          ? filters.map((filter, i) => {
+            const field = fields.data[filter.fieldIndex] || {}
+            const {[criteriaDataProperty]: criteriaData} = field
+            const ValueField = criteriaData ? AutoComplete : TextField
+            
+            return (
+              <div key={i}>
+                <SelectField
+                  floatingLabelText='Select a field'
+                  hintText='Select a field'
+                  isFetching={fields.isFetching}
+                  items={fields.data}
+                  keyProp={'name'}
+                  primaryTextProp={'name'}
+                  style={verticalTop}
+                  value={filter.field}
+                  valueProp={'name'}
+                  onChange={(ev, index, value) => this.onChangeField(ev, i, value, index)}
+                />
+                <SelectField
+                  floatingLabelText='Select an operator'
+                  hintText='Select an operator'
+                  items={operators}
+                  keyProp={'value'}
+                  primaryTextProp={'primaryText'}
+                  style={verticalTop}
+                  value={filter.operator}
+                  valueProp={'value'}
+                  onChange={(ev, index, value) => this.onChangeOperator(ev, i, value, index)}
+                />
+                <ValueField
+                  dataSource={criteriaData}
+                  filter={AutoComplete.caseInsensitiveFilter}
+                  floatingLabelText='Filter Criteria'
+                  hintText='Filter Criteria'
+                  openOnFocus={true}
+                  style={style}
+                  value={filter.value}
+                  onChange={(ev) => this.onChangeValue(ev, i)}
+                />
+                {(() => {
+                  if (filters.length !== 1) {
+                    return (
+                      <FloatingActionButton
+                        mini={true}
+                        primary={true}
+                        style={{
+                          ...style,
+                          margin: '1em 0 0 1em'
+                        }}
+                        onTouchTap={(ev) => this.onRemoveFilter(ev, i)}
+                      >
+                        <ContentRemove />
+                      </FloatingActionButton>
+                    )
+                  }
+                })()}
+                {(() => {
+                  if (i === filters.length - 1) {
+                    return (
+                      <FloatingActionButton
+                        mini={true}
+                        secondary={true}
+                        style={{
+                          ...style,
+                          margin: '1em 0 0 1em'
+                        }}
+                        onTouchTap={this.onAddFilter}
+                      >
+                        <ContentAdd />
+                      </FloatingActionButton>
+                    )
+                  }
+                })()}
+              </div>
+          )})
          : null}
       </div>
     )
