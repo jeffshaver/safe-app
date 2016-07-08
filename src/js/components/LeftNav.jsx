@@ -1,11 +1,12 @@
 import ActionHelp from 'material-ui/svg-icons/action/help'
-import Avatar from 'material-ui/Avatar'
+import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right'
 import {browserHistory} from 'react-router'
 import Divider from 'material-ui/Divider'
 import Drawer from 'material-ui/Drawer'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import IconButton from 'material-ui/IconButton'
-import ListItem from 'material-ui/List/ListItem'
 import {logoStyle} from '../styles/common'
+import MenuItem from 'material-ui/MenuItem'
 import {routes} from '../constants'
 import {applicationName, helpMenuItems} from '../../../config'
 import React, {Component} from 'react'
@@ -17,6 +18,13 @@ const style = {
     margin: '0 auto',
     padding: '1.5rem 0',
     width: '100%'
+  },
+  dropdownIcon: {
+    left: '80%',
+    margin: 0,
+    right: 0,
+    top: '50%',
+    transform: 'translate(-50%, -50%)'
   },
   logoWrapper: {
     textAlign: 'center'
@@ -47,14 +55,14 @@ export class LeftNav extends Component {
         ref='leftNav'
         width={110}
       >
-        <ListItem
+        <MenuItem
           innerDivStyle={logoStyle}
           key={0}
           style={style.logoWrapper}
           onTouchTap={() => (browserHistory.push('/'))}
         >
           <h1>{applicationName}</h1>
-        </ListItem>
+        </MenuItem>
         <Divider />
         {
           routeNames.map((routeName, i) => {
@@ -64,7 +72,7 @@ export class LeftNav extends Component {
             if (!route.enabled || routeName === 'Home') return
 
             return (
-              <ListItem
+              <MenuItem
                 innerDivStyle={{padding: 0}}
                 key={routeName}
                 onTouchTap={() => (browserHistory.push(`/${route.path}`))}
@@ -77,33 +85,39 @@ export class LeftNav extends Component {
                 >
                   <AvatarComponent />
                 </IconButton>
-              </ListItem>
+              </MenuItem>
             )
           })
         }
         {
           helpMenuItems.length > 0
           ? (
-            <ListItem
-              leftAvatar={
-                <Avatar
-                  icon={<ActionHelp />}
+            <MenuItem
+              innerDivStyle={{padding: 0}}
+              key='Help'
+              menuItems={helpMenuItems.map((item) => (
+                <MenuItem
+                  key={item.title}
+                  primaryText={item.title}
+                  onClick={() => (openInNewTab(item.link))}
                 />
-              }
-              nestedItems={
-                helpMenuItems.map((helpItem, i) => (
-                  <ListItem
-                    key={i}
-                    primaryText={helpItem.title}
-                    onTouchTap={() => {openInNewTab(helpItem.link)}}
-                  />
-                ))
-              }
-              primaryText='Help'
-              primaryTogglesNestedList={true}
-            />
+              ))}
+              rightIcon={<ArrowDropRight
+                color={getMuiTheme().palette.textColor}
+                style={style.dropdownIcon}
+              />}
+            >
+              <IconButton
+                style={style.button}
+                tooltip='Help'
+                tooltipPosition={'top-center'}
+                tooltipStyles={style.tooltip}
+              >
+                <ActionHelp />
+              </IconButton>
+            </MenuItem>
           )
-          : ('')
+          : null
         }
       </Drawer>
     )
