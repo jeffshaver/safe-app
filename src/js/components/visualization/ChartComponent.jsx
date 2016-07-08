@@ -52,12 +52,12 @@ export class ChartComponent extends Component {
     if (xAxisType === 'timeline') {
       options.pan = {
         enabled: true,
-        mode: 'xy'
+        mode: 'x'
       }
       
       options.zoom = {
         enabled: true,
-        mode: 'xy'
+        mode: 'x'
       }
     }
 
