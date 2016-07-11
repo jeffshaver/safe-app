@@ -34,7 +34,7 @@ export const fetchVisualizationResults = (id, filters) =>
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(filters)
+      body: JSON.stringify({filters})
     })
     .then(checkFetchStatus)
     .then((response) => response.json())
