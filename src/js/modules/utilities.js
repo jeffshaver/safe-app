@@ -6,12 +6,14 @@ export const checkFetchStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
     return response
   }
+  
+  return response.text().then((error) => {
+    const err = new Error(error)
 
-  const error = new Error(response.statusText)
+    err.response = response
 
-  error.response = response
-
-  throw error
+    throw err
+  })
 }
 
 export const excludeEmptyFilters = (filters) => (

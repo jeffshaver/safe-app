@@ -65,12 +65,7 @@ class App extends Component {
           {(() => {
             if (!user.error) return
 
-            const isNetworkError = user.error.message.indexOf('NetworkError') !== -1
-            const message = isNetworkError
-              ? user.error.message
-              : `NetworkError ${user.error.message}`
-
-            return <span>{message}</span>
+            return <span>{user.error.message}</span>
           })()}
         </div>
       )
