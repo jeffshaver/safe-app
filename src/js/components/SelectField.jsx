@@ -9,6 +9,9 @@ const style = {
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap'
   },
+  menuItem: {
+    cursor: 'default'
+  },
   progress: {
     left: '-15px',
     top: '-15px'
@@ -43,7 +46,6 @@ export const SelectField = (props) => {
     <MaterialSelectField
       disabled={isFetching}
       errorText={errorText}
-      floatingLabelStyle={{pointerEvents: 'none'}}
       floatingLabelText={text}
       items={items}
       labelStyle={style.label}
@@ -56,6 +58,7 @@ export const SelectField = (props) => {
           <MenuItem
             key={item[keyProp]}
             primaryText={item[primaryTextProp]}
+            style={style.menuItem}
             value={item[valueProp]}
           />
         ))
