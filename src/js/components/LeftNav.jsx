@@ -20,6 +20,7 @@ const style = {
     width: '100%'
   },
   dropdownIcon: {
+    cursor: 'pointer',
     left: '80%',
     margin: 0,
     right: 0,
@@ -35,15 +36,6 @@ const style = {
     right: 'auto',
     transform: 'translateX(-50%)'
   }
-}
-const openInNewTab = (url) => {
-  const win = window.open(url, '_blank')
-
-  if (!win) {
-    return
-  }
-
-  win.focus()
 }
 
 export class LeftNav extends Component {
@@ -97,9 +89,10 @@ export class LeftNav extends Component {
               key='Help'
               menuItems={helpMenuItems.map((item) => (
                 <MenuItem
+                  href={item.link}
                   key={item.title}
                   primaryText={item.title}
-                  onClick={() => (openInNewTab(item.link))}
+                  target='_blank'
                 />
               ))}
               rightIcon={<ArrowDropRight
