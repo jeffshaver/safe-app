@@ -105,8 +105,7 @@ class FilterCriteria extends Component {
 
     fields.data.forEach((item) => {
       const isCurrentField = filter.field === item.name
-      const fieldIsString = item.dataType === 'String'
-      const shouldConvert = isCurrentField && !fieldIsString
+      const shouldConvert = isCurrentField && !['String', 'IPv4'].includes(item.dataType)
 
       if (!shouldConvert) {
         return
@@ -198,7 +197,7 @@ class FilterCriteria extends Component {
             const field = fields.data[filter.fieldIndex] || {}
             const {[criteriaDataProperty]: criteriaData} = field
             const ValueField = criteriaData ? AutoComplete : TextField
-            
+
             return (
               <div key={i}>
                 <SelectField

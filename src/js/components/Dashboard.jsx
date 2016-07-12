@@ -82,13 +82,13 @@ class Dashboard extends Component {
     // Populate the Fields based off of the fields
     // for each visualization's source.
     const fields = {
-      data: visualizations.reduce(
+      data: [...(new Set(visualizations.reduce(
         (array, visualization) => {
           const {fields = []} = visualization.source
 
           return [...array, ...fields]
-        }, []
-      ),
+        }
+      )))],
       isFetching: false
     }
 
