@@ -17,6 +17,14 @@ export class ChartComponent extends Component {
     type: PropTypes.string.isRequired
   }
 
+  getItemData (seriesItem, dataItem, drillDownFieldName) {
+    if (seriesItem && seriesItem[drillDownFieldName]) {
+      return seriesItem[drillDownFieldName]
+    }
+
+    return dataItem[drillDownFieldName]
+  }
+
   render () {
     const {data, metadata, type} = this.props
     const {visualizationParams: params = {}} = metadata
@@ -48,13 +56,13 @@ export class ChartComponent extends Component {
       data,
       xAxis: ['Value']
     }
-    
+
     if (xAxisType === 'timeline') {
       options.pan = {
         enabled: true,
         mode: 'x'
       }
-      
+
       options.zoom = {
         enabled: true,
         mode: 'x'
@@ -112,9 +120,15 @@ export class ChartComponent extends Component {
             return
           }
 
+          const data = this.getItemData(
+            seriesItem,
+            dataItem,
+            drillDownFieldName
+          )
+
           this._chart.drilldown({
             ...chartData,
-            data: (seriesItem || dataItem)[drillDownFieldName]
+            data
           })
         }}
       />
