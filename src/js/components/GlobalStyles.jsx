@@ -19,5 +19,5 @@ export const GlobalStyles = () => (
     '.ag-material #borderLayout_eRootPanel': {
       height: 'calc(100% - 128px) !important'
     }
-  }}/>
+  }} />
 )

@@ -92,10 +92,12 @@ class Visualization extends Component {
       <div style={style.container}>
         <VisualizationToolbar title={name}>
           {VisualizationMenu
-            ? <VisualizationMenu
-              metadata={visualization}
-              visualization={this}
-            />
+            ? (
+              <VisualizationMenu
+                metadata={visualization}
+                visualization={this}
+              />
+            )
             : null
           }
         </VisualizationToolbar>

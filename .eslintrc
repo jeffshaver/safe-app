@@ -51,7 +51,13 @@ rules:
   sort-vars:
     - 2
     - ignoreCase: true
-  react/jsx-curly-spacing: 2
+  react/jsx-closing-bracket-location: 2
+  react/jsx-curly-spacing:
+    - 2
+    - "never"
+    - allowMultiline: true
+      spacing:
+        objectLiterals: "never"
   react/jsx-indent-props:
     - 2
     - 2
@@ -62,21 +68,29 @@ rules:
   react/jsx-no-duplicate-props:
     - 2
     - ignoreCase: true
+  react/jsx-no-target-blank: 2
   react/jsx-no-undef: 2
   react/jsx-pascal-case: 2
   react/jsx-sort-props:
     - 2
     - ignoreCase: true
       callbacksLast: true
+  react/jsx-space-before-closing:
+    - 2
+    - "always"
   react/jsx-uses-react: 2
   react/jsx-uses-vars: 2
+  react/no-comment-textnodes: 2
   react/no-did-mount-set-state: 2
   react/no-did-update-set-state: 2
   react/no-direct-mutation-state: 2
   react/no-multi-comp: 2
   react/prefer-es6-class: 2
   react/prop-types: 2
-  react/self-closing-comp: 2
+  react/self-closing-comp:
+    - 2
+    - component: true
+      html: true
   react/sort-prop-types:
     - 2
     - ignoreCase: true

@@ -34,20 +34,22 @@ class VisualizationToolbar extends Component {
         <ToolbarGroup float='right'>
           {/* Icons to float to right */}
           {children
-            ? <IconMenu
-              anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-              iconButtonElement={
-                <IconButton
-                  style={style.iconButton}
-                  touch={true}
-                >
-                  <NavigationMenu />
-                </IconButton>
-              }
-              targetOrigin={{vertical: 'top', horizontal: 'right'}}
-            >
-              {children}
-            </IconMenu>
+            ? (
+              <IconMenu
+                anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                iconButtonElement={
+                  <IconButton
+                    style={style.iconButton}
+                    touch={true}
+                  >
+                    <NavigationMenu />
+                  </IconButton>
+                }
+                targetOrigin={{vertical: 'top', horizontal: 'right'}}
+              >
+                {children}
+              </IconMenu>
+          )
           : null
         }
         </ToolbarGroup>

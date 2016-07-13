@@ -92,13 +92,16 @@ export class LeftNav extends Component {
                   href={item.link}
                   key={item.title}
                   primaryText={item.title}
+                  rel='noopener noreferrer'
                   target='_blank'
                 />
               ))}
-              rightIcon={<ArrowDropRight
-                color={getMuiTheme().palette.textColor}
-                style={style.dropdownIcon}
-              />}
+              rightIcon={
+                <ArrowDropRight
+                  color={getMuiTheme().palette.textColor}
+                  style={style.dropdownIcon}
+                />
+              }
             >
               <IconButton
                 style={style.button}

@@ -61,8 +61,11 @@ const footerRight = footerRightText
 
 export const Footer = () => {
   const footer = footerRight || footerLeft
-    ? <footer style={style.footer}>{footerLeft}<div style={style.spacer}></div>{footerRight}</footer>
-    : null
+    ? (
+      <footer style={style.footer}>
+        {footerLeft}<div style={style.spacer} />{footerRight}
+      </footer>
+    ) : null
 
   return (
     footer
