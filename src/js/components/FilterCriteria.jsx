@@ -4,29 +4,13 @@ import {connect} from 'react-redux'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import ContentRemove from 'material-ui/svg-icons/content/remove'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
+import {operators} from '../constants.js'
 import RaisedButton from 'material-ui/RaisedButton'
 import {SelectField} from './SelectField'
 import TextField from 'material-ui/TextField'
 import {verticalTop} from '../styles/common'
 import {addFilter, editFilter, removeFilter} from '../modules/filters'
 import React, {Component, PropTypes} from 'react'
-
-const operators = [{
-  primaryText: '=',
-  value: '='
-}, {
-  primaryText: '>',
-  value: '>'
-}, {
-  primaryText: '>=',
-  value: '>='
-}, {
-  primaryText: '<',
-  value: '<'
-}, {
-  primaryText: '<=',
-  value: '<='
-}]
 
 const styles = {
   expandButton: {
