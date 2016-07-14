@@ -93,7 +93,7 @@ export class LeftNav extends Component {
                   key={item.title}
                   primaryText={item.title}
                   rel='noopener noreferrer'
-                  target='_blank'
+                  target={item.target || '_self'}
                 />
               ))}
               rightIcon={

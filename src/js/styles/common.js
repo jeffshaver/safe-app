@@ -18,11 +18,11 @@ export const verticalTop = {
 let logoStyle
 
 if (bannerText && headerText) {
-  logoStyle = {padding: '1.98em 1.05em'}
+  logoStyle = {padding: '.98em 1.05em'}
 } else if (bannerText || headerText) {
-  logoStyle = {padding: '1.5em 1.05em'}
+  logoStyle = {padding: '.5em 1.05em'}
 } else {
-  logoStyle = {padding: '1.05em'}
+  logoStyle = {padding: '.05em 1.05em'}
 }
 
 export {logoStyle}
