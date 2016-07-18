@@ -10,7 +10,7 @@
     "bump:minor": "node ./bin/bump.js minor --commit --tag",
     "bump:patch": "node ./bin/bump.js patch --commit --tag",
     "clean:dist": "rm -f dist/*.hot-update.js*",
-    "lint": "eslint --ext .js,.jsx src/ test/ ./*.js",
+    "lint": "eslint --ext .js,.jsx src/ test/ ./server.js",
     "prepublish": "npm run lint && npm test",
     "start": "NODE_ENV=production node server",
     "start:dev": "NODE_ENV=development node server.js",
