@@ -12,11 +12,17 @@ export class MapComponent extends Component {
     type: PropTypes.string.isRequired
   }
 
-  render () {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      baseLayer: {data: []},
+      layers: []
+    }
+  }
+
+  saveState () {
     let {data} = this.props
-    const {metadata} = this.props
-    const {visualizationParams} = metadata
-    const {title} = visualizationParams
 
     if (Array.isArray(data)) {
       data = {baseData: data}
@@ -24,11 +30,34 @@ export class MapComponent extends Component {
 
     const {baseData, layers = []} = data
 
-    const baseLayer = {
-      data: baseData
-    }
+    this.setState({
+      baseLayer: {data: baseData},
+      layers,
+      tileLayerOptions: !mapTileLayer ? {} : {...mapTileLayer}
+    })
+  }
 
-    const tileLayerOptions = !mapTileLayer ? {} : {...mapTileLayer}
+  componentWillMount () {
+    this.saveState()
+  }
+
+  componentWillUpdate () {
+    this.saveState()
+  }
+
+  shouldComponentUpdate (nextProps) {
+    return this.props.data !== nextProps.data
+  }
+
+  render () {
+    const {metadata} = this.props
+    const {visualizationParams} = metadata
+    const {title} = visualizationParams
+    const {
+      baseLayer,
+      layers,
+      tileLayerOptions
+    } = this.state
 
     return (
       <Map
