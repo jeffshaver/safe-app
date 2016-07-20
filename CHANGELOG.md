@@ -1,5 +1,21 @@
 # safe-app ChangeLog
 
+## 0.0.17 (July 20, 2016)
+
+### Changes
+
+* [[20eb92b](https://github.com/jeffshaver/safe-app/commit/20eb92b)] - save state in MapComponent to avoid unneccessary rerenders ([jeffshaver](https://github.com/jeffshaver))
+* [[bd18975](https://github.com/jeffshaver/safe-app/commit/bd18975)] - replace custom json formatting with JSON.stringify ([jeffshaver](https://github.com/jeffshaver))
+* [[7b068a5](https://github.com/jeffshaver/safe-app/commit/7b068a5)] - add != operator to operator list ([knorris](https://github.com/knorris))
+* [[2130c0d](https://github.com/jeffshaver/safe-app/commit/2130c0d)] - fix drilldown issue ([pml984](https://github.com/pml984))
+* [[327b951](https://github.com/jeffshaver/safe-app/commit/327b951)] - fix logo padding. allow menu items to pass a target ([jeffshaver](https://github.com/jeffshaver))
+* [[7cd2c21](https://github.com/jeffshaver/safe-app/commit/7cd2c21)] - update eslint config and fix eslint issues ([jeffshaver](https://github.com/jeffshaver))
+* [[12efb96](https://github.com/jeffshaver/safe-app/commit/12efb96)] - show better error message when authentication fails ([knorris](https://github.com/knorris))
+* [[ce73ac4](https://github.com/jeffshaver/safe-app/commit/ce73ac4)] - fix help menu styling ([jeffshaver](https://github.com/jeffshaver))
+* [[3c8569f](https://github.com/jeffshaver/safe-app/commit/3c8569f)] - fix select field menu item styles ([jeffshaver](https://github.com/jeffshaver))
+* [[db13b51](https://github.com/jeffshaver/safe-app/commit/db13b51)] - allow ips in filter criteria ([jeffshaver](https://github.com/jeffshaver))
+* [[fca2b68](https://github.com/jeffshaver/safe-app/commit/fca2b68)] - fetch visualization results now passes filters as an object ([jeffshaver](https://github.com/jeffshaver))
+
 ## 0.0.16 (July 08, 2016)
 
 ### Changes
