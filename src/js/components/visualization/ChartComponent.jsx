@@ -79,7 +79,8 @@ export class ChartComponent extends Component {
         label: yAxis
       }]
       options.legend = {
-        display: false
+        display: false,
+        position: 'right'
       }
     }
 
@@ -96,7 +97,15 @@ export class ChartComponent extends Component {
             }
 
             for (const tooltipField of tooltipFields) {
-              tooltipLabels.push(`${tooltipField}: ${dataItem[tooltipField]}`)
+              const tooltipFieldValue = dataItem[tooltipField]
+              
+              if (tooltipFieldValue) {
+                if (Array.isArray(tooltipFieldValue)) {
+                  tooltipLabels.push(...tooltipFieldValue)
+                } else {
+                  tooltipLabels.push(`${tooltipField}: ${tooltipFieldValue}`)
+                }
+              }
             }
 
             return tooltipLabels

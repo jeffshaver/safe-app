@@ -9,7 +9,7 @@ import {fetchDashboards} from '../modules/dashboards'
 import FlatButton from 'material-ui/FlatButton'
 import {getDashboardById} from '../constants'
 import {LogMetrics} from '../decorators'
-import {SelectField} from './SelectField'
+import {SelectField} from 'safe-framework'
 import TextField from 'material-ui/TextField'
 import {
   changeCreateDialog,
@@ -154,7 +154,7 @@ class Dashboards extends Component {
   selectDashboard (event, index, id) {
     browserHistory.push(`/dashboards/${id}`)
   }
-
+  
   render () {
     const {
       createDashboardDialog,
@@ -225,6 +225,7 @@ class Dashboards extends Component {
             return (
               <Dashboard
                 dashboard={dashboard}
+                dashboardId={dashboardId}
                 key={dashboardId}
               />
             )

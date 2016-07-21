@@ -27,7 +27,11 @@ export const Hydrateable = (displayName, hydrateableProps, uniquePropPath = '') 
       const stateMap = {}
 
       hydrateableProps.forEach((prop) => {
-        stateMap[prop] = state[prop]
+        const {[prop]: stateProp} = state
+
+        if (stateProp !== undefined) {
+          stateMap[prop] = stateProp
+        }
       })
 
       return stateMap
@@ -38,30 +42,52 @@ export const Hydrateable = (displayName, hydrateableProps, uniquePropPath = '') 
       }
 
       componentWillMount () {
+        this.hydrateProps()
+      }
+      
+      componentWillUpdate (nextProps, nextState) {
+        this.updateStateKey(nextProps)
+        this.saveState(nextProps)
+      }
+
+      componentWillUnmount () {
+        this.saveState()
+        this._stateKey = undefined
+      }
+      
+      hydrateProps () {
         const {dispatch} = this.props
-        const uniqueKey = getValueByPath(this.props, uniquePropPath)
 
-        this._stateKey = displayName + (uniqueKey ? `_${uniqueKey}` : '')
-
+        this.updateStateKey()
+  
         const componentState = localState[this._stateKey] || {}
 
         hydrateableProps.forEach((prop) => {
           const actionName = `hydrate${prop.charAt(0).toUpperCase()}${prop.substring(1)}`
+          const {[prop]: componentStateProp} = componentState
 
-          dispatch(actions[actionName](componentState[prop]))
+          if (componentStateProp !== undefined) {
+            dispatch(actions[actionName](componentStateProp))
+          }
         })
       }
+      
+      updateStateKey (currentState = this.props) {
+        const uniqueKey = getValueByPath(currentState, uniquePropPath)
 
-      componentWillUnmount () {
-        const currentState = this.props
+        this._stateKey = displayName + (uniqueKey ? `_${uniqueKey}` : '')
+      }
+      
+      saveState (currentState = this.props) {
         const newLocalState = {}
 
         hydrateableProps.forEach((prop) => {
-          newLocalState[prop] = currentState[prop]
+          if (currentState[prop] !== undefined) {
+            newLocalState[prop] = currentState[prop]
+          }
         })
 
         localState[this._stateKey] = newLocalState
-        this._stateKey = undefined
       }
 
       render () {
