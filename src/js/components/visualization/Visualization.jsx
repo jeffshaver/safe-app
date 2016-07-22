@@ -1,8 +1,10 @@
 import {ChartComponent} from './ChartComponent'
 import {CircularProgress} from 'safe-framework'
 import {fetchVisualizationResults} from '../../modules/visualization-results'
+// import IconButton from 'material-ui/IconButton/IconButton'
 import {LogMetrics} from '../../decorators'
 import {MapComponent} from './MapComponent'
+// import NavigationClose from 'material-ui/svg-icons/navigation/close'
 import {SummaryComponent} from './SummaryComponent'
 import {TableComponent} from './TableComponent'
 import VisualizationToolbar from './VisualizationToolbar'
@@ -35,12 +37,20 @@ class Visualization extends Component {
     dispatch: PropTypes.func.isRequired,
     filters: PropTypes.object,
     results: PropTypes.object,
-    visualization: PropTypes.object.isRequired
+    visualization: PropTypes.object.isRequired,
+    onClose: PropTypes.func
   }
 
   static defaultProps = {
-    filters: {},
-    results: {}
+    filters: [],
+    results: {},
+    onClose: () => {}
+  }
+
+  constructor (props) {
+    super(props)
+
+    this.onClose = ::this.onClose
   }
 
   componentWillMount () {
@@ -63,6 +73,12 @@ class Visualization extends Component {
     this._menuItems = undefined
     // const {dispatch} = this.props
     // dispatch(removeVisualizationResults())
+  }
+
+  onClose () {
+    const {onClose, visualization} = this.props
+
+    onClose(visualization)
   }
 
   getVisualization () {
@@ -113,6 +129,7 @@ class Visualization extends Component {
       <div style={style.container}>
         <VisualizationToolbar
           title={name}
+          onClose={this.onClose}
         />
         <div style={{flex: 1, position: 'relative'}}>
           <span
@@ -148,6 +165,7 @@ class Visualization extends Component {
         <VisualizationToolbar
           menuItems={this._menuItems}
           title={name}
+          onClose={this.onClose}
         />
         <VisualizationComponent
           data={data}

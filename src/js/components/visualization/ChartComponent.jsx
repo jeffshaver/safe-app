@@ -50,6 +50,9 @@ export class ChartComponent extends Component {
             labelString: ''
           }
         }]
+      },
+      zoom: {
+        enabled: false
       }
     }
     const chartData = {

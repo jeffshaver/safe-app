@@ -1,34 +1,46 @@
+import AddIcon from 'material-ui/svg-icons/content/add'
+import AddVizIcon from 'material-ui/svg-icons/av/playlist-add'
 import {applicationName} from '../../../config'
 import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
-import {createDashboard} from '../modules/create-dashboard'
 import Dashboard from './Dashboard'
-import {deleteDashboard} from '../modules/delete-dashboard'
-import Dialog from 'material-ui/Dialog'
-import {editDashboard} from '../modules/edit-dashboard'
-import {fetchDashboardGroups} from '../modules/dashboard-groups'
-import FlatButton from 'material-ui/FlatButton'
+import DeleteIcon from 'material-ui/svg-icons/action/delete'
+import EditIcon from 'material-ui/svg-icons/image/edit'
+import {fetchVisualizations} from '../modules/visualizations'
+import {FormDialog} from './FormDialog'
+import IconButton from 'material-ui/IconButton'
+import IconMenu from 'material-ui/IconMenu'
 import {LogMetrics} from '../decorators'
+import MenuItem from 'material-ui/MenuItem'
+import SaveIcon from 'material-ui/svg-icons/content/save'
 import {SelectField} from 'safe-framework/lib/hacks/SelectField'
-import TextField from 'material-ui/TextField'
+import Toolbar from 'material-ui/Toolbar'
+import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup'
+import UndoIcon from 'material-ui/svg-icons/content/undo'
 import {
-  changeCreateDialog,
-  resetCreateDialog
-} from '../modules/create-dashboard-dialog'
+  addDashboard,
+  fetchDashboardGroups,
+  removeDashboard
+} from '../modules/dashboard-groups'
 import {
-  changeDeleteDialog,
-  resetDeleteDialog
-} from '../modules/delete-dashboard-dialog'
-import {
-  changeEditDialog,
-  resetEditDialog
-} from '../modules/edit-dashboard-dialog'
+  createDashboard,
+  deleteDashboard,
+  editDashboard,
+  revertDashboard
+} from '../modules/dashboard'
+import {FormsySelect, FormsyText} from 'formsy-material-ui/lib'
 import {getDashboardById, getDashboardsFromGroups} from '../constants'
 import {header, headerAppName, main} from '../styles/common'
 import React, {Component, PropTypes} from 'react'
 
 const style = {
+  button: {
+    marginTop: 'auto'
+  },
   content: {
+    width: '400px'
+  },
+  dialog: {
     width: '400px'
   },
   h1: {
@@ -39,36 +51,39 @@ const style = {
 @LogMetrics('Dashboards')
 class Dashboards extends Component {
   static propTypes = {
-    createDashboardDialog: PropTypes.object.isRequired,
     dashboardGroups: PropTypes.object.isRequired,
     dashboardId: PropTypes.string,
-    deleteDashboardDialog: PropTypes.object.isRequired,
+    dashboards: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    editDashboardDialog: PropTypes.object.isRequired
+    visualizations: PropTypes.object.isRequired
   }
 
   constructor (props) {
     super(props)
 
+    this.state = {
+      dashboardLayout: []
+    }
+
     this.displayName = 'Dashboards'
 
+    this.addVisualization = ::this.addVisualization
     this.createDashboard = ::this.createDashboard
     this.deleteDashboard = ::this.deleteDashboard
     this.editDashboard = ::this.editDashboard
+    this.revertDashboard = ::this.revertDashboard
     this.selectDashboard = ::this.selectDashboard
-    this.changeCreateDialogSubtitle = this.changeCreateDialog.bind(this, 'subtitle')
-    this.changeCreateDialogTitle = this.changeCreateDialog.bind(this, 'title')
-    this.hideCreateDialog = this.changeCreateDialog.bind(this, 'visibility', false)
-    this.showCreateDialog = this.changeCreateDialog.bind(this, 'visibility', true)
-    this.changeEditDialogSubtitle = this.changeEditDialog.bind(this, 'subtitle')
-    this.changeEditDialogTitle = this.changeEditDialog.bind(this, 'title')
-    this.hideEditDialog = this.changeEditDialog.bind(this, 'visibility', false)
-    this.showEditDialog = this.changeEditDialog.bind(this, 'visibility', true)
-    this.hideDeleteDialog = this.changeDeleteDialog.bind(this, 'visibility', false)
-    this.showDeleteDialog = this.changeDeleteDialog.bind(this, 'visibility', true)
+    this.saveDashboard = ::this.saveDashboard
+    this.hideCreateDialog = this.changeState.bind(this, 'createVisibility', false)
+    this.showCreateDialog = this.changeState.bind(this, 'createVisibility', true)
+    this.hideEditDialog = this.changeState.bind(this, 'editVisibility', false)
+    this.showEditDialog = this.changeState.bind(this, 'editVisibility', true)
+    this.hideDeleteDialog = this.changeState.bind(this, 'deleteVisibility', false)
+    this.showDeleteDialog = this.changeState.bind(this, 'deleteVisibility', true)
+    this.onLayoutChange = ::this.onLayoutChange
   }
 
-  componentWillMount () {
+  fetchDashboardsIfNeeded () {
     const {dashboardGroups, dispatch} = this.props
 
     if (!dashboardGroups.error && (dashboardGroups.isFetching || dashboardGroups.data.length !== 0)) {
@@ -78,43 +93,62 @@ class Dashboards extends Component {
     dispatch(fetchDashboardGroups())
   }
 
-  changeCreateDialog (property, event) {
+  componentWillMount () {
     const {dispatch} = this.props
-    const value = event && event.target && event.target.value || event
 
-    dispatch(changeCreateDialog({[property]: value}))
+    this.fetchDashboardsIfNeeded()
+    dispatch(fetchVisualizations())
   }
 
-  changeDeleteDialog (property, event) {
-    const {dispatch} = this.props
-    const value = event && event.target && event.target.value || event
-
-    dispatch(changeDeleteDialog({[property]: value}))
+  componentWillUpdate () {
+    this.fetchDashboardsIfNeeded()
   }
 
-  changeEditDialog (property, event) {
-    const {dashboardGroups, dashboardId, dispatch} = this.props
+  getCurrentDashboard () {
+    const {
+      dashboardId = '',
+      dashboardGroups
+    } = this.props
     const dashboards = getDashboardsFromGroups(dashboardGroups)
-    const dashboard = getDashboardById(
-      dashboards,
-      dashboardId
-    )
-    const {subtitle, title} = dashboard
-    const value = event && event.target && event.target.value || event
 
-    if (property === 'visibility' && value) {
-      dispatch(changeEditDialog({subtitle, title}))
+    return getDashboardById(dashboards, dashboardId) || {}
+  }
+
+  addVisualization (visualization) {
+    const {dispatch} = this.props
+    const dashboard = this.getCurrentDashboard()
+    const {dashboardParams = {}, visualizations = []} = dashboard
+    const {visualizationSizes = {}} = dashboardParams
+    const {_id: vizId} = visualization
+
+    visualizations.push(visualization)
+
+    dashboard.visualizations = visualizations
+    dashboardParams.visualizationSizes = {
+      ...visualizationSizes,
+      [vizId]: {
+        h: 2,
+        w: 1,
+        i: vizId
+      }
     }
 
-    dispatch(changeEditDialog({[property]: value}))
+    dashboard.dashboardParams = dashboardParams
+
+    dispatch(addDashboard(dashboard))
   }
 
-  createDashboard (event) {
-    const {dispatch, createDashboardDialog} = this.props
-    const {subtitle, title} = createDashboardDialog
+  changeState (property, value) {
+    this.setState({[property]: value})
+  }
 
-    dispatch(createDashboard(subtitle, title))
-    dispatch(resetCreateDialog())
+  createDashboard (fields) {
+    const {dispatch} = this.props
+
+    dispatch(createDashboard(fields, (json) => {
+      dispatch(addDashboard(json))
+      browserHistory.push(`/dashboards/${json._id}`)
+    }))
   }
 
   deleteDashboard () {
@@ -126,13 +160,20 @@ class Dashboards extends Component {
       return
     }
 
-    dispatch(deleteDashboard(dashboardId))
-    dispatch(resetDeleteDialog())
+    dispatch(deleteDashboard(dashboardId, (json) => {
+      dispatch(removeDashboard(dashboardId))
+      browserHistory.push('/dashboards/')
+    }))
   }
 
-  editDashboard (event) {
-    const {dashboardId, dispatch, editDashboardDialog} = this.props
-    const {subtitle, title} = editDashboardDialog
+  editDashboard (fields = {}) {
+    const {
+      dashboardId = '',
+      dispatch
+    } = this.props
+    const {dashboardLayout: layouts} = this.state
+    const currentDashboard = this.getCurrentDashboard() || {}
+    let {dashboardParams = {}} = currentDashboard
 
     if (!dashboardId) {
       console.error('Cannot edit a dashboard that is not selected')
@@ -140,123 +181,227 @@ class Dashboards extends Component {
       return
     }
 
-    dispatch(editDashboard(dashboardId, subtitle, title))
-    dispatch(resetEditDialog())
+    const visualizationSizes = layouts.reduce((object, value) => {
+      object[value.i] = {
+        ...value
+      }
+
+      return object
+    }, {})
+
+    dashboardParams = {
+      ...dashboardParams,
+      visualizationSizes
+    }
+
+    dispatch(editDashboard({
+      ...currentDashboard,
+      ...fields,
+      dashboardParams
+    }, (json) => {
+      dispatch(addDashboard(json))
+    }))
   }
 
-  renderActions (cancelText, submitText, onCancelTap, onSubmitTap) {
+  revertDashboard () {
+    const {dashboardId = '', dispatch} = this.props
+
+    dispatch(revertDashboard(dashboardId, (json) => {
+      dispatch(addDashboard(json))
+    }))
+  }
+
+  saveDashboard () {
+    this.editDashboard()
+  }
+
+  enableSubmitButton () {
+    this.setState({
+      submitButtonEnabled: true
+    })
+  }
+
+  disableSubmitButton () {
+    this.setState({
+      submitButtonEnabled: false
+    })
+  }
+
+  onLayoutChange (dashboardLayout) {
+    this.setState({dashboardLayout})
+  }
+
+  renderDashboardFormItems (currentDashboard = {}) {
+    const {dashboardGroups} = this.props
+    const {group, title, subtitle} = currentDashboard
+    const sortedGroups = (dashboardGroups.data || []).sort((a, b) => (
+      a.title.localeCompare(b.title)
+    ))
+
     return [
-      <FlatButton
-        key={0}
-        label={cancelText}
-        secondary={true}
-        onTouchTap={onCancelTap}
+      <FormsyText
+        floatingLabelText="Title"
+        key='titleText'
+        name="title"
+        required
+        value={title}
       />,
-      <FlatButton
-        key={1}
-        label={submitText}
-        primary={true}
-        onTouchTap={onSubmitTap}
-      />
+      <FormsyText
+        floatingLabelText="Subtitle (optional)"
+        key='subtitleText'
+        name="subtitle"
+        value={subtitle}
+      />,
+      <FormsySelect
+        floatingLabelText="Group"
+        key="group"
+        name="group"
+        required
+        value={group}
+      >
+        {sortedGroups.map((group) => (
+          <MenuItem
+            key={group._id}
+            primaryText={group.title}
+            value={group._id}
+          />
+        ))}
+      </FormsySelect>
     ]
   }
 
-  renderCrudButtons () {
+  renderCrudDialogs () {
+    const currentDashboard = this.getCurrentDashboard() || {}
+    const {title} = currentDashboard
+    const {
+      createVisibility,
+      deleteVisibility,
+      editVisibility
+    } = this.state
+
     return (
       <div>
-        {/* <FlatButton
-          disabled={!id}
-          label='Edit'
-          onTouchTap={this.showEditDialog}
-        />
-        <FlatButton
-          disabled={!id}
-          label='Delete'
-          onTouchTap={this.showDeleteDialog}
-        />
-        <FlatButton
-          label='Create'
-          primary={true}
-          onTouchTap={this.showCreateDialog}
-        /> */}
+        <FormDialog
+          open={createVisibility}
+          style={style.dialog}
+          submitButtonText='Create'
+          title='Create a Dashboard'
+          onClose={this.hideCreateDialog}
+          onSubmitClick={this.createDashboard}
+        >
+          {this.renderDashboardFormItems()}
+        </FormDialog>
+        <FormDialog
+          cancelButtonText='No'
+          open={deleteVisibility}
+          style={style.dialog}
+          submitButtonText='Yes'
+          title={`Delete ${title}?`}
+          onClose={this.hideDeleteDialog}
+          onSubmitClick={this.deleteDashboard}
+        >
+          <p>Are you sure you want to delete this dashboard?</p>
+        </FormDialog>
+        <FormDialog
+          open={editVisibility}
+          style={style.dialog}
+          submitButtonText='Edit'
+          title={`Edit ${title}`}
+          onClose={this.hideEditDialog}
+          onSubmitClick={this.editDashboard}
+        >
+          {this.renderDashboardFormItems(currentDashboard)}
+        </FormDialog>
       </div>
     )
   }
 
-  renderCrudDialogs () {
-    const createActions = this.renderActions('Cancel', 'Create', this.hideCreateDialog, this.createDashboard)
-    const deleteActions = this.renderActions('Cancel', 'Delete', this.hideDeleteDialog, this.deleteDashboard)
-    const editActions = this.renderActions('Cancel', 'Save', this.hideEditDialog, this.editDashboard)
+  renderDashboardIcons () {
     const {
-      createDashboardDialog,
-      deleteDashboardDialog,
-      editDashboardDialog
+      dashboardId = '',
+      visualizations: allVisualizations
     } = this.props
-    const {
-      subtitle: createSubtitle,
-      title: createTitle,
-      visibility: createVisibility
-    } = createDashboardDialog
-    const {
-      visibility: deleteVisibility
-    } = deleteDashboardDialog
-    const {
-      subtitle: editSubtitle,
-      title: editTitle,
-      visibility: editVisibility
-    } = editDashboardDialog
+    const dashboard = this.getCurrentDashboard() || {}
+    const {visualizations: dashboardVisualizations = []} = dashboard
+
+    const usedVizIds = dashboardVisualizations.map(v => v._id)
+    const unusedVisualizations = allVisualizations.data.filter(function (currViz) {
+      return !usedVizIds.includes(currViz._id)
+    })
 
     return (
-      <div>
-        <Dialog
-          actions={createActions}
-          contentStyle={style.content}
-          modal={false}
-          open={createVisibility}
-          title='Create a Dashboard'
-          onRequestClose={this.hideCreateDialog}
+      <ToolbarGroup style={style.button}>
+        <IconButton
+          tooltip="Create Dashboard"
+          onClick={this.showCreateDialog}
         >
-          <TextField
-            floatingLabelText='Title'
-            value={createTitle}
-            onChange={this.changeCreateDialogTitle}
-          />
-          <TextField
-            floatingLabelText='Subtitle'
-            value={createSubtitle}
-            onChange={this.changeCreateDialogSubtitle}
-          />
-        </Dialog>
-        <Dialog
-          actions={deleteActions}
-          contentStyle={style.content}
-          modal={false}
-          open={deleteVisibility}
-          title='Delete a Dashboard'
-          onRequestClose={this.hideDeleteDialog}
+          <AddIcon />
+        </IconButton>
+        <IconButton
+          disabled={!dashboardId}
+          tooltip="Edit Dashboard"
+          onClick={this.showEditDialog}
         >
-          <p>Are you sure you want to delete this dashboard?</p>
-        </Dialog>
-        <Dialog
-          actions={editActions}
-          contentStyle={style.content}
-          modal={false}
-          open={editVisibility}
-          title='Edit a Dashboard'
-          onRequestClose={this.hideEditDialog}
+          <EditIcon />
+        </IconButton>
+        <IconButton
+          disabled={!dashboardId}
+          tooltip="Save Dashboard"
+          onClick={this.saveDashboard}
         >
-          <TextField
-            floatingLabelText='Title'
-            value={editTitle}
-            onChange={this.changeEditDialogTitle}
-          />
-          <TextField
-            floatingLabelText='Subtitle'
-            value={editSubtitle}
-            onChange={this.changeEditDialogSubtitle}
-          />
-        </Dialog>
-      </div>
+          <SaveIcon />
+        </IconButton>
+        <IconButton
+          disabled={!dashboardId}
+          tooltip="Revert Dashboard"
+          onClick={this.revertDashboard}
+        >
+          <UndoIcon />
+        </IconButton>
+        <IconButton
+          disabled={!dashboardId}
+          tooltip="Delete Dashboard"
+          onClick={this.showDeleteDialog}
+        >
+          <DeleteIcon />
+        </IconButton>
+        <IconMenu
+          anchorOrigin={{horizontal: 'middle', vertical: 'bottom'}}
+          iconButtonElement={
+            <IconButton
+              disabled={!dashboardId}
+              tooltip='Add Visualization'
+            >
+              <AddVizIcon />
+            </IconButton>
+          }
+          style={{
+            ...style.button,
+            textAlign: 'right'
+          }}
+          targetOrigin={{horizontal: 'right', vertical: 'top'}}
+          onItemTouchTap={(e, m, i) => {this.addVisualization(m.props.value)}}
+        >
+          {
+            unusedVisualizations.length > 0
+            ? (
+              unusedVisualizations.map((viz, i) => (
+                <MenuItem
+                  key={i}
+                  primaryText={viz.name}
+                  value={viz}
+                />
+              ))
+            )
+            : (
+              <MenuItem
+                disabled={true}
+                primaryText='No visualizations available'
+              />
+            )
+          }
+        </IconMenu>
+      </ToolbarGroup>
     )
   }
 
@@ -269,11 +414,7 @@ class Dashboards extends Component {
       dashboardGroups,
       dashboardId = ''
     } = this.props
-    const dashboards = getDashboardsFromGroups(dashboardGroups)
-    const dashboard = getDashboardById(
-      dashboards,
-      dashboardId
-    )
+    const dashboard = this.getCurrentDashboard()
     const {title} = dashboard || {}
 
     return (
@@ -283,22 +424,31 @@ class Dashboards extends Component {
           <h1 style={style.h1}>Dashboards {title ? `/ ${title}` : ''}</h1>
         </header>
         <main style={main}>
-          <SelectField
-            autoWidth={true}
-            childProp='dashboards'
-            floatingLabelText='Select a dashboard'
-            hintText='Select a dashboard'
-            isFetching={dashboardGroups.isFetching}
-            items={(dashboardGroups.data || []).sort((a, b) => (
-              a.title.localeCompare(b.title)
-            ))}
-            keyProp={'_id'}
-            primaryTextProp={'title'}
-            value={dashboardId}
-            valueProp={'_id'}
-            onChange={this.selectDashboard}
-          />
-          {this.renderCrudButtons()}
+          <Toolbar
+            style={{
+              backgroundColor: 'transparent',
+              height: '72px'
+            }}
+          >
+            <ToolbarGroup firstChild={true}>
+              <SelectField
+                autoWidth={true}
+                childProp='dashboards'
+                floatingLabelText='Select a dashboard'
+                hintText='Select a dashboard'
+                isFetching={dashboardGroups.isFetching}
+                items={(dashboardGroups.data || []).sort((a, b) => (
+                  a.title.localeCompare(b.title)
+                ))}
+                keyProp={'_id'}
+                primaryTextProp={'title'}
+                value={dashboardId}
+                valueProp={'_id'}
+                onChange={this.selectDashboard}
+              />
+            </ToolbarGroup>
+            {/* this.renderDashboardIcons() */}
+          </Toolbar>
           {(() => {
             if (!dashboardId || dashboardGroups.data.length === 0 || dashboardGroups.isFetching || dashboardGroups.error) {
               return null
@@ -308,6 +458,9 @@ class Dashboards extends Component {
               <Dashboard
                 dashboard={dashboard}
                 dashboardId={dashboardId}
+                gridOptions={{
+                  onLayoutChange: this.onLayoutChange
+                }}
                 key={dashboardId}
               />
             )
@@ -320,11 +473,9 @@ class Dashboards extends Component {
 }
 
 export default connect((state, ownProps) => ({
-  createDashboardDialog: state.createDashboardDialog,
-  dashboardGroups: state.dashboardGroups,
   dashboardId: ownProps.params
     ? ownProps.params.dashboardId
     : '',
-  deleteDashboardDialog: state.deleteDashboardDialog,
-  editDashboardDialog: state.editDashboardDialog
+  dashboardGroups: state.dashboardGroups,
+  visualizations: state.visualizations
 }))(Dashboards)

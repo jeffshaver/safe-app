@@ -2,41 +2,38 @@ import {apiUri} from '../../../config'
 import {checkFetchStatus} from './utilities'
 import fetch from 'isomorphic-fetch'
 
-export const HYDRATE = 'safe-app/visualization/HYDRATE'
-export const SET = 'safe-app/visualization/SET'
+export const FAILURE = 'safe-app/visualizations/FAILURE'
+export const REQUEST = 'safe-app/visualizations/REQUEST'
+export const SUCCESS = 'safe-app/visualizations/SUCCESS'
 
-export const FAILURE = 'safe-app/visualization/FAILURE'
-export const REQUEST = 'safe-app/visualization/REQUEST'
-export const SUCCESS = 'safe-app/visualization/SUCCESS'
-
-export const fetchDashboardsFailure = (error) => ({
+export const fetchVisualizationsFailure = (error) => ({
   payload: {error},
   type: FAILURE
 })
 
-export const fetchDashboardsRequest = () => ({
+export const fetchVisualizationsRequest = () => ({
   type: REQUEST
 })
 
-export const fetchDashboardsSuccess = (data) => ({
+export const fetchVisualizationsSuccess = (data) => ({
   payload: {data},
-  recievedAt: Date.now(),
+  receivedAt: Date.now(),
   type: SUCCESS
 })
 
-export const fetchDashboards = () =>
+export const fetchVisualizations = () =>
   (dispatch) => {
-    dispatch(fetchDashboardsRequest())
+    dispatch(fetchVisualizationsRequest())
 
-    return fetch(`${apiUri}/dashboards`)
+    return fetch(`${apiUri}/visualizations`)
       .then(checkFetchStatus)
       .then((response) => response.json())
       .then((json) => {
-        dispatch(fetchDashboardsSuccess(json))
+        dispatch(fetchVisualizationsSuccess(json))
 
         return Promise.resolve()
       })
-      .catch((error) => dispatch(fetchDashboardsFailure(error)))
+      .catch((error) => dispatch(fetchVisualizationsFailure(error)))
   }
 
 const initialState = {
@@ -68,7 +65,7 @@ export default (state = initialState, {payload = {}, type, ...action}) => {
         data,
         error,
         isFetching: false,
-        lastUpdated: action.recievedAt
+        lastUpdated: action.receivedAt
       }
     default:
       return state

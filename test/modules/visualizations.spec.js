@@ -6,46 +6,46 @@ import expect from 'expect'
 import nock from 'nock'
 import thunk from 'redux-thunk'
 import {
-  createDashboard,
-  dashboardFailure,
-  dashboardRequest,
-  dashboardSuccess,
   FAILURE,
+  fetchVisualizations,
+  fetchVisualizationsFailure,
+  fetchVisualizationsRequest,
+  fetchVisualizationsSuccess,
   default as reducer,
   REQUEST,
   SUCCESS
-} from '../../src/js/modules/dashboard'
+} from '../../src/js/modules/visualizations'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 
-describe('createDashboard actions', () => {
+describe('visualizations actions', () => {
   describe('sync actions', () => {
-    it('dashboardFailure should create a FAILURE action', () => {
+    it('fetchVisualizationsFailure should create a FAILURE action', () => {
       const error = new Error('test error')
       const expectedAction = {
         payload: {error},
         type: FAILURE
       }
 
-      expect(dashboardFailure(error)).toEqual(expectedAction)
+      expect(fetchVisualizationsFailure(error)).toEqual(expectedAction)
     })
 
-    it('dashboardRequest should create a REQUEST action', () => {
+    it('fetchVisualizationsRequest should create a REQUEST action', () => {
       const expectedAction = {
         type: REQUEST
       }
 
-      expect(dashboardRequest()).toEqual(expectedAction)
+      expect(fetchVisualizationsRequest()).toEqual(expectedAction)
     })
 
-    it('dashboardSuccess should create a SUCCESS action', () => {
+    it('fetchVisualizationsSuccess should create a SUCCESS action', () => {
       const expectedAction = {
-        payload: {data: {}},
+        payload: {data: []},
         receivedAt: null,
         type: SUCCESS
       }
-      const action = dashboardSuccess({})
+      const action = fetchVisualizationsSuccess([])
 
       expectedAction.receivedAt = action.receivedAt
 
@@ -58,26 +58,33 @@ describe('createDashboard actions', () => {
       nock.cleanAll()
     })
 
-    it('createDashboard creates a SUCCESS action on success', (done) => {
+    it('fetchVisualizations creates a SUCCESS action on success', (done) => {
       nock(apiUri)
-        .post('/dashboards')
-        .reply(200, {_id: 'abc123', subtitle: 'Subtitle', title: 'Title'})
+        .get('/visualizations')
+        .reply(200, [
+          {_id: 'abc123', name: 'NameA'},
+          {_id: 'def456', name: 'NameB'}
+        ])
 
-      const subtitle = 'Subtitle'
-      const title = 'Title'
+      const initialState = {
+        visualizations: []
+      }
       const requestAction = {
         type: REQUEST
       }
       const recieveAction = {
         type: SUCCESS,
         payload: {
-          data: {_id: 'abc123', subtitle, title}
+          data: [
+            {_id: 'abc123', name: 'NameA'},
+            {_id: 'def456', name: 'NameB'}
+          ]
         },
         receivedAt: null
       }
-      const store = mockStore({})
+      const store = mockStore(initialState)
 
-      store.dispatch(createDashboard({subtitle, title}))
+      store.dispatch(fetchVisualizations())
         .then(() => {
           const actions = store.getActions()
           const expectedActions = [
@@ -86,21 +93,21 @@ describe('createDashboard actions', () => {
           ]
 
           expectedActions[1].receivedAt = actions[1].receivedAt
-          
-          // call slice because we need to weed out the request that comes from another module
+
           expect(actions).toEqual(expectedActions)
           done()
         })
     })
 
-    it('createDashboard creates a FAILURE action on failure', (done) => {
+    it('fetchVisualizations creates a FAILURE action on failure', (done) => {
       nock(apiUri)
         .get('/dashboards')
         .reply(500)
 
-      const subtitle = 'Subtitle'
-      const title = 'Title'
       const error = new Error('NetworkError')
+      const initialState = {
+        dashboards: []
+      }
       const requestAction = {
         type: REQUEST
       }
@@ -108,9 +115,9 @@ describe('createDashboard actions', () => {
         payload: {error},
         type: FAILURE
       }
-      const store = mockStore({})
+      const store = mockStore(initialState)
 
-      store.dispatch(createDashboard({subtitle, title}))
+      store.dispatch(fetchVisualizations())
         .then(() => {
           const actions = store.getActions()
           const expectedActions = [
@@ -127,10 +134,10 @@ describe('createDashboard actions', () => {
   })
 })
 
-describe('createDashboard reducer', () => {
+describe('dashboards reducer', () => {
   it('should return the initial state', () => {
     const stateAfter = {
-      data: {},
+      data: [],
       error: undefined,
       isFetching: false,
       lastUpdated: null
@@ -146,7 +153,7 @@ describe('createDashboard reducer', () => {
       type: FAILURE
     }
     const stateAfter = {
-      data: {},
+      data: [],
       error,
       isFetching: false,
       lastUpdated: null
@@ -160,7 +167,7 @@ describe('createDashboard reducer', () => {
       type: REQUEST
     }
     const stateAfter = {
-      data: {},
+      data: [],
       error: undefined,
       isFetching: true,
       lastUpdated: null
@@ -170,7 +177,7 @@ describe('createDashboard reducer', () => {
   })
 
   it('should handle SUCCESS', () => {
-    const data = {_id: 'abc123', subtitle: 'Subtitle', title: 'Title'}
+    const data = ['AnalyticA', 'AnalyticB']
     const action = {
       payload: {data},
       receivedAt: Date.now(),

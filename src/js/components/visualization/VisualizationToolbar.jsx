@@ -1,6 +1,8 @@
 import {connect} from 'react-redux'
 import IconButton from 'material-ui/IconButton/IconButton'
 import IconMenu from 'material-ui/IconMenu/IconMenu'
+// import MenuItem from 'material-ui/MenuItem/MenuItem'
+// import NavigationClose from 'material-ui/svg-icons/navigation/close'
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import Toolbar from 'material-ui/Toolbar/Toolbar'
 import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup'
@@ -19,11 +21,15 @@ const style = {
 class VisualizationToolbar extends Component {
   static propTypes = {
     menuItems: PropTypes.node,
-    title: PropTypes.string.isRequired
+    rightIcons: PropTypes.array,
+    title: PropTypes.string.isRequired,
+    onClose: PropTypes.func
   }
 
   static defaultProps = {
-    menuItems: []
+    menuItems: [],
+    rightIcons: [],
+    onClose: () => {}
   }
 
   renderMenuItems () {
@@ -45,12 +51,18 @@ class VisualizationToolbar extends Component {
         targetOrigin={{vertical: 'top', horizontal: 'right'}}
       >
         {menuItems}
+        {/* <MenuItem
+          key='close'
+          leftIcon={<NavigationClose />}
+          primaryText='Remove'
+          onTouchTap={onClose}
+        /> */}
       </IconMenu>
     )
   }
 
   render () {
-    const {title} = this.props
+    const {rightIcons, title} = this.props
 
     return (
       <Toolbar
@@ -61,7 +73,10 @@ class VisualizationToolbar extends Component {
           <ToolbarTitle text={title} />
         </ToolbarGroup>
         <ToolbarGroup>
-          {this.renderMenuItems()}
+          <div>
+            {this.renderMenuItems()}
+            {rightIcons}
+          </div>
         </ToolbarGroup>
       </Toolbar>
     )

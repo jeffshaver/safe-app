@@ -59,7 +59,7 @@ export const menuItemDefs = {
   Chart: [{
     key: 'saveChart',
     leftIcon: <Download />,
-    primaryText: 'Save',
+    primaryText: 'Export',
     onTouchTap: saveCanvasFromVisualization
   }],
   Map: [],

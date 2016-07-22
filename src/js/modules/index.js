@@ -2,15 +2,10 @@ import alerts from './alerts'
 import analytics from './analytics'
 import category from './category'
 import {combineReducers} from 'redux'
-import createDashboardDialog from './create-dashboard-dialog'
 import dashboardGroups from './dashboard-groups'
+import dashboardMenus from './dashboard-menus'
 import dashboards from './dashboards'
-import deleteDashboardDialog from './delete-dashboard-dialog'
 import dialog from './dialog'
-import editDashboardDialog from './edit-dashboard-dialog'
-import fetchCreateDashboard from './create-dashboard'
-import fetchDeleteDashboard from './delete-dashboard'
-import fetchEditDashboard from './edit-dashboard'
 import fields from './fields'
 import filters from './filters'
 import hydrateable from './hydrateable'
@@ -25,11 +20,17 @@ import sources from './sources'
 import uploadDataTypes from './upload'
 import user from './user'
 import visualizationResults from './visualization-results'
+import visualizations from './visualizations'
 import visualizationTypes from './visualization-types'
 import analytic, {
   HYDRATE as HYDRATE_ANALYTIC,
   hydrateAnalytic
 } from './analytic'
+import dashboard, {
+  createDashboard,
+  deleteDashboard,
+  editDashboard
+} from './dashboard'
 import source, {
   HYDRATE as HYDRATE_SOURCE,
   hydrateSource
@@ -50,15 +51,14 @@ export const rootReducer = combineReducers({
   analytic: hydrateable(analytic, HYDRATE_ANALYTIC),
   analytics,
   category,
-  createDashboard: fetchCreateDashboard,
-  createDashboardDialog,
+  createDashboard,
+  dashboardMenus,
+  dashboard,
   dashboardGroups,
   dashboards,
-  deleteDashboard: fetchDeleteDashboard,
-  deleteDashboardDialog,
+  deleteDashboard,
   dialog,
-  editDashboard: fetchEditDashboard,
-  editDashboardDialog,
+  editDashboard,
   fields,
   filters,
   label,
@@ -73,6 +73,7 @@ export const rootReducer = combineReducers({
   user,
   visualization: hydrateable(visualization, HYDRATE_VISUALIZATION),
   visualizationResults,
+  visualizations,
   visualizationTypes,
 
   // for react-router-redux

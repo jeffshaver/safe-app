@@ -10,9 +10,9 @@ require('./modules/analytics.spec')
 
 require('./modules/create-dashboard.spec')
 
-// create-dashboard-dialog
+// dashboard-menus
 
-require('./modules/create-dashboard-dialog.spec')
+require('./modules/dashboard-menus.spec')
 
 // dashboard-groups
 
@@ -22,10 +22,6 @@ require('./modules/dashboard-groups.spec')
 
 require('./modules/dashboards.spec')
 
-// delete-dashboard-dialog
-
-require('./modules/delete-dashboard-dialog.spec')
-
 // delete-dashboard
 
 require('./modules/delete-dashboard.spec')
@@ -33,10 +29,6 @@ require('./modules/delete-dashboard.spec')
 // dialog
 
 require('./modules/dialog.spec')
-
-// edit-dashboard-dialog
-
-require('./modules/edit-dashboard-dialog.spec')
 
 // edit-dashboard
 
@@ -104,3 +96,7 @@ require('./modules/visualization-results.spec')
 // visualizations
 
 require('./modules/visualization-types.spec')
+
+// visualizations
+
+require('./modules/visualizations.spec')

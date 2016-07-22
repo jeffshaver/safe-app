@@ -2,20 +2,19 @@
 
 import {apiUri} from '../../config.js'
 import configureStore from 'redux-mock-store'
-import {REQUEST as DASHBOARDS_REQUEST} from '../../src/js/modules/dashboards'
 import expect from 'expect'
 import nock from 'nock'
 import thunk from 'redux-thunk'
 import {
+  dashboardFailure,
+  dashboardRequest,
+  dashboardSuccess,
   editDashboard,
-  editDashboardFailure,
-  editDashboardRequest,
-  editDashboardSuccess,
   FAILURE,
   default as reducer,
   REQUEST,
   SUCCESS
-} from '../../src/js/modules/edit-dashboard'
+} from '../../src/js/modules/dashboard'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
@@ -23,31 +22,31 @@ const dashboardId = 'abc123'
 
 describe('editDashboard actions', () => {
   describe('sync actions', () => {
-    it('editDashboardFailure should create a FAILURE action', () => {
+    it('dashboardFailure should create a FAILURE action', () => {
       const error = new Error('test error')
       const expectedAction = {
         payload: {error},
         type: FAILURE
       }
 
-      expect(editDashboardFailure(error)).toEqual(expectedAction)
+      expect(dashboardFailure(error)).toEqual(expectedAction)
     })
 
-    it('editDashboardRequest should create a REQUEST action', () => {
+    it('dashboardRequest should create a REQUEST action', () => {
       const expectedAction = {
         type: REQUEST
       }
 
-      expect(editDashboardRequest()).toEqual(expectedAction)
+      expect(dashboardRequest()).toEqual(expectedAction)
     })
 
-    it('editDashboardSuccess should create a SUCCESS action', () => {
+    it('dashboardSuccess should create a SUCCESS action', () => {
       const expectedAction = {
         payload: {data: {}},
         receivedAt: null,
         type: SUCCESS
       }
-      const action = editDashboardSuccess({})
+      const action = dashboardSuccess({})
 
       expectedAction.receivedAt = action.receivedAt
 
@@ -70,29 +69,25 @@ describe('editDashboard actions', () => {
       const requestAction = {
         type: REQUEST
       }
-      const recieveAction = {
+      const receiveAction = {
         type: SUCCESS,
         payload: {
           data: {_id: 'abc123', subtitle, title}
         },
         receivedAt: null
       }
-      const dashboardsRequestAction = {
-        type: DASHBOARDS_REQUEST
-      }
       const store = mockStore({})
 
-      store.dispatch(editDashboard(dashboardId, subtitle, title))
+      store.dispatch(editDashboard({_id: dashboardId, subtitle, title}))
         .then(() => {
           const actions = store.getActions()
           const expectedActions = [
             requestAction,
-            recieveAction,
-            dashboardsRequestAction
+            receiveAction
           ]
 
           expectedActions[1].receivedAt = actions[1].receivedAt
-
+  
           expect(actions).toEqual(expectedActions)
           done()
         })
@@ -115,7 +110,7 @@ describe('editDashboard actions', () => {
       }
       const store = mockStore({})
 
-      store.dispatch(editDashboard(dashboardId, subtitle, title))
+      store.dispatch(editDashboard({_id: dashboardId, subtitle, title}))
         .then(() => {
           const actions = store.getActions()
           const expectedActions = [

@@ -1,4 +1,6 @@
+import CircularProgress from 'material-ui/CircularProgress'
 import {connect} from 'react-redux'
+import {editDashboard} from '../modules/dashboards'
 import {fetchVisualizationResults} from '../modules/visualization-results'
 import FilterCriteria from './FilterCriteria'
 import {LogMetrics} from '../decorators'
@@ -26,6 +28,11 @@ const style = {
   gridTileLoading: {
     boxSizing: 'border-box'
   },
+  loading: {
+    position: 'absolute',
+    left: '50%',
+    top: '50%'
+  },
   visualization: {
     height: '100%'
   }
@@ -35,9 +42,15 @@ const style = {
 class Dashboard extends Component {
   static propTypes = {
     dashboard: PropTypes.object.isRequired,
+    dashboardFetch: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    filters: PropTypes.object.isRequired,
+    filters: PropTypes.array.isRequired,
+    gridOptions: PropTypes.object,
     visualizationResults: PropTypes.object.isRequired
+  }
+  
+  static defaultProps = {
+    gridOptions: {}
   }
 
   constructor (props) {
@@ -45,6 +58,7 @@ class Dashboard extends Component {
 
     this.onClickSubmit = ::this.onClickSubmit
     this.onClickReset = ::this.onClickReset
+    this.onVisualizationClose = ::this.onVisualizationClose
   }
 
   componentWillMount () {
@@ -62,7 +76,7 @@ class Dashboard extends Component {
   }
 
   getUniqueFields = () => {
-    const {dashboard: {visualizations}} = this.props
+    const {dashboard: {visualizations = []}} = this.props
     const sources = visualizations.map((visualization) => visualization.source)
 
     return uniqBy(sources.reduce((fields, {fields: sourceFields = []} = {}) => (
@@ -105,12 +119,41 @@ class Dashboard extends Component {
   onClickReset () {
     this.resetFilters()
   }
+  
+  onVisualizationClose (vizToRemove) {
+    const {dashboard, dispatch} = this.props
+    const {visualizations = []} = dashboard
+    
+    dashboard.visualizations = visualizations.filter((viz) => (
+      vizToRemove._id !== viz._id
+    ))
+
+    dispatch(editDashboard(dashboard))
+  }
 
   renderVisualizationGrid () {
-    const {dashboard} = this.props
+    const {dashboard, gridOptions} = this.props
     const {dashboardParams = {}, visualizations = []} = dashboard
-    const {size = 2, layout} = dashboardParams
+    const {size = 2, visualizationSizes = {}} = dashboardParams
     const totalCols = visualizations.length > 1 ? Number(size) : 1
+
+    const layout = []
+    let i = 0
+    
+    for (const id in visualizationSizes) {
+      const {[id]: vizSize} = visualizationSizes
+      
+      layout.push({
+        x: i % totalCols,
+        y: Math.floor(i / totalCols),
+        h: vizSize.cols || 2,
+        w: vizSize.rows || 1,
+        i: id,
+        ...vizSize
+      })
+      
+      i++
+    }
 
     return (
       <GridLayout
@@ -119,6 +162,7 @@ class Dashboard extends Component {
         layout={layout}
         rowHeight={250}
         style={style.gridList}
+        {...gridOptions}
         onResizeStop={(layout, item) => {
           const visualization = this._visualizations[item.i]
           const {
@@ -139,18 +183,9 @@ class Dashboard extends Component {
 
   renderVisualizations () {
     const {dashboard, filters, visualizationResults} = this.props
-    const {dashboardParams = {}, visualizations = []} = dashboard
-    const {size = 2, visualizationSizes = []} = dashboardParams
-    const totalCols = visualizations.length > 1 ? Number(size) : 1
-    let columnWidths = 0
-
+    const {visualizations = []} = dashboard
+    
     return visualizations.map((visualization, i) => {
-      const visualizationSize = visualizationSizes[visualization._id] || {}
-      const {
-        // remove typeof check once mongodb change is in place
-        cols = (typeof visualizationSize !== 'object' ? visualizationSize : 1),
-        rows = 1
-      } = visualizationSize
       const results = visualizationResults[visualization._id]
       const visualizationElement = filters[dashboard._id]
         ? (
@@ -171,22 +206,13 @@ class Dashboard extends Component {
             }}
             results={results}
             visualization={visualization}
+            onClose={this.onVisualizationClose}
           />
         )
         : null
-
-      const gridData = {
-        x: (i + columnWidths) % totalCols,
-        y: Math.floor((i + columnWidths) / totalCols),
-        w: Number(cols),
-        h: Number(rows) * 2
-      }
-
-      columnWidths += cols > 1 ? cols - 1 : 0
-
+  
       return (
         <div
-          data-grid={gridData}
           key={visualization._id}
           style={{
             ...style.gridTile,
@@ -200,7 +226,7 @@ class Dashboard extends Component {
   }
 
   render () {
-    const {dashboard} = this.props
+    const {dashboard, dashboardFetch} = this.props
 
     if (!dashboard) return null
 
@@ -215,29 +241,37 @@ class Dashboard extends Component {
 
     return (
       <div>
-        <FilterCriteria
-          containerId={_id}
-          fields={fields}
-          headerStyle={{
-            margin: 0
-          }}
-          label={label}
-          showFilterButton={true}
-          style={{
-            ...verticalTop,
-            marginBottom: '1em'
-          }}
-          valid={this.validateFilters()}
-          onClickReset={this.onClickReset}
-          onClickSubmit={this.onClickSubmit}
-        />
-        {this.renderVisualizationGrid()}
+        {dashboardFetch.isFetching
+          ? <CircularProgress
+            style={style.loading}
+            />
+          : <div>
+              <FilterCriteria
+                containerId={_id}
+                fields={fields}
+                headerStyle={{
+                  margin: 0
+                }}
+                label={label}
+                showFilterButton={true}
+                style={{
+                  ...verticalTop,
+                  marginBottom: '1em'
+                }}
+                valid={this.validateFilters()}
+                onClickReset={this.onClickReset}
+                onClickSubmit={this.onClickSubmit}
+              />
+              {this.renderVisualizationGrid()}
+            </div>
+        }
       </div>
     )
   }
 }
 
 export default connect((state) => ({
+  dashboardFetch: state.dashboard,
   filters: state.filters,
   visualizationResults: state.visualizationResults
 }))(Dashboard)

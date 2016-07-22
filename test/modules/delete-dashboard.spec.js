@@ -2,20 +2,19 @@
 
 import {apiUri} from '../../config.js'
 import configureStore from 'redux-mock-store'
-import {REQUEST as DASHBOARDS_REQUEST} from '../../src/js/modules/dashboards'
 import expect from 'expect'
 import nock from 'nock'
 import thunk from 'redux-thunk'
 import {
+  dashboardFailure,
+  dashboardRequest,
+  dashboardSuccess,
   deleteDashboard,
-  deleteDashboardFailure,
-  deleteDashboardRequest,
-  deleteDashboardSuccess,
   FAILURE,
   default as reducer,
   REQUEST,
   SUCCESS
-} from '../../src/js/modules/delete-dashboard'
+} from '../../src/js/modules/dashboard'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
@@ -23,31 +22,31 @@ const dashboardId = 'abc123'
 
 describe('deleteDashboard actions', () => {
   describe('sync actions', () => {
-    it('deleteDashboardFailure should create a FAILURE action', () => {
+    it('dashboardFailure should create a FAILURE action', () => {
       const error = new Error('test error')
       const expectedAction = {
         payload: {error},
         type: FAILURE
       }
 
-      expect(deleteDashboardFailure(error)).toEqual(expectedAction)
+      expect(dashboardFailure(error)).toEqual(expectedAction)
     })
 
-    it('deleteDashboardRequest should create a REQUEST action', () => {
+    it('dashboardRequest should create a REQUEST action', () => {
       const expectedAction = {
         type: REQUEST
       }
 
-      expect(deleteDashboardRequest()).toEqual(expectedAction)
+      expect(dashboardRequest()).toEqual(expectedAction)
     })
 
-    it('deleteDashboardSuccess should create a SUCCESS action', () => {
+    it('dashboardSuccess should create a SUCCESS action', () => {
       const expectedAction = {
         payload: {data: {}},
         receivedAt: null,
         type: SUCCESS
       }
-      const action = deleteDashboardSuccess({})
+      const action = dashboardSuccess({})
 
       expectedAction.receivedAt = action.receivedAt
 
@@ -64,7 +63,7 @@ describe('deleteDashboard actions', () => {
       nock(apiUri)
         .delete(`/dashboards/${dashboardId}`)
         .reply(200, {})
-
+  
       const requestAction = {
         type: REQUEST
       }
@@ -75,9 +74,6 @@ describe('deleteDashboard actions', () => {
         },
         receivedAt: null
       }
-      const dashboardsRequestAction = {
-        type: DASHBOARDS_REQUEST
-      }
       const store = mockStore({})
 
       store.dispatch(deleteDashboard(dashboardId))
@@ -85,12 +81,11 @@ describe('deleteDashboard actions', () => {
           const actions = store.getActions()
           const expectedActions = [
             requestAction,
-            recieveAction,
-            dashboardsRequestAction
+            recieveAction
           ]
 
           expectedActions[1].receivedAt = actions[1].receivedAt
-
+          
           expect(actions).toEqual(expectedActions)
           done()
         })
@@ -102,6 +97,7 @@ describe('deleteDashboard actions', () => {
         .reply(500)
 
       const error = new Error('NetworkError')
+      
       const requestAction = {
         type: REQUEST
       }
@@ -120,7 +116,6 @@ describe('deleteDashboard actions', () => {
           ]
 
           expectedActions[1].payload.error = actions[1].payload.error
-
           expect(actions).toEqual(expectedActions)
           done()
         })
