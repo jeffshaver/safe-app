@@ -1,14 +1,14 @@
 import analytics from './analytics'
 import category from './category'
 import {combineReducers} from 'redux'
-import createDashboard from './create-dashboard'
 import createDashboardDialog from './create-dashboard-dialog'
 import dashboards from './dashboards'
-import deleteDashboard from './delete-dashboard'
 import deleteDashboardDialog from './delete-dashboard-dialog'
 import dialog from './dialog'
-import editDashboard from './edit-dashboard'
 import editDashboardDialog from './edit-dashboard-dialog'
+import fetchCreateDashboard from './create-dashboard'
+import fetchDeleteDashboard from './delete-dashboard'
+import fetchEditDashboard from './edit-dashboard'
 import fields from './fields'
 import hydrateable from './hydrateable'
 import label from './label'
@@ -51,13 +51,13 @@ export const rootReducer = combineReducers({
   analytic: hydrateable(analytic, HYDRATE_ANALYTIC),
   analytics,
   category,
-  createDashboard,
+  createDashboard: fetchCreateDashboard,
   createDashboardDialog,
   dashboards,
-  deleteDashboard,
+  deleteDashboard: fetchDeleteDashboard,
   deleteDashboardDialog,
   dialog,
-  editDashboard,
+  editDashboard: fetchEditDashboard,
   editDashboardDialog,
   fields,
   filters: hydrateable(filters, HYDRATE_FILTERS),

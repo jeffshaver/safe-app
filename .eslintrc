@@ -4,9 +4,19 @@ globals:
 parserOptions:
   ecmaFeatures:
     jsx: true
-extends: standard
+extends:
+  - plugin:import/errors
+  - plugin:import/react
+  - plugin:import/warnings
+  - standard
 plugins:
+  - import
   - react
+settings:
+  import/resolver: webpack
+  import/ignore:
+    - node_modules
+    - config.js
 rules:
   array-bracket-spacing:
     - 2

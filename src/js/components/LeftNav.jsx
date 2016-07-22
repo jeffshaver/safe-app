@@ -1,8 +1,8 @@
 import ActionHelp from 'material-ui/svg-icons/action/help'
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right'
 import {browserHistory} from 'react-router'
-import Divider from 'material-ui/Divider'
 import Drawer from 'material-ui/Drawer'
+import FlatButton from 'material-ui/FlatButton'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import IconButton from 'material-ui/IconButton'
 import {logoStyle} from '../styles/common'
@@ -27,6 +27,11 @@ const style = {
     top: '50%',
     transform: 'translate(-50%, -50%)'
   },
+  logoLabel: {
+    fontSize: '2rem',
+    fontWeight: 400,
+    padding: 0
+  },
   logoWrapper: {
     textAlign: 'center'
   },
@@ -48,14 +53,21 @@ export class LeftNav extends Component {
         width={110}
       >
         <MenuItem
-          innerDivStyle={logoStyle}
-          key={0}
-          style={style.logoWrapper}
+          innerDivStyle={{padding: 0}}
+          key={applicationName}
           onTouchTap={() => (browserHistory.push('/'))}
         >
-          <h1>{applicationName}</h1>
+          <FlatButton
+            hoverColor='transparent'
+            label={applicationName}
+            labelStyle={style.logoLabel}
+            rippleColor='transparent'
+            style={{...style.button, ...logoStyle}}
+            tooltip={applicationName}
+            tooltipPosition='top-center'
+            tooltipStyles={style.tooltip}
+          />
         </MenuItem>
-        <Divider />
         {
           routeNames.map((routeName, i) => {
             const route = routes[routeName]
@@ -70,6 +82,7 @@ export class LeftNav extends Component {
                 onTouchTap={() => (browserHistory.push(`/${route.path}`))}
               >
                 <IconButton
+                  disableTouchRipple={true}
                   style={style.button}
                   tooltip={routeName}
                   tooltipPosition='top-center'
