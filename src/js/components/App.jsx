@@ -1,5 +1,5 @@
 import {Banner} from './Banner'
-import CircularProgress from 'material-ui/CircularProgress'
+import {CircularProgress} from 'safe-framework'
 import {connect} from 'react-redux'
 import {fetchUser} from '../modules/user'
 import {Footer} from './Footer'
@@ -54,7 +54,7 @@ class App extends Component {
     if (user.isFetching) {
       content = (
         <div style={[style.loading.wrapper]}>
-          <CircularProgress />
+          <CircularProgress text={''} />
           <h1>Fetching User Data</h1>
         </div>
       )

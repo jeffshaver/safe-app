@@ -8,20 +8,30 @@ import RaisedButton from 'material-ui/RaisedButton'
 import {setSource} from '../modules/source'
 import Tab from 'material-ui/Tabs/Tab'
 import Tabs from 'material-ui/Tabs/Tabs'
-import {DataTable, SelectField} from 'safe-framework'
+import {CircularProgress, DataTable, SelectField} from 'safe-framework'
 import {header, main, verticalTop} from '../styles/common'
 import {Hydrateable, LogMetrics} from '../decorators'
 import React, {Component, PropTypes} from 'react'
 
 const style = {
-  hidden: {
-    display: 'none'
-  },
   button: {
     margin: '1.5em 0'
   },
+  hidden: {
+    display: 'none'
+  },
   margin: {
     margin: '12px'
+  },
+  progress: {
+    left: '.5em',
+    top: '1.2em'
+  },
+  span: {
+    position: 'absolute',
+    left: '50%',
+    top: '50%',
+    'transform': 'translate(-50%, -50%)'
   }
 }
 const generateColumns = (data) => {
@@ -148,24 +158,42 @@ class Search extends Component {
             />
           </div>
           {(() => {
-            if (searchResults.data && searchResults.data.length > 0) {
+            if (!searchResults) {
+              return null
+            }
+
+            if (searchResults.isFetching) {
               return (
-                <div className={size}>
-                  <Tabs>
-                    <Tab label='Data'>
-                      <div style={{height: '350px'}}>
-                        <DataTable
-                          columns={this.state.columns}
-                          data={searchResults.data}
-                          enableColResize='true'
-                          enableSorting='true'
-                        />
-                      </div>
-                    </Tab>
-                  </Tabs>
-                </div>
+                <CircularProgress
+                  size={0.5}
+                  spanStyle={style.span}
+                  style={style.progress}
+                />
               )
             }
+
+            const {data = []} = searchResults
+        
+            if (data.length === 0) {
+              return <div />
+            }
+            
+            return (
+              <div className={size}>
+                <Tabs>
+                  <Tab label='Data'>
+                     <div style={{height: '350px'}}>
+                      <DataTable
+                        columns={this.state.columns}
+                        data={searchResults.data}
+                        enableColResize='true'
+                        enableSorting='true'
+                      />
+                    </div>
+                  </Tab>
+                </Tabs>
+              </div>
+            )
           })()}
         </main>
       </div>
@@ -177,10 +205,6 @@ export default connect((state) => ({
   category: state.category,
   fields: state.fields,
   filters: state.filters,
-  label: state.label,
-  latitude: state.latitude,
-  longitude: state.longitude,
-  mapResults: state.mapResults,
   searchResults: state.searchResults,
   source: state.source,
   sources: state.sources
