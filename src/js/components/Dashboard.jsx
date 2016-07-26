@@ -1,8 +1,6 @@
 import * as FrameworkTypes from 'safe-framework'
 import {ChartComponent} from './visualization/ChartComponent'
-import {ChartMenu} from './visualization/ChartMenu'
 import {connect} from 'react-redux'
-import {excludeEmptyFilters} from '../modules/utilities'
 import {fetchVisualizationResults} from '../modules/visualization-results'
 import FilterCriteria from './FilterCriteria'
 import {Hydrateable} from '../decorators/Hydrateable'
@@ -10,11 +8,10 @@ import {MapComponent} from './visualization/MapComponent'
 import {setDefaultFilters} from '../modules/filters'
 import {SummaryComponent} from './visualization/SummaryComponent'
 import {TableComponent} from './visualization/TableComponent'
-import {TableMenu} from './visualization/TableMenu'
+import {excludeEmptyFilters, menuItemDefs} from '../modules/utilities'
 import React, {Component, PropTypes} from 'react'
 
 const componentTypes = {ChartComponent, MapComponent, TableComponent, SummaryComponent}
-const menuTypes = {ChartMenu, TableMenu}
 
 const {Dashboard: FrameworkDashboard} = FrameworkTypes
 
@@ -26,15 +23,15 @@ class Dashboard extends Component {
     filters: PropTypes.array.isRequired,
     visualizationResults: PropTypes.object.isRequired
   }
-  
+
   constructor (props) {
     super(props)
 
     this.fetchVisualizationResults = ::this.fetchVisualizationResults
-    this.onClickFilter = ::this.onClickFilter
     this.getComponentType = ::this.getComponentType
+    this.getTypeGroup = ::this.getTypeGroup
+    this.onClickFilter = ::this.onClickFilter
     this.onDashboardWillMount = ::this.onDashboardWillMount
-    this.getMenuType = ::this.getMenuType
   }
 
   onDashboardWillMount (dashboard) {
@@ -47,7 +44,7 @@ class Dashboard extends Component {
       dispatch(setDefaultFilters(dashboardFilters))
     }
   }
-  
+
   fetchVisualizationResults (visualization) {
     const {dispatch, filters} = this.props
 
@@ -55,30 +52,26 @@ class Dashboard extends Component {
       visualization._id, excludeEmptyFilters(filters))
     )
   }
-  
+
   getComponentType (type, visualization) {
-    return componentTypes[`${this.getTypeName(type)}Component`]
+    return componentTypes[`${this.getTypeGroup(type)}Component`]
   }
-  
-  getMenuType (type, visualization) {
-    return menuTypes[`${this.getTypeName(type)}Menu`]
-  }
-  
-  getTypeName (type) {
+
+  getTypeGroup (type) {
     if (FrameworkTypes[`${type}Chart`]) {
       return 'Chart'
     }
-    
+
     return type
   }
-  
+
   getFields (dashboard) {
     const {visualizations = []} = dashboard || {}
-    
+
     if (visualizations.length === 0) {
       return {data: []}
     }
-    
+
     // Populate the Fields based off of the fields
     // for each visualization's source.
     return {
@@ -92,7 +85,7 @@ class Dashboard extends Component {
       isFetching: false
     }
   }
-  
+
   onClickFilter () {
     const {dispatch, filters, dashboard} = this.props
     const {visualizations} = dashboard
@@ -136,8 +129,10 @@ class Dashboard extends Component {
         <FrameworkDashboard
           dashboard={dashboard}
           getComponentType={this.getComponentType}
+          getTypeGroup={this.getTypeGroup}
           header={dashboardHeader}
           key={dashboardId}
+          menuItemDefs={menuItemDefs}
           visualizationResults={visualizationResults}
           onVisualizationMount={this.fetchVisualizationResults}
           onWillMount={this.onDashboardWillMount}
