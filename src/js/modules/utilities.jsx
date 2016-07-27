@@ -1,5 +1,6 @@
 import changeCase from 'change-case'
 import Download from 'material-ui/svg-icons/file/file-download'
+import MenuItem from 'material-ui/MenuItem'
 import React from 'react'
 
 /* global document */
@@ -63,12 +64,32 @@ export const menuItemDefs = {
     onTouchTap: saveCanvasFromVisualization
   }],
   Map: [],
+  Summary: [],
   Table: [{
     key: 'exportTable',
     leftIcon: <Download />,
     primaryText: 'Export',
     onTouchTap: exportTableToCSV
   }]
+}
+
+export const generateMenuItems = (type, params) => {
+  return (menuItemDefs[type] || [])
+    .map(({key, leftIcon, primaryText, onTouchTap}, i) => {
+      const onTouchTapWrapper = () => {
+        onTouchTap(...params)
+      }
+
+      return (
+        <MenuItem
+          key={key}
+          leftIcon={leftIcon}
+          primaryText={primaryText}
+          style={{cursor: 'default'}}
+          onTouchTap={onTouchTapWrapper}
+        />
+      )
+    })
 }
 
 export const defaultFetchOptions = {

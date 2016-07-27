@@ -44,7 +44,7 @@ export const Hydrateable = (displayName, hydrateableProps, uniquePropPath = '') 
       componentWillMount () {
         this.hydrateProps()
       }
-      
+
       componentWillUpdate (nextProps, nextState) {
         this.updateStateKey(nextProps)
         this.saveState(nextProps)
@@ -54,30 +54,28 @@ export const Hydrateable = (displayName, hydrateableProps, uniquePropPath = '') 
         this.saveState()
         this._stateKey = undefined
       }
-      
+
       hydrateProps () {
         const {dispatch} = this.props
 
         this.updateStateKey()
-  
+
         const componentState = localState[this._stateKey] || {}
 
         hydrateableProps.forEach((prop) => {
           const actionName = `hydrate${prop.charAt(0).toUpperCase()}${prop.substring(1)}`
           const {[prop]: componentStateProp} = componentState
 
-          if (componentStateProp !== undefined) {
-            dispatch(actions[actionName](componentStateProp))
-          }
+          dispatch(actions[actionName](componentStateProp))
         })
       }
-      
+
       updateStateKey (currentState = this.props) {
         const uniqueKey = getValueByPath(currentState, uniquePropPath)
 
         this._stateKey = displayName + (uniqueKey ? `_${uniqueKey}` : '')
       }
-      
+
       saveState (currentState = this.props) {
         const newLocalState = {}
 
