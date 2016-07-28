@@ -29,7 +29,6 @@ const style = {
 class Dashboard extends Component {
   static propTypes = {
     dashboard: PropTypes.object.isRequired,
-    dashboards: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     filters: PropTypes.array.isRequired,
     visualizationResults: PropTypes.object.isRequired
@@ -155,7 +154,6 @@ class Dashboard extends Component {
 }
 
 export default connect((state, ownProps) => ({
-  dashboards: state.dashboards,
   filters: state.filters,
   visualizationResults: state.visualizationResults
 }))(Dashboard)
