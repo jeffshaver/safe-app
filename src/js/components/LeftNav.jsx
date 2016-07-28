@@ -117,6 +117,7 @@ export class LeftNav extends Component {
               }
             >
               <IconButton
+                disableTouchRipple={true}
                 style={style.button}
                 tooltip='Help'
                 tooltipPosition={'top-center'}
