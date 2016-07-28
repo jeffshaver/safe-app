@@ -17,8 +17,7 @@ const style = {
     marginBottom: 24
   },
   gridTile: {
-    boxSizing: 'border-box',
-    height: '500px'
+    boxSizing: 'border-box'
   },
   visualization: {
     height: '100%'
@@ -117,22 +116,28 @@ class Dashboard extends Component {
               const isFirstTwo = isFirst || i === 1
               const isLast = i === visualizations.length - 1
               const isLastTwo = isLast || i === visualizations.length - 2
-              const size = visualizationSizes[visualization._id]
+              const visualizationSize = visualizationSizes[visualization._id]
+              const {
+                // remove typeof check once mongodb change is in place
+                cols = (typeof visualizationSize === 'number' ? visualizationSize : 2),
+                rows = 1
+              } = visualizationSize
               const results = visualizationResults[visualization._id]
               let padding = '10px'
 
-              if (isFirst && size === 2 || isFirstTwo && size === 1) {
+              if (isFirst && cols === 2 || isFirstTwo && cols === 1) {
                 padding = '0px 10px 10px 10px'
               }
 
-              if (isLast && size === 2 || isLastTwo && size === 1) {
+              if (isLast && cols === 2 || isLastTwo && cols === 1) {
                 padding = '10px 10px 0px 10px'
               }
 
               return (
                 <GridTile
-                  cols={size}
+                  cols={cols}
                   key={visualization._id}
+                  rows={rows}
                   style={{
                     ...(results && results.isFetching ? {} : style.gridTile),
                     padding
