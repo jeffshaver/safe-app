@@ -1,5 +1,38 @@
 # safe-app ChangeLog
 
+## 0.0.17 (July 28, 2016)
+
+### Changes
+
+* [[8e407b3](https://github.com/jeffshaver/safe-app/commit/8e407b3)] - allow visualizations to choose the number of rows they take up in the grid ([knorris](https://github.com/knorris))
+* [[359afe8](https://github.com/jeffshaver/safe-app/commit/359afe8)] - update dependencies and remove a few ([jeffshaver](https://github.com/jeffshaver))
+* [[b2cf4a4](https://github.com/jeffshaver/safe-app/commit/b2cf4a4)] - use new CircularProgress component from safe-framework ([knorris](https://github.com/knorris))
+* [[8966659](https://github.com/jeffshaver/safe-app/commit/8966659)] - fix touch ripple on help icon ([jeffshaver](https://github.com/jeffshaver))
+* [[fa1406b](https://github.com/jeffshaver/safe-app/commit/fa1406b)] - remove unneccessary reference to dashboards in dashboard ([jeffshaver](https://github.com/jeffshaver))
+* [[e1eaab1](https://github.com/jeffshaver/safe-app/commit/e1eaab1)] - bring dashboard back into safe-app ([jeffshaver](https://github.com/jeffshaver))
+* [[deeba8a](https://github.com/jeffshaver/safe-app/commit/deeba8a)] - fix issue where visualization menus wouldn't close after clicking ([jeffshaver](https://github.com/jeffshaver))
+* [[c9c50a5](https://github.com/jeffshaver/safe-app/commit/c9c50a5)] - add eslint plugin to find bad imports. fix left nav styling ([jeffshaver](https://github.com/jeffshaver))
+* [[08c2fd5](https://github.com/jeffshaver/safe-app/commit/08c2fd5)] - move dashboard component to safe-framework ([pml984](https://github.com/pml984))
+
+### Dependency updates
+
+* add `eslint-import-resolver-webpack` at `0.4.0`
+* add `eslint-plugin-import` at `1.11.1`
+* update `babel-cli` to `6.11.4`
+* update `babel-core` to `6.11.4`
+* update `babel-register` to `6.11.5`
+* update `eslint` to `3.1.1`
+* update `eslint-config-standard` to `5.3.5`
+* update `eslint-plugin-promise` to `2.0.0`
+* update `eslint-plugin-standard` to `2.0.0`
+* update `radium` to `0.18.1`
+* update `react-router` to `2.6.0`
+* remove `is`
+* remove `color`
+* remove `flexboxgrid`
+* remove `jsesc`
+* remove `title-case`
+
 ## 0.0.17 (July 20, 2016)
 
 ### Changes
