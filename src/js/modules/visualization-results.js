@@ -36,14 +36,14 @@ export const fetchVisualizationResults = (id, filters) =>
       },
       body: JSON.stringify({filters})
     })
-    .then(checkFetchStatus)
-    .then((response) => response.json())
-    .then((json) => {
-      dispatch(fetchVisualizationResultsSuccess(json, id))
+      .then(checkFetchStatus)
+      .then((response) => response.json())
+      .then((json) => {
+        dispatch(fetchVisualizationResultsSuccess(json, id))
 
-      return Promise.resolve()
-    })
-    .catch((error) => dispatch(fetchVisualizationResultsFailure(error, id)))
+        return Promise.resolve()
+      })
+      .catch((error) => dispatch(fetchVisualizationResultsFailure(error, id)))
   }
 
 export const removeVisualizationResults = (visualization) => ({

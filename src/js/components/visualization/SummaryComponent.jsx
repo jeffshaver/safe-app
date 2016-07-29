@@ -1,8 +1,14 @@
 import numeral from 'numeral'
 import React, {PropTypes} from 'react'
- 
+
 export const SummaryComponent = ({data}) => {
   const style = {
+    flexColumn: {
+      display: 'flex',
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'center'
+    },
     flexWrapper: {
       display: 'flex',
       flexDirection: 'row',
@@ -12,11 +18,12 @@ export const SummaryComponent = ({data}) => {
   }
 
   return (
+    <div style={style.flexColumn}>
     <div style={style.flexWrapper}>
       {
         data.map((item, i) => {
           const key = Object.keys(item)[0]
-        
+
           return (
             <div key={i}>
               <h2>
@@ -30,9 +37,10 @@ export const SummaryComponent = ({data}) => {
         })
       }
     </div>
+    </div>
   )
 }
- 
+
 SummaryComponent.propTypes = {
   data: PropTypes.array.isRequired
 }

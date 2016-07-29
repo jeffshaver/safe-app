@@ -1,7 +1,8 @@
 import {ChartComponent} from './ChartComponent'
-import CircularProgress from 'material-ui/CircularProgress'
+import {CircularProgress} from 'safe-framework'
 import {connect} from 'react-redux'
 import {fetchVisualizationResults} from '../../modules/visualization-results'
+import {grey300} from 'material-ui/styles/colors'
 import {MapComponent} from './MapComponent'
 import {SummaryComponent} from './SummaryComponent'
 import {TableComponent} from './TableComponent'
@@ -12,7 +13,11 @@ import React, {Component, PropTypes} from 'react'
 const components = {ChartComponent, MapComponent, SummaryComponent, TableComponent}
 const style = {
   container: {
-    height: '100%'
+    border: `1px solid ${grey300}`,
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    overflow: 'hidden'
   }
 }
 const getTypeGroup = (type) => {
@@ -64,20 +69,25 @@ class Visualization extends Component {
 
     if (results.isFetching) {
       return (
-        <span style={{
-          position: 'absolute',
-          left: '50%',
-          top: '50%',
-          'transform': 'translate(-50%, -50%)'
-        }}>
-        <CircularProgress
-          size={0.5}
-          style={{
-            left: '.5em',
-            top: '1.2em'
-          }}
-        /> Loading...
-        </span>
+        <div style={style.container}>
+          <VisualizationToolbar
+            title={name}
+          />
+          <div style={{flex: 1, position: 'relative'}}>
+            <CircularProgress
+              size={0.5}
+              spanStyle={{
+                left: '50%',
+                position: 'absolute',
+                top: '50%',
+                transform: 'translate(-50%, -50%)'
+              }}
+              style={{
+                verticalAlign: 'middle'
+              }}
+            />
+          </div>
+        </div>
       )
     }
 
@@ -85,7 +95,23 @@ class Visualization extends Component {
     const {name: visualizationTypeName} = visualizationType
 
     if (data.length === 0) {
-      return <div />
+      return (
+        <div style={style.container}>
+          <VisualizationToolbar
+            title={name}
+          />
+          <div style={{flex: 1, position: 'relative'}}>
+            <span
+              style={{
+                left: '50%',
+                position: 'absolute',
+                top: '50%',
+                transform: 'translate(-50%, -50%)'
+              }}
+            >No data</span>
+          </div>
+        </div>
+      )
     }
 
     let visualizationComponentName = visualizationTypeName

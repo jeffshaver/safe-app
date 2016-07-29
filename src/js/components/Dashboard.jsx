@@ -17,6 +17,10 @@ const style = {
     marginBottom: 24
   },
   gridTile: {
+    height: '100%',
+    overflow: 'visible'
+  },
+  gridTileLoading: {
     boxSizing: 'border-box'
   },
   visualization: {
@@ -107,15 +111,11 @@ class Dashboard extends Component {
         <GridList
           cellHeight={500}
           cols={visualizations.length > 1 ? size : 1}
-          padding={0}
+          padding={10}
           style={style.gridList}
         >
           {
             visualizations.map((visualization, i) => {
-              const isFirst = i === 0
-              const isFirstTwo = isFirst || i === 1
-              const isLast = i === visualizations.length - 1
-              const isLastTwo = isLast || i === visualizations.length - 2
               const visualizationSize = visualizationSizes[visualization._id] || {}
               const {
                 // remove typeof check once mongodb change is in place
@@ -123,15 +123,6 @@ class Dashboard extends Component {
                 rows = 1
               } = visualizationSize
               const results = visualizationResults[visualization._id]
-              let padding = '10px'
-
-              if (isFirst && cols === 2 || isFirstTwo && cols === 1) {
-                padding = '0px 10px 10px 10px'
-              }
-
-              if (isLast && cols === 2 || isLastTwo && cols === 1) {
-                padding = '10px 10px 0px 10px'
-              }
 
               return (
                 <GridTile
@@ -139,8 +130,8 @@ class Dashboard extends Component {
                   key={visualization._id}
                   rows={rows}
                   style={{
-                    ...(results && results.isFetching ? {} : style.gridTile),
-                    padding
+                    ...style.gridTile,
+                    ...(results && results.isFetching ? {} : style.gridTileLoading)
                   }}
                 >
                   <Visualization

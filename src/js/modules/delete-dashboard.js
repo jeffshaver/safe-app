@@ -34,16 +34,16 @@ export const deleteDashboard = (id) =>
         'Content-Type': 'application/json'
       }
     })
-    .then(checkFetchStatus)
-    .then((response) => response.json())
-    .then((json) => {
-      dispatch(deleteDashboardSuccess(json))
-      // FUTURE: OPTIMISTIC UPDATE INSTEAD
-      dispatch(fetchDashboards())
+      .then(checkFetchStatus)
+      .then((response) => response.json())
+      .then((json) => {
+        dispatch(deleteDashboardSuccess(json))
+        // FUTURE: OPTIMISTIC UPDATE INSTEAD
+        dispatch(fetchDashboards())
 
-      return Promise.resolve('')
-    })
-    .catch((error) => dispatch(deleteDashboardFailure(error)))
+        return Promise.resolve('')
+      })
+      .catch((error) => dispatch(deleteDashboardFailure(error)))
   }
 
 const initialState = {
