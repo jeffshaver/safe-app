@@ -85,7 +85,7 @@ class Dashboard extends Component {
           const {fields = []} = visualization.source
 
           return [...array, ...fields]
-        }
+        }, []
       )))],
       isFetching: false
     }
@@ -116,7 +116,7 @@ class Dashboard extends Component {
               const isFirstTwo = isFirst || i === 1
               const isLast = i === visualizations.length - 1
               const isLastTwo = isLast || i === visualizations.length - 2
-              const visualizationSize = visualizationSizes[visualization._id]
+              const visualizationSize = visualizationSizes[visualization._id] || {}
               const {
                 // remove typeof check once mongodb change is in place
                 cols = (typeof visualizationSize === 'number' ? visualizationSize : 2),
