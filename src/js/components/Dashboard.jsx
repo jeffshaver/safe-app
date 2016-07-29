@@ -119,7 +119,7 @@ class Dashboard extends Component {
               const visualizationSize = visualizationSizes[visualization._id] || {}
               const {
                 // remove typeof check once mongodb change is in place
-                cols = (typeof visualizationSize === 'number' ? visualizationSize : 2),
+                cols = (typeof visualizationSize !== 'object' ? visualizationSize : 2),
                 rows = 1
               } = visualizationSize
               const results = visualizationResults[visualization._id]
