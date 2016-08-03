@@ -6,14 +6,14 @@ import {Hydrateable} from '../decorators/Hydrateable'
 import {setDefaultFilters} from '../modules/filters'
 import {verticalTop} from '../styles/common'
 import Visualization from './visualization/Visualization'
-import {GridList, GridTile} from 'material-ui/GridList'
 import React, {Component, PropTypes} from 'react'
+import ReactGridLayout, {WidthProvider} from 'react-grid-layout'
+
+const GridLayout = WidthProvider(ReactGridLayout)
 
 const style = {
   gridList: {
     width: '100%',
-    height: '60%',
-    overflowY: 'auto',
     marginBottom: 24
   },
   gridTile: {
@@ -80,7 +80,7 @@ class Dashboard extends Component {
 
     const {dispatch, visualizationResults} = this.props
     const {dashboardParams = {}, visualizations = []} = dashboard
-    const {size = 2, visualizationSizes = []} = dashboardParams
+    const {size = 2, visualizationSizes = [], layout} = dashboardParams
     // Populate the Fields based off of the fields
     // for each visualization's source.
     const fields = {
@@ -93,6 +93,7 @@ class Dashboard extends Component {
       )))],
       isFetching: false
     }
+    const totalCols = visualizations.length > 1 ? size : 1
 
     return (
       <div>
@@ -108,10 +109,10 @@ class Dashboard extends Component {
           }}
           onClickFilter={this.onClickFilter}
         />
-        <GridList
-          cellHeight={500}
-          cols={visualizations.length > 1 ? size : 1}
-          padding={10}
+        <GridLayout
+          cols={totalCols}
+          layout={layout}
+          rowHeight={250}
           style={style.gridList}
         >
           {
@@ -119,16 +120,15 @@ class Dashboard extends Component {
               const visualizationSize = visualizationSizes[visualization._id] || {}
               const {
                 // remove typeof check once mongodb change is in place
-                cols = (typeof visualizationSize !== 'object' ? visualizationSize : 2),
+                cols = (typeof visualizationSize !== 'object' ? visualizationSize : 1),
                 rows = 1
               } = visualizationSize
               const results = visualizationResults[visualization._id]
 
               return (
-                <GridTile
-                  cols={cols}
+                <div
+                  _grid={{x: i % totalCols, y: Math.floor(i / totalCols), w: cols, h: rows * 2}}
                   key={visualization._id}
-                  rows={rows}
                   style={{
                     ...style.gridTile,
                     ...(results && results.isFetching ? {} : style.gridTileLoading)
@@ -139,11 +139,11 @@ class Dashboard extends Component {
                     results={results}
                     visualization={visualization}
                   />
-                </GridTile>
+                </div>
               )
             })
           }
-        </GridList>
+        </GridLayout>
       </div>
     )
   }

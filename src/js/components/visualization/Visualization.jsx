@@ -123,7 +123,15 @@ class Visualization extends Component {
     const VisualizationComponent = components[`${visualizationComponentName}Component`]
 
     return (
-      <div style={style.container}>
+      <div
+        style={{
+          ...style.container,
+          ...(VisualizationComponent === TableComponent
+            ? {display: 'block'}
+            : {}
+          )
+        }}
+      >
         <VisualizationToolbar
           menuItems={this._menuItems}
           title={name}
