@@ -1,6 +1,20 @@
 # safe-app ChangeLog
 
-## 0.0.17 (July 28, 2016)
+## 0.0.19 (August 08, 2016)
+
+### Changes
+
+* [[e61daa3](https://github.com/jeffshaver/safe-app/commit/e61daa3)] - fix some styles while dragging visualizations. only allow dragging from toolbar ([jeffshaver](https://github.com/jeffshaver))
+* [[6d701b2](https://github.com/jeffshaver/safe-app/commit/6d701b2)] - configurable dashboards ([jeffshaver](https://github.com/jeffshaver))
+* [[48976f7](https://github.com/jeffshaver/safe-app/commit/48976f7)] - change visualization styles ([jeffshaver](https://github.com/jeffshaver))
+* [[9d8caf8](https://github.com/jeffshaver/safe-app/commit/9d8caf8)] - fix issue that caused all visualizations to be 2 columns wide ([jeffshaver](https://github.com/jeffshaver))
+* [[363ad31](https://github.com/jeffshaver/safe-app/commit/363ad31)] - fix issue when dashboards only had one visualization ([jeffshaver](https://github.com/jeffshaver))
+
+### Dependency updates
+
+* add `react-grid-layout` at `0.12.7`
+
+## 0.0.18 (July 28, 2016)
 
 ### Changes
 
