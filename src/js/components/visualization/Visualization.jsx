@@ -2,17 +2,18 @@ import {ChartComponent} from './ChartComponent'
 import {CircularProgress} from 'safe-framework'
 import {connect} from 'react-redux'
 import {fetchVisualizationResults} from '../../modules/visualization-results'
-import {grey300} from 'material-ui/styles/colors'
 import {MapComponent} from './MapComponent'
 import {SummaryComponent} from './SummaryComponent'
 import {TableComponent} from './TableComponent'
 import VisualizationToolbar from './VisualizationToolbar'
 import {excludeEmptyFilters, generateMenuItems} from '../../modules/utilities'
+import {grey300, white} from 'material-ui/styles/colors'
 import React, {Component, PropTypes} from 'react'
 
 const components = {ChartComponent, MapComponent, SummaryComponent, TableComponent}
 const style = {
   container: {
+    background: white,
     border: `1px solid ${grey300}`,
     display: 'flex',
     flexDirection: 'column',

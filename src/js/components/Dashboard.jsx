@@ -111,6 +111,7 @@ class Dashboard extends Component {
         />
         <GridLayout
           cols={totalCols}
+          draggableHandle={'.visualizationToolbar'}
           layout={layout}
           rowHeight={250}
           style={style.gridList}

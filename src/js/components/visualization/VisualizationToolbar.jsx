@@ -10,6 +10,9 @@ import React, {Component, PropTypes} from 'react'
 const style = {
   iconButton: {
     margin: '0.35rem -0.75rem 0 0'
+  },
+  toolbar: {
+    cursor: 'move'
   }
 }
 
@@ -27,7 +30,10 @@ class VisualizationToolbar extends Component {
     const {menuItems, title} = this.props
 
     return (
-      <Toolbar>
+      <Toolbar
+        className={'visualizationToolbar'}
+        style={style.toolbar}
+      >
         <ToolbarGroup float='left'>
           <ToolbarTitle text={title} />
         </ToolbarGroup>
