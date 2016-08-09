@@ -6,9 +6,8 @@ import {fetchSources} from '../modules/sources'
 import FilterCriteria from './FilterCriteria'
 import RaisedButton from 'material-ui/RaisedButton'
 import {setSource} from '../modules/source'
-import Tab from 'material-ui/Tabs/Tab'
-import Tabs from 'material-ui/Tabs/Tabs'
 import {CircularProgress, DataTable, SelectField} from 'safe-framework'
+import {grey300, white} from 'material-ui/styles/colors'
 import {header, main, verticalTop} from '../styles/common'
 import {Hydrateable, LogMetrics} from '../decorators'
 import React, {Component, PropTypes} from 'react'
@@ -32,6 +31,12 @@ const style = {
     left: '50%',
     top: '50%',
     'transform': 'translate(-50%, -50%)'
+  },
+  wrapper: {
+    background: white,
+    border: `1px solid ${grey300}`,
+    height: '510px',
+    position: 'relative'
   }
 }
 const generateColumns = (data) => {
@@ -46,7 +51,6 @@ const generateColumns = (data) => {
     field
   }))
 }
-const size = 'col-xs-12 col-sm-12'
 
 @LogMetrics('pageView', 'Search')
 @Hydrateable('Search', ['filters', 'source'])
@@ -84,7 +88,7 @@ class Search extends Component {
 
   componentWillMount () {
     const {dispatch, searchResults} = this.props
-    
+
     this.updateColumns(searchResults)
 
     dispatch(fetchSources())
@@ -108,6 +112,43 @@ class Search extends Component {
     dispatch(fetchFields(source))
   }
 
+  renderSearchResults () {
+    const {searchResults} = this.props
+
+    if (!searchResults) {
+      return null
+    }
+
+    if (searchResults.isFetching) {
+      return (
+        <div style={style.wrapper}>
+          <CircularProgress
+            size={0.5}
+            spanStyle={style.span}
+            style={style.progress}
+          />
+        </div>
+      )
+    }
+
+    const {data = []} = searchResults
+
+    if (data.length === 0) {
+      return <div />
+    }
+
+    return (
+      <div style={style.wrapper}>
+        <DataTable
+          columns={this.state.columns}
+          data={searchResults.data}
+          enableColResize='true'
+          enableSorting='true'
+        />
+      </div>
+    )
+  }
+
   onClickSearch () {
     const {dispatch, filters, source} = this.props
 
@@ -117,7 +158,6 @@ class Search extends Component {
   render () {
     const {
       fields,
-      searchResults,
       source,
       sources
     } = this.props
@@ -157,44 +197,7 @@ class Search extends Component {
               onTouchTap={this.onClickSearch}
             />
           </div>
-          {(() => {
-            if (!searchResults) {
-              return null
-            }
-
-            if (searchResults.isFetching) {
-              return (
-                <CircularProgress
-                  size={0.5}
-                  spanStyle={style.span}
-                  style={style.progress}
-                />
-              )
-            }
-
-            const {data = []} = searchResults
-        
-            if (data.length === 0) {
-              return <div />
-            }
-            
-            return (
-              <div className={size}>
-                <Tabs>
-                  <Tab label='Data'>
-                     <div style={{height: '350px'}}>
-                      <DataTable
-                        columns={this.state.columns}
-                        data={searchResults.data}
-                        enableColResize='true'
-                        enableSorting='true'
-                      />
-                    </div>
-                  </Tab>
-                </Tabs>
-              </div>
-            )
-          })()}
+          {this.renderSearchResults()}
         </main>
       </div>
     )

@@ -43,7 +43,7 @@ class Upload extends Component {
 
   componentWillUnmount () {
     const {dispatch} = this.props
-    
+
     dispatch(resetUploadDataTypes())
   }
 
@@ -92,6 +92,12 @@ class Upload extends Component {
     dispatch(setUploadDataTypeByHeaderName(header, value))
   }
 
+  handleNonCsvDialogClose = () => {
+    const {dispatch} = this.props
+
+    dispatch(toggleDialog(false))
+  }
+
   renderColumnMenu (header, value) {
     return (
       <div key={header}>{header}
@@ -126,12 +132,6 @@ class Upload extends Component {
     }
 
     return headers.map((header) => this.renderColumnMenu(header, uploadDataTypes[header]))
-  }
-
-  handleNonCsvDialogClose = () => {
-    const {dispatch} = this.props
-
-    dispatch(toggleDialog(false))
   }
 
   render () {

@@ -26,8 +26,31 @@ class VisualizationToolbar extends Component {
     menuItems: []
   }
 
+  renderMenuItems () {
+    const {menuItems} = this.props
+
+    if (menuItems.length === 0) return null
+
+    return (
+      <IconMenu
+        anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+        iconButtonElement={
+          <IconButton
+            style={style.iconButton}
+            touch={true}
+          >
+            <NavigationMenu />
+          </IconButton>
+        }
+        targetOrigin={{vertical: 'top', horizontal: 'right'}}
+      >
+        {menuItems}
+      </IconMenu>
+    )
+  }
+
   render () {
-    const {menuItems, title} = this.props
+    const {title} = this.props
 
     return (
       <Toolbar
@@ -38,26 +61,7 @@ class VisualizationToolbar extends Component {
           <ToolbarTitle text={title} />
         </ToolbarGroup>
         <ToolbarGroup float='right'>
-          {/* Icons to float to right */}
-          {menuItems.length > 0
-            ? (
-              <IconMenu
-                anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-                iconButtonElement={
-                  <IconButton
-                    style={style.iconButton}
-                    touch={true}
-                  >
-                    <NavigationMenu />
-                  </IconButton>
-                }
-                targetOrigin={{vertical: 'top', horizontal: 'right'}}
-              >
-                {menuItems}
-              </IconMenu>
-            )
-          : null
-        }
+          {this.renderMenuItems()}
         </ToolbarGroup>
       </Toolbar>
     )

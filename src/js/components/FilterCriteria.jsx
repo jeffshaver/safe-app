@@ -136,11 +136,108 @@ class FilterCriteria extends Component {
     onClickFilter(...params)
   }
 
+  renderAddButton (i) {
+    const {filters, style} = this.props
+
+    if (i !== filters.length - 1) return null
+
+    return (
+      <FloatingActionButton
+        mini={true}
+        secondary={true}
+        style={{
+          ...style,
+          margin: '1em 0 0 1em'
+        }}
+        onTouchTap={this.onAddFilter}
+      >
+        <ContentAdd />
+      </FloatingActionButton>
+    )
+  }
+
+  renderFilters () {
+    const {expanded} = this.state
+
+    if (!expanded) return null
+
+    const {filters} = this.props
+
+    return filters.map((filter, i) => {
+      const {
+        criteriaDataProperty,
+        fields,
+        style
+      } = this.props
+      const field = fields.data[filter.fieldIndex] || {}
+      const {[criteriaDataProperty]: criteriaData} = field
+      const ValueField = criteriaData ? AutoComplete : TextField
+
+      return (
+        <div key={i}>
+          <SelectField
+            floatingLabelText='Select a field'
+            hintText='Select a field'
+            isFetching={fields.isFetching}
+            items={fields.data}
+            keyProp={'name'}
+            primaryTextProp={'name'}
+            style={verticalTop}
+            value={filter.field}
+            valueProp={'name'}
+            onChange={(ev, index, value) => this.onChangeField(ev, i, value, index)}
+          />
+          <SelectField
+            floatingLabelText='Select an operator'
+            hintText='Select an operator'
+            items={operators}
+            keyProp={'value'}
+            primaryTextProp={'primaryText'}
+            style={verticalTop}
+            value={filter.operator}
+            valueProp={'value'}
+            onChange={(ev, index, value) => this.onChangeOperator(ev, i, value, index)}
+          />
+          <ValueField
+            dataSource={criteriaData}
+            filter={AutoComplete.caseInsensitiveFilter}
+            floatingLabelText='Filter Criteria'
+            hintText='Filter Criteria'
+            openOnFocus={true}
+            style={style}
+            value={filter.value}
+            onChange={(ev) => this.onChangeValue(ev, i)}
+          />
+          {this.renderRemoveButton(i)}
+          {this.renderAddButton(i)}
+        </div>
+      )
+    })
+  }
+
+  renderRemoveButton (i) {
+    const {filters, style} = this.props
+
+    if (filters.length === 1) return null
+
+    return (
+      <FloatingActionButton
+        mini={true}
+        primary={true}
+        style={{
+          ...style,
+          margin: '1em 0 0 1em'
+        }}
+        onTouchTap={(ev) => this.onRemoveFilter(ev, i)}
+      >
+        <ContentRemove />
+      </FloatingActionButton>
+    )
+  }
+
   render () {
     const {
-      criteriaDataProperty,
       fields,
-      filters,
       headerStyle,
       headerText,
       onClickFilter,
@@ -176,84 +273,7 @@ class FilterCriteria extends Component {
               </span>
           : null}
         </h3>
-        {this.state.expanded
-          ? filters.map((filter, i) => {
-            const field = fields.data[filter.fieldIndex] || {}
-            const {[criteriaDataProperty]: criteriaData} = field
-            const ValueField = criteriaData ? AutoComplete : TextField
-
-            return (
-              <div key={i}>
-                <SelectField
-                  floatingLabelText='Select a field'
-                  hintText='Select a field'
-                  isFetching={fields.isFetching}
-                  items={fields.data}
-                  keyProp={'name'}
-                  primaryTextProp={'name'}
-                  style={verticalTop}
-                  value={filter.field}
-                  valueProp={'name'}
-                  onChange={(ev, index, value) => this.onChangeField(ev, i, value, index)}
-                />
-                <SelectField
-                  floatingLabelText='Select an operator'
-                  hintText='Select an operator'
-                  items={operators}
-                  keyProp={'value'}
-                  primaryTextProp={'primaryText'}
-                  style={verticalTop}
-                  value={filter.operator}
-                  valueProp={'value'}
-                  onChange={(ev, index, value) => this.onChangeOperator(ev, i, value, index)}
-                />
-                <ValueField
-                  dataSource={criteriaData}
-                  filter={AutoComplete.caseInsensitiveFilter}
-                  floatingLabelText='Filter Criteria'
-                  hintText='Filter Criteria'
-                  openOnFocus={true}
-                  style={style}
-                  value={filter.value}
-                  onChange={(ev) => this.onChangeValue(ev, i)}
-                />
-                {(() => {
-                  if (filters.length !== 1) {
-                    return (
-                      <FloatingActionButton
-                        mini={true}
-                        primary={true}
-                        style={{
-                          ...style,
-                          margin: '1em 0 0 1em'
-                        }}
-                        onTouchTap={(ev) => this.onRemoveFilter(ev, i)}
-                      >
-                        <ContentRemove />
-                      </FloatingActionButton>
-                    )
-                  }
-                })()}
-                {(() => {
-                  if (i === filters.length - 1) {
-                    return (
-                      <FloatingActionButton
-                        mini={true}
-                        secondary={true}
-                        style={{
-                          ...style,
-                          margin: '1em 0 0 1em'
-                        }}
-                        onTouchTap={this.onAddFilter}
-                      >
-                        <ContentAdd />
-                      </FloatingActionButton>
-                    )
-                  }
-                })()}
-              </div>
-          )})
-         : null}
+        {this.renderFilters()}
       </div>
     )
   }

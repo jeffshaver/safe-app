@@ -134,7 +134,7 @@ class Dashboards extends Component {
     dispatch(resetEditDialog())
   }
 
-  generateActions (cancelText, submitText, onCancelTap, onSubmitTap) {
+  renderActions (cancelText, submitText, onCancelTap, onSubmitTap) {
     return [
       <FlatButton
         key={0}
@@ -151,20 +151,37 @@ class Dashboards extends Component {
     ]
   }
 
-  selectDashboard (event, index, id) {
-    browserHistory.push(`/dashboards/${id}`)
+  renderCrudButtons () {
+    return (
+      <div>
+        {/* <FlatButton
+          disabled={!id}
+          label='Edit'
+          onTouchTap={this.showEditDialog}
+        />
+        <FlatButton
+          disabled={!id}
+          label='Delete'
+          onTouchTap={this.showDeleteDialog}
+        />
+        <FlatButton
+          label='Create'
+          primary={true}
+          onTouchTap={this.showCreateDialog}
+        /> */}
+      </div>
+    )
   }
-  
-  render () {
+
+  renderCrudDialogs () {
+    const createActions = this.renderActions('Cancel', 'Create', this.hideCreateDialog, this.createDashboard)
+    const deleteActions = this.renderActions('Cancel', 'Delete', this.hideDeleteDialog, this.deleteDashboard)
+    const editActions = this.renderActions('Cancel', 'Save', this.hideEditDialog, this.editDashboard)
     const {
       createDashboardDialog,
-      dashboardId = '',
-      dashboards,
       deleteDashboardDialog,
       editDashboardDialog
     } = this.props
-    const dashboard = getDashboardById(dashboards.data, dashboardId)
-    const {title} = dashboard || {}
     const {
       subtitle: createSubtitle,
       title: createTitle,
@@ -178,60 +195,9 @@ class Dashboards extends Component {
       title: editTitle,
       visibility: editVisibility
     } = editDashboardDialog
-    const createActions = this.generateActions('Cancel', 'Create', this.hideCreateDialog, this.createDashboard)
-    const deleteActions = this.generateActions('Cancel', 'Delete', this.hideDeleteDialog, this.deleteDashboard)
-    const editActions = this.generateActions('Cancel', 'Save', this.hideEditDialog, this.editDashboard)
 
     return (
       <div>
-        <header style={header}>
-          <h1>Dashboards {title ? `/ ${title}` : ''}</h1>
-        </header>
-        <main style={main}>
-          <SelectField
-            autoWidth={true}
-            floatingLabelText='Select a dashboard'
-            hintText='Select a dashboard'
-            isFetching={dashboards.isFetching}
-            items={(dashboards.data || []).sort((a, b) => (
-              a.title.localeCompare(b.title)
-            ))}
-            keyProp={'_id'}
-            primaryTextProp={'title'}
-            value={dashboardId}
-            valueProp={'_id'}
-            onChange={this.selectDashboard}
-          />
-          {/* <FlatButton
-            disabled={!id}
-            label='Edit'
-            onTouchTap={this.showEditDialog}
-          />
-          <FlatButton
-            disabled={!id}
-            label='Delete'
-            onTouchTap={this.showDeleteDialog}
-          />
-          <FlatButton
-            label='Create'
-            primary={true}
-            onTouchTap={this.showCreateDialog}
-          /> */}
-          {(() => {
-            if (!dashboardId || dashboards.data.length === 0 || dashboards.isFetching || dashboards.error) {
-              return null
-            }
-
-            return (
-              <Dashboard
-                dashboard={dashboard}
-                dashboardId={dashboardId}
-                key={dashboardId}
-              />
-            )
-          })()}
-        </main>
-        {/* Dialog Definitions */}
         <Dialog
           actions={createActions}
           contentStyle={style}
@@ -280,6 +246,58 @@ class Dashboards extends Component {
             onChange={this.changeEditDialogSubtitle}
           />
         </Dialog>
+      </div>
+    )
+  }
+
+  selectDashboard (event, index, id) {
+    browserHistory.push(`/dashboards/${id}`)
+  }
+
+  render () {
+    const {
+      dashboardId = '',
+      dashboards
+    } = this.props
+    const dashboard = getDashboardById(dashboards.data, dashboardId)
+    const {title} = dashboard || {}
+
+    return (
+      <div>
+        <header style={header}>
+          <h1>Dashboards {title ? `/ ${title}` : ''}</h1>
+        </header>
+        <main style={main}>
+          <SelectField
+            autoWidth={true}
+            floatingLabelText='Select a dashboard'
+            hintText='Select a dashboard'
+            isFetching={dashboards.isFetching}
+            items={(dashboards.data || []).sort((a, b) => (
+              a.title.localeCompare(b.title)
+            ))}
+            keyProp={'_id'}
+            primaryTextProp={'title'}
+            value={dashboardId}
+            valueProp={'_id'}
+            onChange={this.selectDashboard}
+          />
+          {this.renderCrudButtons()}
+          {(() => {
+            if (!dashboardId || dashboards.data.length === 0 || dashboards.isFetching || dashboards.error) {
+              return null
+            }
+
+            return (
+              <Dashboard
+                dashboard={dashboard}
+                dashboardId={dashboardId}
+                key={dashboardId}
+              />
+            )
+          })()}
+        </main>
+        {this.renderCrudDialogs()}
       </div>
     )
   }

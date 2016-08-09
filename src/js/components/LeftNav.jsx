@@ -44,9 +44,74 @@ const style = {
 }
 
 export class LeftNav extends Component {
-  render () {
+  renderHelpMenu () {
+    if (helpMenuItems.length === 0) {
+      return null
+    }
+
+    return (
+      <MenuItem
+        innerDivStyle={{padding: 0}}
+        key='Help'
+        menuItems={helpMenuItems.map((item) => (
+          <MenuItem
+            href={item.link}
+            key={item.title}
+            primaryText={item.title}
+            rel='noopener noreferrer'
+            target={item.target || '_self'}
+          />
+        ))}
+        rightIcon={
+          <ArrowDropRight
+            color={getMuiTheme().palette.textColor}
+            style={style.dropdownIcon}
+          />
+        }
+      >
+        <IconButton
+          disableTouchRipple={true}
+          style={style.button}
+          tooltip='Help'
+          tooltipPosition={'top-center'}
+          tooltipStyles={style.tooltip}
+        >
+          <ActionHelp />
+        </IconButton>
+      </MenuItem>
+    )
+  }
+
+  renderRoutes () {
     const routeNames = Object.keys(routes)
 
+    return routeNames.map((routeName, i) => {
+      const route = routes[routeName]
+      const AvatarComponent = route.avatar
+
+      if (!route.enabled || routeName === 'Home') return
+
+      return (
+        <MenuItem
+          innerDivStyle={{padding: 0}}
+          key={routeName}
+          onTouchTap={() => (browserHistory.push(`/${route.path}`))}
+        >
+          <IconButton
+            disableTouchRipple={true}
+            style={style.button}
+            tooltip={routeName}
+            tooltipPosition='top-center'
+            tooltipStyles={style.tooltip}
+          >
+            <AvatarComponent />
+          </IconButton>
+        </MenuItem>
+      )
+    })
+  }
+
+  render () {
     return (
       <Drawer
         ref='leftNav'
@@ -68,67 +133,8 @@ export class LeftNav extends Component {
             tooltipStyles={style.tooltip}
           />
         </MenuItem>
-        {
-          routeNames.map((routeName, i) => {
-            const route = routes[routeName]
-            const AvatarComponent = route.avatar
-
-            if (!route.enabled || routeName === 'Home') return
-
-            return (
-              <MenuItem
-                innerDivStyle={{padding: 0}}
-                key={routeName}
-                onTouchTap={() => (browserHistory.push(`/${route.path}`))}
-              >
-                <IconButton
-                  disableTouchRipple={true}
-                  style={style.button}
-                  tooltip={routeName}
-                  tooltipPosition='top-center'
-                  tooltipStyles={style.tooltip}
-                >
-                  <AvatarComponent />
-                </IconButton>
-              </MenuItem>
-            )
-          })
-        }
-        {
-          helpMenuItems.length > 0
-          ? (
-            <MenuItem
-              innerDivStyle={{padding: 0}}
-              key='Help'
-              menuItems={helpMenuItems.map((item) => (
-                <MenuItem
-                  href={item.link}
-                  key={item.title}
-                  primaryText={item.title}
-                  rel='noopener noreferrer'
-                  target={item.target || '_self'}
-                />
-              ))}
-              rightIcon={
-                <ArrowDropRight
-                  color={getMuiTheme().palette.textColor}
-                  style={style.dropdownIcon}
-                />
-              }
-            >
-              <IconButton
-                disableTouchRipple={true}
-                style={style.button}
-                tooltip='Help'
-                tooltipPosition={'top-center'}
-                tooltipStyles={style.tooltip}
-              >
-                <ActionHelp />
-              </IconButton>
-            </MenuItem>
-          )
-          : null
-        }
+        {this.renderRoutes()}
+        {this.renderHelpMenu()}
       </Drawer>
     )
   }

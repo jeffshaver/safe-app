@@ -71,6 +71,56 @@ class Dashboard extends Component {
     }
   }
 
+  renderVisualizationGrid () {
+    const {dashboard} = this.props
+    const {dashboardParams = {}, visualizations = []} = dashboard
+    const {size = 2, layout} = dashboardParams
+    const totalCols = visualizations.length > 1 ? size : 1
+
+    return (
+      <GridLayout
+        cols={totalCols}
+        draggableHandle={'.visualizationToolbar'}
+        layout={layout}
+        rowHeight={250}
+        style={style.gridList}
+      >
+        {visualizations.map(this.renderVisualization, this)}
+      </GridLayout>
+    )
+  }
+
+  renderVisualization (visualization, i) {
+    const {dashboard, dispatch, visualizationResults} = this.props
+    const {dashboardParams = {}, visualizations = []} = dashboard
+    const {size = 2, visualizationSizes = []} = dashboardParams
+    const visualizationSize = visualizationSizes[visualization._id] || {}
+    const {
+      // remove typeof check once mongodb change is in place
+      cols = (typeof visualizationSize !== 'object' ? visualizationSize : 1),
+      rows = 1
+    } = visualizationSize
+    const results = visualizationResults[visualization._id]
+    const totalCols = visualizations.length > 1 ? Number(size) : 1
+
+    return (
+      <div
+        data-grid={{x: i % totalCols, y: Math.floor(i / totalCols), w: Number(cols), h: Number(rows) * 2}}
+        key={visualization._id}
+        style={{
+          ...style.gridTile,
+          ...(results && results.isFetching ? {} : style.gridTileLoading)
+        }}
+      >
+        <Visualization
+          dispatch={dispatch}
+          results={results}
+          visualization={visualization}
+        />
+      </div>
+    )
+  }
+
   render () {
     const {dashboard} = this.props
 
@@ -78,9 +128,8 @@ class Dashboard extends Component {
       return null
     }
 
-    const {dispatch, visualizationResults} = this.props
-    const {dashboardParams = {}, visualizations = []} = dashboard
-    const {size = 2, visualizationSizes = [], layout} = dashboardParams
+    const {visualizations} = dashboard
+
     // Populate the Fields based off of the fields
     // for each visualization's source.
     const fields = {
@@ -93,7 +142,6 @@ class Dashboard extends Component {
       )))],
       isFetching: false
     }
-    const totalCols = visualizations.length > 1 ? size : 1
 
     return (
       <div>
@@ -109,42 +157,7 @@ class Dashboard extends Component {
           }}
           onClickFilter={this.onClickFilter}
         />
-        <GridLayout
-          cols={totalCols}
-          draggableHandle={'.visualizationToolbar'}
-          layout={layout}
-          rowHeight={250}
-          style={style.gridList}
-        >
-          {
-            visualizations.map((visualization, i) => {
-              const visualizationSize = visualizationSizes[visualization._id] || {}
-              const {
-                // remove typeof check once mongodb change is in place
-                cols = (typeof visualizationSize !== 'object' ? visualizationSize : 1),
-                rows = 1
-              } = visualizationSize
-              const results = visualizationResults[visualization._id]
-
-              return (
-                <div
-                  _grid={{x: i % totalCols, y: Math.floor(i / totalCols), w: cols, h: rows * 2}}
-                  key={visualization._id}
-                  style={{
-                    ...style.gridTile,
-                    ...(results && results.isFetching ? {} : style.gridTileLoading)
-                  }}
-                >
-                  <Visualization
-                    dispatch={dispatch}
-                    results={results}
-                    visualization={visualization}
-                  />
-                </div>
-              )
-            })
-          }
-        </GridLayout>
+        {this.renderVisualizationGrid()}
       </div>
     )
   }

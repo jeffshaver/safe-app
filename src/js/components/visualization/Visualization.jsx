@@ -60,61 +60,61 @@ class Visualization extends Component {
     // dispatch(removeVisualizationResults())
   }
 
-  render () {
-    const {visualization, results} = this.props
-    const {name, visualizationType} = visualization
+  renderLoading () {
+    const {visualization} = this.props
+    const {name} = visualization
 
-    if (!results) {
-      return null
-    }
-
-    if (results.isFetching) {
-      return (
-        <div style={style.container}>
-          <VisualizationToolbar
-            title={name}
+    return (
+      <div style={style.container}>
+        <VisualizationToolbar
+          title={name}
+        />
+        <div style={{flex: 1, position: 'relative'}}>
+          <CircularProgress
+            size={0.5}
+            spanStyle={{
+              left: '50%',
+              position: 'absolute',
+              top: '50%',
+              transform: 'translate(-50%, -50%)'
+            }}
+            style={{
+              verticalAlign: 'middle'
+            }}
           />
-          <div style={{flex: 1, position: 'relative'}}>
-            <CircularProgress
-              size={0.5}
-              spanStyle={{
-                left: '50%',
-                position: 'absolute',
-                top: '50%',
-                transform: 'translate(-50%, -50%)'
-              }}
-              style={{
-                verticalAlign: 'middle'
-              }}
-            />
-          </div>
         </div>
-      )
-    }
+      </div>
+    )
+  }
 
+  renderNoData () {
+    const {visualization} = this.props
+    const {name} = visualization
+
+    return (
+      <div style={style.container}>
+        <VisualizationToolbar
+          title={name}
+        />
+        <div style={{flex: 1, position: 'relative'}}>
+          <span
+            style={{
+              left: '50%',
+              position: 'absolute',
+              top: '50%',
+              transform: 'translate(-50%, -50%)'
+            }}
+          >No data</span>
+        </div>
+      </div>
+    )
+  }
+
+  renderVisualization () {
+    const {results, visualization} = this.props
     const {data = []} = results
+    const {name, visualizationType} = visualization
     const {name: visualizationTypeName} = visualizationType
-
-    if (data.length === 0) {
-      return (
-        <div style={style.container}>
-          <VisualizationToolbar
-            title={name}
-          />
-          <div style={{flex: 1, position: 'relative'}}>
-            <span
-              style={{
-                left: '50%',
-                position: 'absolute',
-                top: '50%',
-                transform: 'translate(-50%, -50%)'
-              }}
-            >No data</span>
-          </div>
-        </div>
-      )
-    }
-
     let visualizationComponentName = visualizationTypeName
 
     if (!['Map', 'Table', 'Summary'].includes(visualizationTypeName)) {
@@ -146,6 +146,21 @@ class Visualization extends Component {
         />
       </div>
     )
+  }
+
+  render () {
+    const {results} = this.props
+    const {data = []} = results
+
+    if (results.isFetching) {
+      return this.renderLoading()
+    }
+
+    if (data.length === 0) {
+      return this.renderNoData()
+    }
+
+    return this.renderVisualization()
   }
 }
 

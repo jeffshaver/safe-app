@@ -47,44 +47,57 @@ class App extends Component {
     dispatch(fetchUser())
   }
 
-  render () {
+  renderLoading () {
+    return (
+      <div style={[style.loading.wrapper]}>
+        <CircularProgress text={''} />
+        <h1>Fetching User Data</h1>
+      </div>
+    )
+  }
+
+  renderError (user) {
+    return (
+      <div style={[style.loading.wrapper]}>
+        <h1>{'We couldn\'t authenticate you.'}</h1>
+        {(() => {
+          if (!user.error) return
+
+          return <span>{user.error.message}</span>
+        })()}
+      </div>
+    )
+  }
+
+  renderContent () {
     const {children, user} = this.props
-    let content
 
     if (user.isFetching) {
-      content = (
-        <div style={[style.loading.wrapper]}>
-          <CircularProgress text={''} />
-          <h1>Fetching User Data</h1>
-        </div>
-      )
-    } else if (user.error || !user.data.authenticated) {
-      content = (
-        <div style={[style.loading.wrapper]}>
-          <h1>{'We couldn\'t authenticate you.'}</h1>
-          {(() => {
-            if (!user.error) return
-
-            return <span>{user.error.message}</span>
-          })()}
-        </div>
-      )
-    } else {
-      content = (
-        <div>
-          <LeftNav />
-          <Wrapper style={style.wrapper}>
-            <Banner />
-            <Header />
-            <div style={style.flexWrapper}>
-              {children}
-            </div>
-            <Footer />
-            <Banner />
-          </Wrapper>
-        </div>
-      )
+      return this.renderLoading()
     }
+
+    if (user.error || !user.data.authenticated) {
+      return this.renderError(user)
+    }
+
+    return (
+      <div>
+        <LeftNav />
+        <Wrapper style={style.wrapper}>
+          <Banner />
+          <Header />
+          <div style={style.flexWrapper}>
+            {children}
+          </div>
+          <Footer />
+          <Banner />
+        </Wrapper>
+      </div>
+    )
+  }
+
+  render () {
+    const content = this.renderContent()
 
     return (
       <StyleRoot>

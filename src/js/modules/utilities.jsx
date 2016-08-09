@@ -44,12 +44,10 @@ export const saveCanvasFromVisualization = (metadata, visualization) => {
 export const saveCanvas = (canvas, name) => {
   const image = canvas.toDataURL()
   const aLink = document.createElement('a')
-  const evt = document.createEvent('HTMLEvents')
 
-  evt.initEvent('click')
   aLink.download = `${changeCase.pascalCase(name)}.png`
   aLink.href = image
-  aLink.dispatchEvent(evt)
+  aLink.click()
 }
 
 export const exportTableToCSV = (metadata, visualization) => {
