@@ -3,6 +3,7 @@ import {excludeEmptyFilters} from '../modules/utilities'
 import {fetchVisualizationResults} from '../modules/visualization-results'
 import FilterCriteria from './FilterCriteria'
 import {Hydrateable} from '../decorators/Hydrateable'
+import {LogMetrics} from '../decorators'
 import {setDefaultFilters} from '../modules/filters'
 import {verticalTop} from '../styles/common'
 import Visualization from './visualization/Visualization'
@@ -28,6 +29,7 @@ const style = {
   }
 }
 
+@LogMetrics('Dashboard', ['dashboard.title', 'dashboard._id'])
 @Hydrateable('Dashboard', ['filters'], 'dashboard._id')
 class Dashboard extends Component {
   static propTypes = {
@@ -128,7 +130,7 @@ class Dashboard extends Component {
       return null
     }
 
-    const {visualizations} = dashboard
+    const {_id, title, visualizations} = dashboard
 
     // Populate the Fields based off of the fields
     // for each visualization's source.
@@ -142,6 +144,8 @@ class Dashboard extends Component {
       )))],
       isFetching: false
     }
+    
+    const label = `Dashboard_${title}_${_id}`
 
     return (
       <div>
@@ -150,6 +154,7 @@ class Dashboard extends Component {
           headerStyle={{
             margin: 0
           }}
+          label={label}
           showFilterButton={true}
           style={{
             ...verticalTop,

@@ -1,20 +1,22 @@
 /*
- * This is a decorator that wraps react components. It takes a {String} groupName,
- * and a {String} displayName.
+ * This is a decorator that wraps react components. It takes a {String} displayName
+ * and an {Array} of prop paths that will be looked up to retrieve the property value
+ * which is appended to the displayName.
  *
  * Usage:
- * @LogMetrics('pageView', 'MyPage')
+ * @LogMetrics('MyComponent', ['MyComponent.prop1', 'MyComponent.prop2'])
  * class MyComponent extends Component {
  *   // rest of class definition
  * }
  */
 
 import {connect} from 'react-redux'
+import {getValueByPath} from '../modules/utilities'
 import {sendMetrics} from '../modules/metrics'
 import React, {Component, PropTypes} from 'react'
 
 @connect(({user}) => ({user}))
-export const LogMetrics = (groupName, displayName) => {
+export const LogMetrics = (displayName, uniqueProps = []) => {
   return (TargetComponent) => {
     return class MetricsComponent extends Component {
       static propTypes = {
@@ -25,12 +27,22 @@ export const LogMetrics = (groupName, displayName) => {
       componentWillMount () {
         const {dispatch, user} = this.props
         const event = {
-          group: groupName,
           attributes: {
-            page: displayName,
-            user: user.data.username
+            DN: user.data.dn,
+            email: user.data.emailaddress,
+            sid: user.data.username
           }
         }
+        
+        let group = displayName
+        
+        uniqueProps.forEach((prop) => {
+          const uniqueKey = getValueByPath(this.props, prop)
+            
+          group += uniqueKey ? `_${uniqueKey}` : ''
+        })
+          
+        event.group = group
         
         dispatch(sendMetrics([event]))
       }

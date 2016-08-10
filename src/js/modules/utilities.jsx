@@ -94,6 +94,20 @@ export const defaultFetchOptions = {
   credentials: 'include'
 }
 
+export const getNameByID = (list, id) => {
+  if (list.length === 0 || id === '') {
+    return ''
+  }
+  
+  for (const item of list) {
+    const {_id, name} = item
+    
+    if (_id === id) {
+      return name
+    }
+  }
+}
+
 export const getValueByPath = (object, path) => {
   const paths = path.split('.')
   let currentValue = object

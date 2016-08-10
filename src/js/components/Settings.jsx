@@ -2,7 +2,7 @@ import {LogMetrics} from '../decorators'
 import {header, main} from '../styles/common'
 import React, {Component} from 'react'
 
-@LogMetrics('pageView', 'Settings')
+@LogMetrics('Settings')
 class Settings extends Component {
   render () {
     return (

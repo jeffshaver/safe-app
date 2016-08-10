@@ -18,7 +18,7 @@ const style = {
   }
 }
 
-@LogMetrics('pageView', 'Analytics')
+@LogMetrics('Analytics')
 @Hydrateable('Analytics', ['analytic', 'filters', 'source', 'visualization'])
 class Analytics extends Component {
   static propTypes = {

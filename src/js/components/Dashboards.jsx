@@ -30,7 +30,7 @@ const style = {
   width: '400px'
 }
 
-@LogMetrics('pageView', 'Dashboards')
+@LogMetrics('Dashboards')
 class Dashboards extends Component {
   static propTypes = {
     createDashboardDialog: PropTypes.object.isRequired,

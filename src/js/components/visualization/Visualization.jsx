@@ -2,6 +2,7 @@ import {ChartComponent} from './ChartComponent'
 import {CircularProgress} from 'safe-framework'
 import {connect} from 'react-redux'
 import {fetchVisualizationResults} from '../../modules/visualization-results'
+import {LogMetrics} from '../../decorators'
 import {MapComponent} from './MapComponent'
 import {SummaryComponent} from './SummaryComponent'
 import {TableComponent} from './TableComponent'
@@ -29,6 +30,7 @@ const getTypeGroup = (type) => {
   return 'Chart'
 }
 
+@LogMetrics('Visualization', ['visualization.name', 'visualization._id'])
 class Visualization extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,

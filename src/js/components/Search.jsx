@@ -1,12 +1,13 @@
 import {connect} from 'react-redux'
-import {excludeEmptyFilters} from '../modules/utilities'
 import {fetchFields} from '../modules/fields'
 import {fetchSearchResults} from '../modules/search-results'
 import {fetchSources} from '../modules/sources'
 import FilterCriteria from './FilterCriteria'
+import MetricsWrapper from './MetricsWrapper'
 import RaisedButton from 'material-ui/RaisedButton'
 import {setSource} from '../modules/source'
 import {CircularProgress, DataTable, SelectField} from 'safe-framework'
+import {excludeEmptyFilters, getNameByID} from '../modules/utilities'
 import {grey300, white} from 'material-ui/styles/colors'
 import {header, main, verticalTop} from '../styles/common'
 import {Hydrateable, LogMetrics} from '../decorators'
@@ -52,7 +53,7 @@ const generateColumns = (data) => {
   }))
 }
 
-@LogMetrics('pageView', 'Search')
+@LogMetrics('Search')
 @Hydrateable('Search', ['filters', 'source'])
 class Search extends Component {
   static propTypes = {
@@ -151,19 +152,24 @@ class Search extends Component {
 
   onClickSearch () {
     const {dispatch, filters, source} = this.props
-
+  
     dispatch(fetchSearchResults(source, excludeEmptyFilters(filters)))
   }
 
   render () {
     const {
       fields,
+      filters,
       source,
       sources
     } = this.props
     const filterStyle = source === ''
       ? style.hidden
       : {}
+    
+    const sourceName = getNameByID(sources.data, source)
+    const label = source === '' ? 'Search' : `Search_${sourceName}_${source}`
+    const searchFilters = excludeEmptyFilters(filters)
 
     return (
       <div>
@@ -189,11 +195,16 @@ class Search extends Component {
             wrapperStyle={filterStyle}
           />
           <div>
-            <RaisedButton
-              disabled={!source}
-              label='Search'
-              primary={true}
-              style={style.button}
+            <MetricsWrapper
+              component={
+                <RaisedButton
+                  disabled={!source}
+                  label='Search'
+                  primary={true}
+                  style={style.button}
+                />}
+              data={{filters: searchFilters}}
+              label={label}
               onTouchTap={this.onClickSearch}
             />
           </div>

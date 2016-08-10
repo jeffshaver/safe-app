@@ -3,7 +3,9 @@ import CardExpandable from 'material-ui/Card/CardExpandable'
 import {connect} from 'react-redux'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import ContentRemove from 'material-ui/svg-icons/content/remove'
+import {excludeEmptyFilters} from '../modules/utilities'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
+import MetricsWrapper from './MetricsWrapper'
 import {operators} from '../constants'
 import RaisedButton from 'material-ui/RaisedButton'
 import {SelectField} from 'safe-framework'
@@ -27,6 +29,7 @@ class FilterCriteria extends Component {
     filters: PropTypes.array.isRequired,
     headerStyle: PropTypes.object,
     headerText: PropTypes.string,
+    label: PropTypes.string,
     style: PropTypes.object,
     wrapperStyle: PropTypes.object,
     onClickFilter: PropTypes.func
@@ -238,13 +241,15 @@ class FilterCriteria extends Component {
   render () {
     const {
       fields,
+      filters,
       headerStyle,
       headerText,
+      label,
       onClickFilter,
       style,
       wrapperStyle
     } = this.props
-
+    
     if (fields.data.length === 0) {
       return (
         <div style={wrapperStyle}>
@@ -252,6 +257,8 @@ class FilterCriteria extends Component {
         </div>
       )
     }
+    
+    const searchFilters = excludeEmptyFilters(filters)
 
     return (
       <div style={wrapperStyle}>
@@ -264,10 +271,15 @@ class FilterCriteria extends Component {
                   style={styles.expandButton}
                   onExpanding={this.toggle}
                 />
-                <RaisedButton
-                  label='Filter'
-                  primary={true}
-                  style={style.button}
+                <MetricsWrapper
+                  component={
+                    <RaisedButton
+                      label='Filter'
+                      primary={true}
+                      style={style.button}
+                    />}
+                  data={{filters: searchFilters}}
+                  label={label + '_Filter'}
                   onTouchTap={this.handleClickFilter}
                 />
               </span>

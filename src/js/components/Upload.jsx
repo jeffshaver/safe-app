@@ -21,7 +21,7 @@ const getFileExtension = (fileName) =>
     .slice((fileName.lastIndexOf('.') - 1 >>> 0) + 2)
     .toLowerCase()
 
-@LogMetrics('pageView', 'Upload')
+@LogMetrics('Upload')
 class Upload extends Component {
   static propTypes = {
     dialogOpen: PropTypes.bool.isRequired,
