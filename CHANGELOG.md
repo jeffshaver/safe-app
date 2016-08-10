@@ -1,11 +1,17 @@
 # safe-app ChangeLog
 
+## 0.0.20 (August 10, 2016)
+
+### Changes
+
+* [[c833c41](https://github.com/jeffshaver/safe-app/commit/c833c41)] - fix warning when saving a chart. for visualization sizes to be numbers ([jeffshaver](https://github.com/jeffshaver))
+
 ## 0.0.19 (August 08, 2016)
 
 ### Changes
 
 * [[e61daa3](https://github.com/jeffshaver/safe-app/commit/e61daa3)] - fix some styles while dragging visualizations. only allow dragging from toolbar ([jeffshaver](https://github.com/jeffshaver))
-* [[6d701b2](https://github.com/jeffshaver/safe-app/commit/6d701b2)] - configurable dashboards ([jeffshaver](https://github.com/jeffshaver))
+* [[6d701b2](https://github.com/jeffshaver/safe-app/commit/6d701b2)] - configurable dashboards ([pml984](https://github.com/pml984))
 * [[48976f7](https://github.com/jeffshaver/safe-app/commit/48976f7)] - change visualization styles ([jeffshaver](https://github.com/jeffshaver))
 * [[9d8caf8](https://github.com/jeffshaver/safe-app/commit/9d8caf8)] - fix issue that caused all visualizations to be 2 columns wide ([jeffshaver](https://github.com/jeffshaver))
 * [[363ad31](https://github.com/jeffshaver/safe-app/commit/363ad31)] - fix issue when dashboards only had one visualization ([jeffshaver](https://github.com/jeffshaver))
