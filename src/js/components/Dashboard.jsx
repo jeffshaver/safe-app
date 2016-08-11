@@ -75,7 +75,7 @@ class Dashboard extends Component {
     const {dashboard} = this.props
     const {dashboardParams = {}, visualizations = []} = dashboard
     const {size = 2, layout} = dashboardParams
-    const totalCols = visualizations.length > 1 ? size : 1
+    const totalCols = visualizations.length > 1 ? Number(size) : 1
 
     return (
       <GridLayout
