@@ -43,13 +43,13 @@ class MetricsWrapper extends Component {
     const {component} = this.props
     
     return (
-      <div>
+      <span>
         {
           React.cloneElement(component, {
             onTouchTap: this.handleTouchTap
           })
         }
-      </div>
+      </span>
     )
   }
 }

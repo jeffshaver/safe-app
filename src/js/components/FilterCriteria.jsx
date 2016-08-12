@@ -32,7 +32,8 @@ class FilterCriteria extends Component {
     label: PropTypes.string,
     style: PropTypes.object,
     wrapperStyle: PropTypes.object,
-    onClickFilter: PropTypes.func
+    onClickFilter: PropTypes.func,
+    onClickReset: PropTypes.func
   }
 
   static defaultProps = {
@@ -52,6 +53,7 @@ class FilterCriteria extends Component {
     }
 
     this.handleClickFilter = ::this.handleClickFilter
+    this.handleClickReset = ::this.handleClickReset
     this.onAddFilter = ::this.onAddFilter
     this.onChangeField = ::this.onChangeField
     this.onChangeOperator = ::this.onChangeOperator
@@ -139,6 +141,12 @@ class FilterCriteria extends Component {
     onClickFilter(...params)
   }
 
+  handleClickReset (...params) {
+    const {onClickReset} = this.props
+
+    onClickReset(...params)
+  }
+  
   renderAddButton (i) {
     const {filters, style} = this.props
 
@@ -156,6 +164,40 @@ class FilterCriteria extends Component {
       >
         <ContentAdd />
       </FloatingActionButton>
+    )
+  }
+  
+  renderButtons () {
+    const {expanded} = this.state
+    const {
+      filters,
+      label,
+      onClickFilter,
+      style
+    } = this.props
+    const searchFilters = excludeEmptyFilters(filters)
+    
+    if (!expanded || !onClickFilter) return null
+    
+    return (
+      <span>
+        <MetricsWrapper
+          component={
+            <RaisedButton
+              label='Filter'
+              primary={true}
+              style={style.button}
+            />}
+          data={{filters: searchFilters}}
+          label={label + '_Filter'}
+          onTouchTap={this.handleClickFilter}
+        />
+        <RaisedButton
+          label='Reset'
+          style={style.button}
+          onTouchTap={this.handleClickReset}
+        />
+      </span>
     )
   }
 
@@ -241,12 +283,9 @@ class FilterCriteria extends Component {
   render () {
     const {
       fields,
-      filters,
       headerStyle,
       headerText,
-      label,
       onClickFilter,
-      style,
       wrapperStyle
     } = this.props
     
@@ -258,34 +297,20 @@ class FilterCriteria extends Component {
       )
     }
     
-    const searchFilters = excludeEmptyFilters(filters)
-
     return (
       <div style={wrapperStyle}>
         <h3 style={headerStyle}>
           {headerText}
           {onClickFilter
-            ? <span>
-                <CardExpandable
-                  expanded={this.state.expanded}
-                  style={styles.expandButton}
-                  onExpanding={this.toggle}
-                />
-                <MetricsWrapper
-                  component={
-                    <RaisedButton
-                      label='Filter'
-                      primary={true}
-                      style={style.button}
-                    />}
-                  data={{filters: searchFilters}}
-                  label={label + '_Filter'}
-                  onTouchTap={this.handleClickFilter}
-                />
-              </span>
+            ? <CardExpandable
+              expanded={this.state.expanded}
+              style={styles.expandButton}
+              onExpanding={this.toggle}
+              />
           : null}
         </h3>
         {this.renderFilters()}
+        {this.renderButtons()}
       </div>
     )
   }

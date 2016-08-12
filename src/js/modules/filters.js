@@ -27,7 +27,8 @@ export const removeFilter = (index) => ({
   payload: {index}
 })
 
-export const resetFilters = () => ({
+export const resetFilters = (filters) => ({
+  payload: {filters},
   type: RESET
 })
 
@@ -46,7 +47,7 @@ const initialState = [{
 
 export default (state = initialState, {payload = {}, type, ...action}) => {
   const {filter, filters, index, value} = payload
-
+  
   switch (type) {
     case ADD:
       return [
@@ -71,7 +72,7 @@ export default (state = initialState, {payload = {}, type, ...action}) => {
         ...state.slice(index + 1)
       ]
     case RESET:
-      return []
+      return [...filters]
     case SET_DEFAULT:
       return excludeEmptyFilters(state).length === 0
         ? [...filters]

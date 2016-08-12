@@ -71,11 +71,19 @@ describe('filter actions', () => {
   })
 
   it('resetFilters should create a RESET action', () => {
+    const filters = [{
+      id: 0,
+      field: 'FieldA',
+      operator: '=',
+      value: 'FieldAValue'
+    }]
+    
     const expectedAction = {
-      type: RESET
+      type: RESET,
+      payload: {filters}
     }
 
-    expect(resetFilters()).toEqual(expectedAction)
+    expect(resetFilters(filters)).toEqual(expectedAction)
   })
 
   it('setDefaultFilters should create a SET_DEFAULT action', () => {
@@ -208,10 +216,17 @@ describe('filters reducer', () => {
       operator: '<=',
       value: 'fieldBValue'
     }]
+    const filters = [{
+      id: 0,
+      field: 'fieldA',
+      operator: '=',
+      value: 'fieldAValue'
+    }]
     const action = {
+      payload: {filters},
       type: RESET
     }
-    const stateAfter = []
+    const stateAfter = [...filters]
 
     deepFreeze(stateBefore)
     deepFreeze(action)

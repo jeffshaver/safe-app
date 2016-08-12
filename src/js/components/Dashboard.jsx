@@ -4,11 +4,11 @@ import {fetchVisualizationResults} from '../modules/visualization-results'
 import FilterCriteria from './FilterCriteria'
 import {Hydrateable} from '../decorators/Hydrateable'
 import {LogMetrics} from '../decorators'
-import {setDefaultFilters} from '../modules/filters'
 import {verticalTop} from '../styles/common'
 import Visualization from './visualization/Visualization'
 import React, {Component, PropTypes} from 'react'
 import ReactGridLayout, {WidthProvider} from 'react-grid-layout'
+import {resetFilters, setDefaultFilters} from '../modules/filters'
 
 const GridLayout = WidthProvider(ReactGridLayout)
 
@@ -43,6 +43,7 @@ class Dashboard extends Component {
     super(props)
 
     this.onClickFilter = ::this.onClickFilter
+    this.onClickReset = ::this.onClickReset
   }
 
   componentWillMount () {
@@ -70,6 +71,25 @@ class Dashboard extends Component {
       dispatch(fetchVisualizationResults(
         _id, excludeEmptyFilters(filters))
       )
+    }
+  }
+  
+  onClickReset () {
+    const {dispatch, dashboard} = this.props
+    
+    const {dashboardParams = {}} = dashboard
+    const {filters: dashboardFilters = []} = dashboardParams
+
+    if (dashboardFilters && dashboardFilters.length > 0) {
+      dispatch(resetFilters(dashboardFilters))
+    } else {
+      const filter = {
+        field: '',
+        operator: '',
+        value: ''
+      }
+      
+      dispatch(resetFilters([filter]))
     }
   }
 
@@ -161,6 +181,7 @@ class Dashboard extends Component {
             marginBottom: '1em'
           }}
           onClickFilter={this.onClickFilter}
+          onClickReset={this.onClickReset}
         />
         {this.renderVisualizationGrid()}
       </div>
