@@ -12,12 +12,26 @@ import {SelectField} from 'safe-framework'
 import TextField from 'material-ui/TextField'
 import {verticalTop} from '../styles/common'
 import {addFilter, editFilter, removeFilter} from '../modules/filters'
+import {cyan500, grey400, redA400} from 'material-ui/styles/colors.js'
 import React, {Component, PropTypes} from 'react'
 
 const styles = {
   expandButton: {
     position: 'relative',
     verticalAlign: 'middle'
+  },
+  colors: {
+    blue: {
+      color: cyan500,
+      fontWeight: 'bold'
+    },
+    grey: {
+      color: grey400,
+      fontSize: 14
+    },
+    red: {
+      color: redA400
+    }
   }
 }
 
@@ -309,6 +323,13 @@ class FilterCriteria extends Component {
               />
           : null}
         </h3>
+        {this.state.expanded
+          ? <p>
+              <span style={styles.colors.grey}>
+                Click <span style={styles.colors.red}>+</span> to add a new filter, click <span style={styles.colors.blue}>-</span> to remove a filter
+              </span>
+            </p>
+          : null}
         {this.renderFilters()}
         {this.renderButtons()}
       </div>
