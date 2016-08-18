@@ -128,3 +128,18 @@ export const getValueByPath = (object, path) => {
 
   return currentValue
 }
+
+export const removeDuplicates = (arr, prop) => {
+  const newArr = [];
+  const lookup  = {};
+ 
+  for (const item in arr) {
+    lookup[arr[item][prop]] = arr[item];
+  }
+ 
+  for (const item in lookup) {
+    newArr.push(lookup[item]);
+  }
+ 
+  return newArr;
+ }

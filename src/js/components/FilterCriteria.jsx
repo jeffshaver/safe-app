@@ -35,6 +35,8 @@ const styles = {
   }
 }
 
+const requiredFields = ['Age', 'Height']
+
 class FilterCriteria extends Component {
   static propTypes = {
     criteriaDataProperty: PropTypes.string,
@@ -231,10 +233,14 @@ class FilterCriteria extends Component {
       const field = fields.data[filter.fieldIndex] || {}
       const {[criteriaDataProperty]: criteriaData} = field
       const ValueField = criteriaData ? AutoComplete : TextField
-
+      const required = true
+      
+      console.log('FilterCriteria, field: ' + JSON.stringify(field))
+      
       return (
         <div key={i}>
           <SelectField
+            disabled={required}
             floatingLabelText='Select a field'
             hintText='Select a field'
             isFetching={fields.isFetching}
@@ -278,6 +284,8 @@ class FilterCriteria extends Component {
     const {filters, style} = this.props
 
     if (filters.length === 1) return null
+    // if field selected is a required field, return null
+    if (requiredFields.indexOf(filters[i].field) > -1) return null
 
     return (
       <FloatingActionButton

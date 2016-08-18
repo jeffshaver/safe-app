@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import {excludeEmptyFilters} from '../modules/utilities'
+import {excludeEmptyFilters, removeDuplicates} from '../modules/utilities'
 import {fetchVisualizationResults} from '../modules/visualization-results'
 import FilterCriteria from './FilterCriteria'
 import {Hydrateable} from '../decorators/Hydrateable'
@@ -29,6 +29,8 @@ const style = {
   }
 }
 
+const requiredFields = ['Age', 'Height']
+
 @LogMetrics('Dashboard', ['dashboard.title', 'dashboard._id'])
 @Hydrateable('Dashboard', ['filters'], 'dashboard._id')
 class Dashboard extends Component {
@@ -49,12 +51,72 @@ class Dashboard extends Component {
   componentWillMount () {
     const {dashboard, dispatch} = this.props
 
-    const {dashboardParams = {}} = dashboard
+    const {dashboardParams = {}, visualizations} = dashboard
     const {filters: dashboardFilters = []} = dashboardParams
+    
+    const fields = {
+      data: [...(new Set(visualizations.reduce(
+        (array, visualization) => {
+          const {fields = []} = visualization.source
 
-    if (dashboardFilters && dashboardFilters.length > 0) {
-      dispatch(setDefaultFilters(dashboardFilters))
+          return [...array, ...fields]
+        }, []
+      )))]
     }
+    
+    const tmp = [
+    {
+        uniqueCode: 1234,
+        selected: true,
+        otherVal: 'abc'
+    },
+    {
+        uniqueCode: 5678,
+        selected: false,
+        otherVal: 'abc'
+    },
+    {
+        selected: true,
+        otherVal: 'def',
+        uniqueCode: 1234,
+    }
+]
+    
+    //console.log('tmp fields: ' + JSON.stringify(removeDuplicates(tmp, "uniqueCode")))
+    
+    const uniqueArray = removeDuplicates(fields.data, "name")
+    
+    console.log('unique fields array: ' + JSON.stringify(uniqueArray))
+    
+    //const reqFields =
+
+    // Create filters for the required fields
+    // First check if default filters have required fields
+  
+    //if (dashboardFilters && dashboardFilters.length > 0) {
+   //   dispatch(setDefaultFilters(dashboardFilters))
+   // }
+    
+    //if (requiredFields && requiredFields.length > 0) {
+    let newFilters = []
+    
+    for (let i = 0; i < requiredFields.length; i++) {
+      newFilters.push({
+        field: requiredFields[i],
+        operator: '',
+        value: ''
+      })
+    }
+    
+    if (dashboardFilters && dashboardFilters.length > 0) {
+      newFilters = newFilters.concat(dashboardFilters)
+    }
+    
+    if (newFilters.length > 0) {
+      dispatch(resetFilters(removeDuplicates(newFilters, 'field')))
+    }
+    
+    console.log('filters: ' + JSON.stringify(removeDuplicates(newFilters, 'field')))
   }
 
   onClickFilter () {
@@ -164,6 +226,8 @@ class Dashboard extends Component {
       )))],
       isFetching: false
     }
+    
+    console.log('FIELDS: ' + JSON.stringify(fields))
     
     const label = `Dashboard_${title}_${_id}`
 
