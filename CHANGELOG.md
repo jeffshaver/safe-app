@@ -1,5 +1,14 @@
 # safe-app ChangeLog
 
+## 0.0.21 (August 22, 2016)
+
+### Changes
+
+* [[7b3e071](https://github.com/jeffshaver/safe-app/commit/7b3e071)] - Closes #255. Added insruction instead of tooltip to filter buttons ([knorris](https://github.com/knorris))
+* [[d1b7c3c](https://github.com/jeffshaver/safe-app/commit/d1b7c3c)] - Closes #223. Added reset button to filter on dashboard page ([knorris](https://github.com/knorris))
+* [[7238d53](https://github.com/jeffshaver/safe-app/commit/7238d53)] - Closes #218. Created a MetricsWrapper component and logged metrics for each dashboard, button clicks on search and filter ([knorris](https://github.com/knorris))
+* [[93deb0c](https://github.com/jeffshaver/safe-app/commit/93deb0c)] - fix another dashboard size issue with strings ([jeffshaver](https://github.com/jeffshaver))
+
 ## 0.0.20 (August 10, 2016)
 
 ### Changes
