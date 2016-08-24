@@ -2,6 +2,12 @@ import changeCase from 'change-case'
 import {DataTable} from 'safe-framework'
 import React, {Component, PropTypes} from 'react'
 
+const style = {
+  container: {
+    height: 'auto'
+  }
+}
+
 export class TableComponent extends Component {
   static propTypes = {
     data: PropTypes.array.isRequired,
@@ -17,6 +23,7 @@ export class TableComponent extends Component {
     return (
       <DataTable
         childProp={drillDownFieldName}
+        containerStyle={style.container}
         data={data}
         enableColResize='true'
         enableSorting='true'

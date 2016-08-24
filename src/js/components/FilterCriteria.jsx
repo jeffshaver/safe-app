@@ -15,10 +15,16 @@ import {addFilter, editFilter, removeFilter} from '../modules/filters'
 import {cyan500, grey400, redA400} from 'material-ui/styles/colors.js'
 import React, {Component, PropTypes} from 'react'
 
-const styles = {
+const style = {
+  directions: {
+    margin: 0
+  },
   expandButton: {
     position: 'relative',
     verticalAlign: 'middle'
+  },
+  resetButton: {
+    margin: '0 0 0 1em'
   },
   colors: {
     blue: {
@@ -160,9 +166,9 @@ class FilterCriteria extends Component {
 
     onClickReset(...params)
   }
-  
+
   renderAddButton (i) {
-    const {filters, style} = this.props
+    const {filters, style: filterStyle} = this.props
 
     if (i !== filters.length - 1) return null
 
@@ -171,7 +177,7 @@ class FilterCriteria extends Component {
         mini={true}
         secondary={true}
         style={{
-          ...style,
+          ...filterStyle,
           margin: '1em 0 0 1em'
         }}
         onTouchTap={this.onAddFilter}
@@ -180,19 +186,19 @@ class FilterCriteria extends Component {
       </FloatingActionButton>
     )
   }
-  
+
   renderButtons () {
     const {expanded} = this.state
     const {
       filters,
       label,
       onClickFilter,
-      style
+      style: filterStyle
     } = this.props
     const searchFilters = excludeEmptyFilters(filters)
-    
+
     if (!expanded || !onClickFilter) return null
-    
+
     return (
       <span>
         <MetricsWrapper
@@ -200,7 +206,7 @@ class FilterCriteria extends Component {
             <RaisedButton
               label='Filter'
               primary={true}
-              style={style.button}
+              style={filterStyle.button}
             />}
           data={{filters: searchFilters}}
           label={label + '_Filter'}
@@ -208,7 +214,10 @@ class FilterCriteria extends Component {
         />
         <RaisedButton
           label='Reset'
-          style={style.button}
+          style={{
+            ...filterStyle.button,
+            ...style.resetButton
+          }}
           onTouchTap={this.handleClickReset}
         />
       </span>
@@ -226,7 +235,7 @@ class FilterCriteria extends Component {
       const {
         criteriaDataProperty,
         fields,
-        style
+        style: filterStyle
       } = this.props
       const field = fields.data[filter.fieldIndex] || {}
       const {[criteriaDataProperty]: criteriaData} = field
@@ -263,7 +272,7 @@ class FilterCriteria extends Component {
             floatingLabelText='Filter Criteria'
             hintText='Filter Criteria'
             openOnFocus={true}
-            style={style}
+            style={filterStyle}
             value={filter.value}
             onChange={(ev) => this.onChangeValue(ev, i)}
           />
@@ -302,7 +311,7 @@ class FilterCriteria extends Component {
       onClickFilter,
       wrapperStyle
     } = this.props
-    
+
     if (fields.data.length === 0) {
       return (
         <div style={wrapperStyle}>
@@ -310,7 +319,7 @@ class FilterCriteria extends Component {
         </div>
       )
     }
-    
+
     return (
       <div style={wrapperStyle}>
         <h3 style={headerStyle}>
@@ -318,15 +327,15 @@ class FilterCriteria extends Component {
           {onClickFilter
             ? <CardExpandable
               expanded={this.state.expanded}
-              style={styles.expandButton}
+              style={style.expandButton}
               onExpanding={this.toggle}
               />
           : null}
         </h3>
         {this.state.expanded
-          ? <p>
-              <span style={styles.colors.grey}>
-                Click <span style={styles.colors.red}>+</span> to add a new filter, click <span style={styles.colors.blue}>-</span> to remove a filter
+          ? <p style={style.directions}>
+              <span style={style.colors.grey}>
+                Click <span style={style.colors.red}>+</span> to add a new filter, click <span style={style.colors.blue}>-</span> to remove a filter
               </span>
             </p>
           : null}
