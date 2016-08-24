@@ -1,6 +1,6 @@
 import {apiUri} from '../../../config'
-import {checkFetchStatus} from './utilities'
 import fetch from 'isomorphic-fetch'
+import {checkFetchStatus, defaultFetchOptions} from './utilities'
 
 export const FAILURE = 'safe-app/metrics/FAILURE'
 export const REQUEST = 'safe-app/metrics/REQUEST'
@@ -27,6 +27,7 @@ export const sendMetrics = (data) =>
     
     return fetch(`${apiUri}/metrics`,
       {
+        ...defaultFetchOptions,
         method: 'POST',
         headers: {
           'Accept': 'application/json',
