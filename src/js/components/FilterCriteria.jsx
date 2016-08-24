@@ -10,6 +10,7 @@ import {operators} from '../constants'
 import RaisedButton from 'material-ui/RaisedButton'
 import {SelectField} from 'safe-framework'
 import TextField from 'material-ui/TextField'
+import Tooltip from './Tooltip'
 import {verticalTop} from '../styles/common'
 import {addFilter, editFilter, removeFilter} from '../modules/filters'
 import {cyan500, grey400, redA400} from 'material-ui/styles/colors.js'
@@ -22,6 +23,9 @@ const style = {
   expandButton: {
     position: 'relative',
     verticalAlign: 'middle'
+  },
+  filterButton: {
+    margin: '1em 0 0 1em'
   },
   resetButton: {
     margin: '0 0 0 1em'
@@ -173,17 +177,51 @@ class FilterCriteria extends Component {
     if (i !== filters.length - 1) return null
 
     return (
-      <FloatingActionButton
-        mini={true}
-        secondary={true}
+      <Tooltip
+        label='Click to add a new filter'
         style={{
-          ...filterStyle,
-          margin: '1em 0 0 1em'
+          ...style.filterButton
         }}
-        onTouchTap={this.onAddFilter}
       >
-        <ContentAdd />
-      </FloatingActionButton>
+        <FloatingActionButton
+          mini={true}
+          secondary={true}
+          style={{
+            ...filterStyle,
+            ...style.filterButton
+          }}
+          onTouchTap={this.onAddFilter}
+        >
+          <ContentAdd />
+        </FloatingActionButton>
+      </Tooltip>
+    )
+  }
+  
+  renderRemoveButton (i) {
+    const {filters, style: filterStyle} = this.props
+
+    if (filters.length === 1) return null
+
+    return (
+      <Tooltip
+        label='Click to remove this filter'
+        style={{
+          ...style.filterButton
+        }}
+      >
+        <FloatingActionButton
+          mini={true}
+          primary={true}
+          style={{
+            ...filterStyle,
+            ...style.filterButton
+          }}
+          onTouchTap={(ev) => this.onRemoveFilter(ev, i)}
+        >
+          <ContentRemove />
+        </FloatingActionButton>
+      </Tooltip>
     )
   }
 
@@ -283,26 +321,6 @@ class FilterCriteria extends Component {
     })
   }
 
-  renderRemoveButton (i) {
-    const {filters, style} = this.props
-
-    if (filters.length === 1) return null
-
-    return (
-      <FloatingActionButton
-        mini={true}
-        primary={true}
-        style={{
-          ...style,
-          margin: '1em 0 0 1em'
-        }}
-        onTouchTap={(ev) => this.onRemoveFilter(ev, i)}
-      >
-        <ContentRemove />
-      </FloatingActionButton>
-    )
-  }
-
   render () {
     const {
       fields,
@@ -332,13 +350,6 @@ class FilterCriteria extends Component {
               />
           : null}
         </h3>
-        {this.state.expanded
-          ? <p style={style.directions}>
-              <span style={style.colors.grey}>
-                Click <span style={style.colors.red}>+</span> to add a new filter, click <span style={style.colors.blue}>-</span> to remove a filter
-              </span>
-            </p>
-          : null}
         {this.renderFilters()}
         {this.renderButtons()}
       </div>
