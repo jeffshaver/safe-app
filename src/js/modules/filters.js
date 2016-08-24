@@ -1,5 +1,3 @@
-import {excludeEmptyFilters} from './utilities'
-
 export const ADD = 'safe-app/filters/ADD'
 export const EDIT = 'safe-app/filters/EDIT'
 export const HYDRATE = 'safe-app/filters/HYDRATE'
@@ -27,8 +25,7 @@ export const removeFilter = (index) => ({
   payload: {index}
 })
 
-export const resetFilters = (filters) => ({
-  payload: {filters},
+export const resetFilters = () => ({
   type: RESET
 })
 
@@ -41,13 +38,14 @@ let nextFilterId = 0
 const initialState = [{
   id: nextFilterId,
   field: '',
-  operator: '',
+  operator: '=',
+  required: false,
   value: ''
 }]
 
 export default (state = initialState, {payload = {}, type, ...action}) => {
   const {filter, filters, index, value} = payload
-  
+
   switch (type) {
     case ADD:
       return [
@@ -72,11 +70,13 @@ export default (state = initialState, {payload = {}, type, ...action}) => {
         ...state.slice(index + 1)
       ]
     case RESET:
-      return [...filters]
+      const newFilters = [...initialState]
+
+      newFilters[0].id = ++nextFilterId
+
+      return newFilters
     case SET_DEFAULT:
-      return excludeEmptyFilters(state).length === 0
-        ? [...filters]
-        : state
+      return [...filters]
     case HYDRATE:
       return [...state]
     default:

@@ -98,10 +98,10 @@ export const getNameByID = (list, id) => {
   if (list.length === 0 || id === '') {
     return ''
   }
-  
+
   for (const item of list) {
     const {_id, name} = item
-    
+
     if (_id === id) {
       return name
     }
@@ -128,3 +128,20 @@ export const getValueByPath = (object, path) => {
 
   return currentValue
 }
+
+export const createFilter = (filter = {}) => {
+  const initialValue = {
+    field: '',
+    operator: '=',
+    required: false,
+    value: ''
+  }
+
+  return Object.assign({}, initialValue, filter)
+}
+
+export const validateFilters = (filters = []) => (
+  filters.filter((filter) => {
+    return filter.required && (!filter.operator || !filter.value)
+  }).length === 0
+)

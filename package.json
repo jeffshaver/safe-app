@@ -63,6 +63,8 @@
     "isomorphic-fetch": "^2.2.1",
     "leaflet": "^0.7.7",
     "leaflet-fullscreen": "^1.0.1",
+    "lodash.isequal": "^4.4.0",
+    "lodash.uniqby": "^4.7.0",
     "material-ui": "^0.15.4",
     "morgan": "^1.7.0",
     "numeral": "^1.5.3",

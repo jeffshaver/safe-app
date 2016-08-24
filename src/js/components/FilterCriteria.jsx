@@ -3,8 +3,8 @@ import CardExpandable from 'material-ui/Card/CardExpandable'
 import {connect} from 'react-redux'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import ContentRemove from 'material-ui/svg-icons/content/remove'
-import {excludeEmptyFilters} from '../modules/utilities'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
+import isEqual from 'lodash.isequal'
 import MetricsWrapper from './MetricsWrapper'
 import {operators} from '../constants'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -13,6 +13,7 @@ import TextField from 'material-ui/TextField'
 import Tooltip from './Tooltip'
 import {verticalTop} from '../styles/common'
 import {addFilter, editFilter, removeFilter} from '../modules/filters'
+import {createFilter, excludeEmptyFilters} from '../modules/utilities'
 import {cyan500, grey400, redA400} from 'material-ui/styles/colors.js'
 import React, {Component, PropTypes} from 'react'
 
@@ -55,18 +56,21 @@ class FilterCriteria extends Component {
     headerText: PropTypes.string,
     label: PropTypes.string,
     style: PropTypes.object,
+    valid: PropTypes.boolean,
     wrapperStyle: PropTypes.object,
-    onClickFilter: PropTypes.func,
-    onClickReset: PropTypes.func
+    onClickReset: PropTypes.func,
+    onClickSubmit: PropTypes.func
   }
 
   static defaultProps = {
     criteriaDataProperty: 'data',
     headerStyle: {},
-    headerText: 'Select filter criteria (optional)',
-    onClickFilter: null,
+    headerText: 'Select filter criteria',
     style: {},
-    wrapperStyle: {}
+    valid: true,
+    wrapperStyle: {},
+    onClickReset: () => {},
+    onClickSubmit: () => {}
   }
 
   constructor (props) {
@@ -84,15 +88,78 @@ class FilterCriteria extends Component {
     this.toggle = ::this.toggle
   }
 
+  createFilterElement = (filter, i, isFirstOptionalFilter) => {
+    const {
+      criteriaDataProperty,
+      fields,
+      style: filterStyle
+    } = this.props
+    const field = fields.data[filter.fieldIndex] || {}
+    const {[criteriaDataProperty]: criteriaData} = field
+    const ValueField = criteriaData ? AutoComplete : TextField
+    const filterIndex = this.getFilterIndex(filter)
+    const errorText = filter.required && !filter.value
+      ? 'Required'
+      : undefined
+
+    return (
+      <div key={filterIndex}>
+        <SelectField
+          disabled={filter.required}
+          floatingLabelText='Select a field'
+          hintText='Select a field'
+          isFetching={fields.isFetching}
+          items={fields.data}
+          keyProp={'name'}
+          primaryTextProp={'name'}
+          style={verticalTop}
+          value={filter.field}
+          valueProp={'name'}
+          onChange={(ev, index, value) => this.onChangeField(ev, filterIndex, value, index)}
+        />
+        <SelectField
+          floatingLabelText='Select an operator'
+          hintText='Select an operator'
+          items={operators}
+          keyProp={'value'}
+          primaryTextProp={'primaryText'}
+          style={verticalTop}
+          value={filter.operator}
+          valueProp={'value'}
+          onChange={(ev, index, value) => this.onChangeOperator(ev, filterIndex, value, index)}
+        />
+        <ValueField
+          dataSource={criteriaData}
+          errorText={errorText}
+          filter={AutoComplete.caseInsensitiveFilter}
+          floatingLabelText='Filter Criteria'
+          hintText='Filter Criteria'
+          openOnFocus={true}
+          style={filterStyle}
+          value={filter.value}
+          onChange={(ev) => this.onChangeValue(ev, filterIndex)}
+        />
+        {(() => {
+          if (filter.required) {
+            return null
+          }
+
+          return [
+            isFirstOptionalFilter
+              ? null
+              : this.renderRemoveButton(filterIndex),
+            this.renderAddButton()
+          ]
+        })()}
+      </div>
+    )
+  }
+
   onAddFilter (ev) {
     const {dispatch} = this.props
 
     ev.preventDefault()
-    dispatch(addFilter({
-      field: '',
-      operator: '',
-      value: ''
-    }))
+    dispatch(addFilter(createFilter()))
   }
 
   onChangeField (ev, index, field, fieldIndex) {
@@ -155,14 +222,22 @@ class FilterCriteria extends Component {
     })
   }
 
+  getFilterIndex (filter) {
+    const {filters} = this.props
+
+    return filters.findIndex((currentFilter) => {
+      return isEqual(currentFilter, filter)
+    })
+  }
+
   handleClickFilter (...params) {
-    const {onClickFilter} = this.props
+    const {onClickSubmit} = this.props
 
     if (this.state.expanded) {
       this.toggle()
     }
 
-    onClickFilter(...params)
+    onClickSubmit(...params)
   }
 
   handleClickReset (...params) {
@@ -171,10 +246,8 @@ class FilterCriteria extends Component {
     onClickReset(...params)
   }
 
-  renderAddButton (i) {
-    const {filters, style: filterStyle} = this.props
-
-    if (i !== filters.length - 1) return null
+  renderAddButton () {
+    const {style: filterStyle} = this.props
 
     return (
       <Tooltip
@@ -197,11 +270,65 @@ class FilterCriteria extends Component {
       </Tooltip>
     )
   }
-  
-  renderRemoveButton (i) {
-    const {filters, style: filterStyle} = this.props
 
-    if (filters.length === 1) return null
+  renderButtons () {
+    const {expanded} = this.state
+    const {
+      filters,
+      label,
+      onClickSubmit,
+      style: filterStyle
+    } = this.props
+    const searchFilters = excludeEmptyFilters(filters)
+
+    if (!expanded || !onClickSubmit) return null
+
+    return (
+      <span>
+        <MetricsWrapper
+          component={
+            <RaisedButton
+              disabled={!this.props.valid}
+              label='Submit'
+              primary={true}
+              style={filterStyle.button}
+            />}
+          data={{filters: searchFilters}}
+          label={label + '_Filter'}
+          onTouchTap={this.handleClickFilter}
+        />
+        <RaisedButton
+          label='Reset'
+          style={{
+            ...filterStyle.button,
+            ...style.resetButton
+          }}
+          onTouchTap={this.handleClickReset}
+        />
+      </span>
+    )
+  }
+
+  renderFilters () {
+    const {expanded} = this.state
+    const {filters} = this.props
+    const required = filters.filter((filter) => filter.required)
+    const optional = filters.filter((filter) => !filter.required)
+
+    if (!expanded) return null
+
+    return required.concat(optional).map((filter, i, array) => (
+      this.createFilterElement(
+        filter,
+        i,
+        i === Math.abs(array.length - required.length - (optional.length - 1))
+      )
+    ))
+  }
+
+  // (i) is the index of the filter in filters
+  renderRemoveButton (i) {
+    const {style: filterStyle} = this.props
 
     return (
       <Tooltip
@@ -225,108 +352,12 @@ class FilterCriteria extends Component {
     )
   }
 
-  renderButtons () {
-    const {expanded} = this.state
-    const {
-      filters,
-      label,
-      onClickFilter,
-      style: filterStyle
-    } = this.props
-    const searchFilters = excludeEmptyFilters(filters)
-
-    if (!expanded || !onClickFilter) return null
-
-    return (
-      <span>
-        <MetricsWrapper
-          component={
-            <RaisedButton
-              label='Filter'
-              primary={true}
-              style={filterStyle.button}
-            />}
-          data={{filters: searchFilters}}
-          label={label + '_Filter'}
-          onTouchTap={this.handleClickFilter}
-        />
-        <RaisedButton
-          label='Reset'
-          style={{
-            ...filterStyle.button,
-            ...style.resetButton
-          }}
-          onTouchTap={this.handleClickReset}
-        />
-      </span>
-    )
-  }
-
-  renderFilters () {
-    const {expanded} = this.state
-
-    if (!expanded) return null
-
-    const {filters} = this.props
-
-    return filters.map((filter, i) => {
-      const {
-        criteriaDataProperty,
-        fields,
-        style: filterStyle
-      } = this.props
-      const field = fields.data[filter.fieldIndex] || {}
-      const {[criteriaDataProperty]: criteriaData} = field
-      const ValueField = criteriaData ? AutoComplete : TextField
-
-      return (
-        <div key={i}>
-          <SelectField
-            floatingLabelText='Select a field'
-            hintText='Select a field'
-            isFetching={fields.isFetching}
-            items={fields.data}
-            keyProp={'name'}
-            primaryTextProp={'name'}
-            style={verticalTop}
-            value={filter.field}
-            valueProp={'name'}
-            onChange={(ev, index, value) => this.onChangeField(ev, i, value, index)}
-          />
-          <SelectField
-            floatingLabelText='Select an operator'
-            hintText='Select an operator'
-            items={operators}
-            keyProp={'value'}
-            primaryTextProp={'primaryText'}
-            style={verticalTop}
-            value={filter.operator}
-            valueProp={'value'}
-            onChange={(ev, index, value) => this.onChangeOperator(ev, i, value, index)}
-          />
-          <ValueField
-            dataSource={criteriaData}
-            filter={AutoComplete.caseInsensitiveFilter}
-            floatingLabelText='Filter Criteria'
-            hintText='Filter Criteria'
-            openOnFocus={true}
-            style={filterStyle}
-            value={filter.value}
-            onChange={(ev) => this.onChangeValue(ev, i)}
-          />
-          {this.renderRemoveButton(i)}
-          {this.renderAddButton(i)}
-        </div>
-      )
-    })
-  }
-
   render () {
     const {
       fields,
       headerStyle,
       headerText,
-      onClickFilter,
+      onClickSubmit,
       wrapperStyle
     } = this.props
 
@@ -342,7 +373,7 @@ class FilterCriteria extends Component {
       <div style={wrapperStyle}>
         <h3 style={headerStyle}>
           {headerText}
-          {onClickFilter
+          {onClickSubmit
             ? <CardExpandable
               expanded={this.state.expanded}
               style={style.expandButton}

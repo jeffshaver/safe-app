@@ -1,13 +1,14 @@
 import {connect} from 'react-redux'
+import {excludeEmptyFilters} from '../modules/utilities'
 import {fetchFields} from '../modules/fields'
 import {fetchSearchResults} from '../modules/search-results'
 import {fetchSources} from '../modules/sources'
 import FilterCriteria from './FilterCriteria'
-import MetricsWrapper from './MetricsWrapper'
-import RaisedButton from 'material-ui/RaisedButton'
+// import MetricsWrapper from './MetricsWrapper'
+// import RaisedButton from 'material-ui/RaisedButton'
+import {resetFilters} from '../modules/filters'
 import {setSource} from '../modules/source'
 import {CircularProgress, DataTable, SelectField} from 'safe-framework'
-import {excludeEmptyFilters, getNameByID} from '../modules/utilities'
 import {grey300, white} from 'material-ui/styles/colors'
 import {header, main, verticalTop} from '../styles/common'
 import {Hydrateable, LogMetrics} from '../decorators'
@@ -37,6 +38,7 @@ const style = {
     background: white,
     border: `1px solid ${grey300}`,
     height: '510px',
+    margin: '.5em 0 0 0',
     position: 'relative'
   }
 }
@@ -74,7 +76,7 @@ class Search extends Component {
       columns: []
     }
     this.onChangeSource = ::this.onChangeSource
-    this.onClickSearch = ::this.onClickSearch
+    this.onClickSubmit = ::this.onClickSubmit
   }
 
   updateColumns (data) {
@@ -150,26 +152,27 @@ class Search extends Component {
     )
   }
 
-  onClickSearch () {
+  onClickReset = () => {
+    const {dispatch} = this.props
+
+    dispatch(resetFilters())
+  }
+
+  onClickSubmit () {
     const {dispatch, filters, source} = this.props
-  
+
     dispatch(fetchSearchResults(source, excludeEmptyFilters(filters)))
   }
 
   render () {
     const {
       fields,
-      filters,
       source,
       sources
     } = this.props
     const filterStyle = source === ''
       ? style.hidden
       : {}
-    
-    const sourceName = getNameByID(sources.data, source)
-    const label = source === '' ? 'Search' : `Search_${sourceName}_${source}`
-    const searchFilters = excludeEmptyFilters(filters)
 
     return (
       <div>
@@ -193,21 +196,9 @@ class Search extends Component {
             fields={fields}
             style={verticalTop}
             wrapperStyle={filterStyle}
+            onClickReset={this.onClickReset}
+            onClickSubmit={this.onClickSubmit}
           />
-          <div>
-            <MetricsWrapper
-              component={
-                <RaisedButton
-                  disabled={!source}
-                  label='Search'
-                  primary={true}
-                  style={style.button}
-                />}
-              data={{filters: searchFilters}}
-              label={label}
-              onTouchTap={this.onClickSearch}
-            />
-          </div>
           {this.renderSearchResults()}
         </main>
       </div>

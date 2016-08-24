@@ -1,14 +1,15 @@
 import {connect} from 'react-redux'
-import {excludeEmptyFilters} from '../modules/utilities'
 import {fetchVisualizationResults} from '../modules/visualization-results'
 import FilterCriteria from './FilterCriteria'
 import {Hydrateable} from '../decorators/Hydrateable'
 import {LogMetrics} from '../decorators'
+import {setDefaultFilters} from '../modules/filters'
+import uniqBy from 'lodash.uniqby'
 import {verticalTop} from '../styles/common'
 import Visualization from './visualization/Visualization'
+import {createFilter, excludeEmptyFilters, validateFilters} from '../modules/utilities'
 import React, {Component, PropTypes} from 'react'
 import ReactGridLayout, {WidthProvider} from 'react-grid-layout'
-import {resetFilters, setDefaultFilters} from '../modules/filters'
 
 const GridLayout = WidthProvider(ReactGridLayout)
 const gridMargin = 10
@@ -44,22 +45,79 @@ class Dashboard extends Component {
   constructor (props) {
     super(props)
 
-    this.onClickFilter = ::this.onClickFilter
+    this.onClickSubmit = ::this.onClickSubmit
     this.onClickReset = ::this.onClickReset
   }
 
   componentWillMount () {
-    const {dashboard, dispatch} = this.props
-
-    const {dashboardParams = {}} = dashboard
-    const {filters: dashboardFilters = []} = dashboardParams
-
-    if (dashboardFilters && dashboardFilters.length > 0) {
-      dispatch(setDefaultFilters(dashboardFilters))
-    }
+    this.resetFilters()
   }
 
-  onClickFilter () {
+  validateFilters = () => {
+    const {filters} = this.props
+
+    return validateFilters(filters)
+  }
+
+  getUniqueFields = () => {
+    const {dashboard: {visualizations}} = this.props
+    const sources = visualizations.map((visualization) => visualization.source)
+
+    return uniqBy(sources.reduce((fields, source) => (
+      [...fields, ...source.fields]
+    )), 'name')
+  }
+
+  getOptionalFilters = (requiredFilters, dashboardFilters) => {
+    const optional = dashboardFilters.filter((filter) => {
+      return !requiredFilters.find((requiredFilter) => {
+        return requiredFilter.field === filter.field
+      })
+    })
+
+    if (optional.length === 0) {
+      optional.push(createFilter())
+    }
+
+    return optional
+  }
+
+  getRequiredFilters = (requiredFields, dashboardFilters) => {
+    return requiredFields
+      .map((field) => {
+        let newFilter = createFilter({
+          field: field.name,
+          required: true
+        })
+        const existingFilter = dashboardFilters.find((filter) => {
+          return filter.field === field
+        })
+
+        if (existingFilter) {
+          newFilter = Object.assign({}, newFilter, existingFilter)
+        }
+
+        return newFilter
+      })
+  }
+
+  resetFilters () {
+    const {dashboard, dispatch} = this.props
+    const {dashboardParams = {}} = dashboard
+    const {filters: dashboardFilters = []} = dashboardParams
+    const fields = this.getUniqueFields()
+    const requiredFields = fields.filter((field) => field.required)
+    const required = this.getRequiredFilters(requiredFields, dashboardFilters)
+    const optional = this.getOptionalFilters(required, dashboardFilters)
+
+    dispatch(
+      setDefaultFilters(
+        required.concat(optional)
+      )
+    )
+  }
+
+  onClickSubmit () {
     const {dispatch, filters, dashboard} = this.props
     const {visualizations} = dashboard
 
@@ -77,22 +135,7 @@ class Dashboard extends Component {
   }
 
   onClickReset () {
-    const {dispatch, dashboard} = this.props
-
-    const {dashboardParams = {}} = dashboard
-    const {filters: dashboardFilters = []} = dashboardParams
-
-    if (dashboardFilters && dashboardFilters.length > 0) {
-      dispatch(resetFilters(dashboardFilters))
-    } else {
-      const filter = {
-        field: '',
-        operator: '',
-        value: ''
-      }
-
-      dispatch(resetFilters([filter]))
-    }
+    this.resetFilters()
   }
 
   renderVisualizationGrid () {
@@ -152,18 +195,12 @@ class Dashboard extends Component {
       return null
     }
 
-    const {_id, title, visualizations} = dashboard
+    const {_id, title} = dashboard
 
     // Populate the Fields based off of the fields
     // for each visualization's source.
     const fields = {
-      data: [...(new Set(visualizations.reduce(
-        (array, visualization) => {
-          const {fields = []} = visualization.source
-
-          return [...array, ...fields]
-        }, []
-      )))],
+      data: this.getUniqueFields(),
       isFetching: false
     }
 
@@ -182,8 +219,9 @@ class Dashboard extends Component {
             ...verticalTop,
             marginBottom: '1em'
           }}
-          onClickFilter={this.onClickFilter}
+          valid={this.validateFilters()}
           onClickReset={this.onClickReset}
+          onClickSubmit={this.onClickSubmit}
         />
         {this.renderVisualizationGrid()}
       </div>

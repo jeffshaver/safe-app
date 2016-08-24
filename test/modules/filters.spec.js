@@ -71,19 +71,11 @@ describe('filter actions', () => {
   })
 
   it('resetFilters should create a RESET action', () => {
-    const filters = [{
-      id: 0,
-      field: 'FieldA',
-      operator: '=',
-      value: 'FieldAValue'
-    }]
-    
     const expectedAction = {
-      type: RESET,
-      payload: {filters}
+      type: RESET
     }
 
-    expect(resetFilters(filters)).toEqual(expectedAction)
+    expect(resetFilters()).toEqual(expectedAction)
   })
 
   it('setDefaultFilters should create a SET_DEFAULT action', () => {
@@ -105,13 +97,17 @@ describe('filter actions', () => {
 describe('filters reducer', () => {
   it('should return the initial state', () => {
     const stateAfter = [{
-      id: 0,
       field: '',
-      operator: '',
+      operator: '=',
+      required: false,
       value: ''
     }]
 
-    expect(reducer(undefined, {})).toEqual(stateAfter)
+    const result = reducer(undefined, {})
+
+    stateAfter[0].id = result[0].id
+
+    expect(result).toEqual(stateAfter)
   })
 
   it('should handle ADD', () => {
@@ -216,22 +212,24 @@ describe('filters reducer', () => {
       operator: '<=',
       value: 'fieldBValue'
     }]
-    const filters = [{
-      id: 0,
-      field: 'fieldA',
-      operator: '=',
-      value: 'fieldAValue'
-    }]
     const action = {
-      payload: {filters},
       type: RESET
     }
-    const stateAfter = [...filters]
+    const stateAfter = [{
+      field: '',
+      operator: '=',
+      required: false,
+      value: ''
+    }]
 
     deepFreeze(stateBefore)
     deepFreeze(action)
 
-    expect(reducer(stateBefore, action)).toEqual(stateAfter)
+    const result = reducer(stateBefore, action)
+
+    stateAfter[0].id = result[0].id
+
+    expect(result).toEqual(stateAfter)
   })
 
   it('should handle SET_DEFAULT when no filters exist', () => {
@@ -262,7 +260,7 @@ describe('filters reducer', () => {
   it('should handle SET_DEFAULT when filters exist', () => {
     const stateBefore = [{
       id: 0,
-      field: 'FieldB',
+      field: 'Field',
       operator: '=',
       value: 'FieldBValue'
     }]
@@ -276,7 +274,7 @@ describe('filters reducer', () => {
       payload: {filters},
       type: SET_DEFAULT
     }
-    const stateAfter = [...stateBefore]
+    const stateAfter = [...filters]
 
     deepFreeze(stateBefore)
     deepFreeze(action)
