@@ -11,11 +11,13 @@ import ReactGridLayout, {WidthProvider} from 'react-grid-layout'
 import {resetFilters, setDefaultFilters} from '../modules/filters'
 
 const GridLayout = WidthProvider(ReactGridLayout)
-
+const gridMargin = 10
 const style = {
   gridList: {
-    width: '100%',
-    marginBottom: 24
+    marginBottom: 24,
+    marginLeft: -gridMargin,
+    marginRight: -gridMargin,
+    width: `calc(100% + ${gridMargin * 2}px)`
   },
   gridTile: {
     height: '100%',
@@ -73,10 +75,10 @@ class Dashboard extends Component {
       )
     }
   }
-  
+
   onClickReset () {
     const {dispatch, dashboard} = this.props
-    
+
     const {dashboardParams = {}} = dashboard
     const {filters: dashboardFilters = []} = dashboardParams
 
@@ -88,7 +90,7 @@ class Dashboard extends Component {
         operator: '',
         value: ''
       }
-      
+
       dispatch(resetFilters([filter]))
     }
   }
@@ -164,7 +166,7 @@ class Dashboard extends Component {
       )))],
       isFetching: false
     }
-    
+
     const label = `Dashboard_${title}_${_id}`
 
     return (
