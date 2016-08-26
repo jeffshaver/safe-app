@@ -5,11 +5,10 @@ import Dashboard from './Dashboard'
 import {deleteDashboard} from '../modules/delete-dashboard'
 import Dialog from 'material-ui/Dialog'
 import {editDashboard} from '../modules/edit-dashboard'
-import {fetchDashboards} from '../modules/dashboards'
+import {fetchDashboardGroups} from '../modules/dashboard-groups'
 import FlatButton from 'material-ui/FlatButton'
-import {getDashboardById} from '../constants'
 import {LogMetrics} from '../decorators'
-import {SelectField} from 'safe-framework'
+import {SelectField} from 'safe-framework/lib/hacks/SelectField'
 import TextField from 'material-ui/TextField'
 import {
   changeCreateDialog,
@@ -23,6 +22,7 @@ import {
   changeEditDialog,
   resetEditDialog
 } from '../modules/edit-dashboard-dialog'
+import {getDashboardById, getDashboardsFromGroups} from '../constants'
 import {header, main} from '../styles/common'
 import React, {Component, PropTypes} from 'react'
 
@@ -34,8 +34,8 @@ const style = {
 class Dashboards extends Component {
   static propTypes = {
     createDashboardDialog: PropTypes.object.isRequired,
+    dashboardGroups: PropTypes.object.isRequired,
     dashboardId: PropTypes.string,
-    dashboards: PropTypes.object.isRequired,
     deleteDashboardDialog: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     editDashboardDialog: PropTypes.object.isRequired
@@ -63,13 +63,13 @@ class Dashboards extends Component {
   }
 
   componentWillMount () {
-    const {dashboards, dispatch} = this.props
+    const {dashboardGroups, dispatch} = this.props
 
-    if (!dashboards.error && (dashboards.isFetching || dashboards.data.length !== 0)) {
+    if (!dashboardGroups.error && (dashboardGroups.isFetching || dashboardGroups.data.length !== 0)) {
       return
     }
 
-    dispatch(fetchDashboards())
+    dispatch(fetchDashboardGroups())
   }
 
   changeCreateDialog (property, event) {
@@ -87,8 +87,12 @@ class Dashboards extends Component {
   }
 
   changeEditDialog (property, event) {
-    const {dashboardId, dashboards, dispatch} = this.props
-    const dashboard = getDashboardById(dashboards.data, dashboardId)
+    const {dashboardGroups, dashboardId, dispatch} = this.props
+    const dashboards = getDashboardsFromGroups(dashboardGroups)
+    const dashboard = getDashboardById(
+      dashboards,
+      dashboardId
+    )
     const {subtitle, title} = dashboard
     const value = event && event.target && event.target.value || event
 
@@ -256,10 +260,14 @@ class Dashboards extends Component {
 
   render () {
     const {
-      dashboardId = '',
-      dashboards
+      dashboardGroups,
+      dashboardId = ''
     } = this.props
-    const dashboard = getDashboardById(dashboards.data, dashboardId)
+    const dashboards = getDashboardsFromGroups(dashboardGroups)
+    const dashboard = getDashboardById(
+      dashboards,
+      dashboardId
+    )
     const {title} = dashboard || {}
 
     return (
@@ -270,10 +278,11 @@ class Dashboards extends Component {
         <main style={main}>
           <SelectField
             autoWidth={true}
+            childProp='dashboards'
             floatingLabelText='Select a dashboard'
             hintText='Select a dashboard'
-            isFetching={dashboards.isFetching}
-            items={(dashboards.data || []).sort((a, b) => (
+            isFetching={dashboardGroups.isFetching}
+            items={(dashboardGroups.data || []).sort((a, b) => (
               a.title.localeCompare(b.title)
             ))}
             keyProp={'_id'}
@@ -284,7 +293,7 @@ class Dashboards extends Component {
           />
           {this.renderCrudButtons()}
           {(() => {
-            if (!dashboardId || dashboards.data.length === 0 || dashboards.isFetching || dashboards.error) {
+            if (!dashboardId || dashboardGroups.data.length === 0 || dashboardGroups.isFetching || dashboardGroups.error) {
               return null
             }
 
@@ -305,10 +314,10 @@ class Dashboards extends Component {
 
 export default connect((state, ownProps) => ({
   createDashboardDialog: state.createDashboardDialog,
+  dashboardGroups: state.dashboardGroups,
   dashboardId: ownProps.params
     ? ownProps.params.dashboardId
     : '',
-  dashboards: state.dashboards,
   deleteDashboardDialog: state.deleteDashboardDialog,
   editDashboardDialog: state.editDashboardDialog
 }))(Dashboards)

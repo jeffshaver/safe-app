@@ -61,6 +61,15 @@ export const routes = {
   }
 }
 
+export const getDashboardsFromGroups = (dashboardGroups) => (
+  dashboardGroups.data.reduce((dashboards, dashboardGroup) => {
+    return [
+      ...dashboards,
+      ...dashboardGroup.dashboards
+    ]
+  }, [])
+)
+
 export const getDashboardById = (dashboards, id) => {
   let dashboard
 

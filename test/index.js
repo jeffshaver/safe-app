@@ -14,6 +14,10 @@ require('./modules/create-dashboard.spec')
 
 require('./modules/create-dashboard-dialog.spec')
 
+// dashboard-groups
+
+require('./modules/dashboard-groups.spec')
+
 // dashboards
 
 require('./modules/dashboards.spec')
