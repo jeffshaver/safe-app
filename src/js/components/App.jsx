@@ -1,6 +1,7 @@
 import {Banner} from './Banner'
 import {CircularProgress} from 'safe-framework'
 import {connect} from 'react-redux'
+import {fetchAlerts} from '../modules/alerts'
 import {fetchUser} from '../modules/user'
 import {Footer} from './Footer'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
@@ -36,6 +37,7 @@ const style = {
 @Radium
 class App extends Component {
   static propTypes = {
+    alerts: PropTypes.object,
     children: PropTypes.node,
     dispatch: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired
@@ -45,6 +47,13 @@ class App extends Component {
     const {dispatch} = this.props
 
     dispatch(fetchUser())
+    dispatch(fetchAlerts())
+
+    this._interval = setInterval(() => dispatch(fetchAlerts()), 1000 * 60 * 5)
+  }
+
+  componentWillUnmount () {
+    clearInterval(this._interval)
   }
 
   renderLoading () {
@@ -70,7 +79,9 @@ class App extends Component {
   }
 
   renderContent () {
-    const {children, user} = this.props
+    const {alerts, children, user} = this.props
+    const {data} = alerts
+    const {text} = data
 
     if (user.isFetching) {
       return this.renderLoading()
@@ -85,7 +96,7 @@ class App extends Component {
         <LeftNav />
         <Wrapper style={style.wrapper}>
           <Banner />
-          <Header />
+          <Header text={text} />
           <div style={style.flexWrapper}>
             {children}
           </div>
@@ -113,5 +124,6 @@ class App extends Component {
 }
 
 export default connect((state) => ({
+  alerts: state.alerts,
   user: state.user
 }))(App)

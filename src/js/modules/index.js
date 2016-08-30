@@ -1,3 +1,4 @@
+import alerts from './alerts'
 import analytics from './analytics'
 import category from './category'
 import {combineReducers} from 'redux'
@@ -49,6 +50,7 @@ export const actions = {
 }
 
 export const rootReducer = combineReducers({
+  alerts,
   analytic: hydrateable(analytic, HYDRATE_ANALYTIC),
   analytics,
   category,

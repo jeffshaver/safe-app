@@ -1,6 +1,7 @@
 import ActionHelp from 'material-ui/svg-icons/action/help'
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right'
 import {browserHistory} from 'react-router'
+import {connect} from 'react-redux'
 import Drawer from 'material-ui/Drawer'
 import FlatButton from 'material-ui/FlatButton'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
@@ -8,8 +9,8 @@ import IconButton from 'material-ui/IconButton'
 import {logoStyle} from '../styles/common'
 import MenuItem from 'material-ui/MenuItem'
 import {routes} from '../constants'
-import {applicationName, helpMenuItems} from '../../../config'
-import React, {Component} from 'react'
+import {applicationName, bannerText, helpMenuItems} from '../../../config'
+import React, {Component, PropTypes} from 'react'
 
 const style = {
   button: {
@@ -43,7 +44,14 @@ const style = {
   }
 }
 
+@connect((state) => ({
+  alerts: state.alerts
+}))
 export class LeftNav extends Component {
+  static propTypes = {
+    alerts: PropTypes.object
+  }
+
   renderHelpMenu () {
     if (helpMenuItems.length === 0) {
       return null
@@ -112,6 +120,20 @@ export class LeftNav extends Component {
   }
 
   render () {
+    const {alerts} = this.props
+    const {data} = alerts
+    const {text} = data
+    let allLogoStyles = {
+      ...style.button,
+      ...logoStyle
+    }
+
+    if (bannerText && text) {
+      allLogoStyles = {...allLogoStyles, padding: '2.65em 1.05em'}
+    } else if (bannerText || text) {
+      allLogoStyles = {...allLogoStyles, padding: '2.2em 1.05em'}
+    }
+
     return (
       <Drawer
         ref='leftNav'
@@ -127,7 +149,7 @@ export class LeftNav extends Component {
             label={applicationName}
             labelStyle={style.logoLabel}
             rippleColor='transparent'
-            style={{...style.button, ...logoStyle}}
+            style={allLogoStyles}
             tooltip={applicationName}
             tooltipPosition='top-center'
             tooltipStyles={style.tooltip}
