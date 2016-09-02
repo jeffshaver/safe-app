@@ -1,5 +1,18 @@
 # safe-app ChangeLog
 
+## 0.0.22 (September 09, 2016)
+
+### Changes
+
+* [[09df38c](https://github.com/jeffshaver/safe-app/commit/09df38c)] - fix filter remove button on search page ([jeffshaver](https://github.com/jeffshaver))
+* [[cd00ef1](https://github.com/jeffshaver/safe-app/commit/cd00ef1)] - add alerts banner ([jeffshaver](https://github.com/jeffshaver))
+* [[55f2d35](https://github.com/jeffshaver/safe-app/commit/55f2d35)] - implement required filters. default filter operator is now =. filter button now says submit ([jeffshaver](https://github.com/jeffshaver))
+* [[9349c4f](https://github.com/jeffshaver/safe-app/commit/9349c4f)] - add generic way to use tooltip component ([pml984](https://github.com/pml984))
+* [[6dff496](https://github.com/jeffshaver/safe-app/commit/6dff496)] - fix grid being inset by margin ([jeffshaver](https://github.com/jeffshaver))
+* [[5bda042](https://github.com/jeffshaver/safe-app/commit/5bda042)] - use dashboard group select field from framework ([jeffshaver](https://github.com/jeffshaver))
+* [[565f2b2](https://github.com/jeffshaver/safe-app/commit/565f2b2)] - fix user session issue ([knorris](https://github.com/knorris))
+* [[7a7e218](https://github.com/jeffshaver/safe-app/commit/7a7e218)] - update deps. remove flexbox hack. remove margin on filter directions ([jeffshaver](https://github.com/jeffshaver))
+
 ## 0.0.21 (August 22, 2016)
 
 ### Changes
