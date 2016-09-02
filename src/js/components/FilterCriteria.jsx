@@ -317,13 +317,19 @@ class FilterCriteria extends Component {
 
     if (!expanded) return null
 
-    return required.concat(optional).map((filter, i, array) => (
-      this.createFilterElement(
+    return required.concat(optional).map((filter, i, array) => {
+      const isFirstOptionalFilter = (
+        (i === 0 && required.length === 0) ||
+        ((i !== 0 && required.length !== 0) &&
+        (i === Math.abs(array.length - required.length - (optional.length - 1))))
+      )
+
+      return this.createFilterElement(
         filter,
         i,
-        i === Math.abs(array.length - required.length - (optional.length - 1))
+        isFirstOptionalFilter
       )
-    ))
+    })
   }
 
   // (i) is the index of the filter in filters
