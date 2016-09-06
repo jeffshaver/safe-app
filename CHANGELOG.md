@@ -1,6 +1,11 @@
 # safe-app ChangeLog
 
-## 0.0.22 (September 09, 2016)
+## 0.0.23 (September 06, 2016)
+
+* [[dc7d79e](https://github.com/jeffshaver/safe-app/commit/dc7d79e)] - fix issue where add filter button appeared after every filter ([jeffshaver](https://github.com/jeffshaver))
+* [[405041a](https://github.com/jeffshaver/safe-app/commit/405041a)] - fix PropType warnings and some other issues ([jeffshaver](https://github.com/jeffshaver))
+
+## 0.0.22 (September 02, 2016)
 
 ### Changes
 
