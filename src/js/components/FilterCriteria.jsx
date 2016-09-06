@@ -56,7 +56,7 @@ class FilterCriteria extends Component {
     headerText: PropTypes.string,
     label: PropTypes.string,
     style: PropTypes.object,
-    valid: PropTypes.boolean,
+    valid: PropTypes.bool,
     wrapperStyle: PropTypes.object,
     onClickReset: PropTypes.func,
     onClickSubmit: PropTypes.func
@@ -88,7 +88,7 @@ class FilterCriteria extends Component {
     this.toggle = ::this.toggle
   }
 
-  createFilterElement = (filter, i, isFirstOptionalFilter) => {
+  createFilterElement = (filter, i, isFirstAndOnlyOptionalFilter) => {
     const {
       criteriaDataProperty,
       fields,
@@ -144,12 +144,16 @@ class FilterCriteria extends Component {
             return null
           }
 
-          return [
-            isFirstOptionalFilter
-              ? null
-              : this.renderRemoveButton(filterIndex),
-            this.renderAddButton()
-          ]
+          return (
+            <span>
+              {
+                isFirstAndOnlyOptionalFilter
+                  ? null
+                  : this.renderRemoveButton(filterIndex)
+              }
+              {this.renderAddButton()}
+            </span>
+          )
         })()}
       </div>
     )
@@ -318,16 +322,18 @@ class FilterCriteria extends Component {
     if (!expanded) return null
 
     return required.concat(optional).map((filter, i, array) => {
-      const isFirstOptionalFilter = (
-        (i === 0 && required.length === 0) ||
-        ((i !== 0 && required.length !== 0) &&
-        (i === Math.abs(array.length - required.length - (optional.length - 1))))
+      const isFirstAndOnlyOptionalFilter = (
+        optional.length === 1 && (
+          (i === 0 && required.length === 0) ||
+          ((i !== 0 && required.length !== 0) &&
+          (i === Math.abs(array.length - required.length - (optional.length - 1))))
+        )
       )
 
       return this.createFilterElement(
         filter,
         i,
-        isFirstOptionalFilter
+        isFirstAndOnlyOptionalFilter
       )
     })
   }

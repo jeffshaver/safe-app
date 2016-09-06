@@ -65,7 +65,7 @@ class Dashboard extends Component {
 
     return uniqBy(sources.reduce((fields, source) => (
       [...fields, ...source.fields]
-    )), 'name')
+    ), []), 'name')
   }
 
   getOptionalFilters = (requiredFilters, dashboardFilters) => {
@@ -90,7 +90,7 @@ class Dashboard extends Component {
           required: true
         })
         const existingFilter = dashboardFilters.find((filter) => {
-          return filter.field === field
+          return filter.field === field.name
         })
 
         if (existingFilter) {

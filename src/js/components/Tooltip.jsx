@@ -3,7 +3,7 @@ import React, {Component, PropTypes} from 'react'
 
 export default class Tooltip extends Component {
   static propTypes = {
-    children: PropTypes.array,
+    children: PropTypes.node,
     className: PropTypes.string,
     horizontalPosition: PropTypes.string,
     label: PropTypes.node.isRequired,
@@ -11,16 +11,16 @@ export default class Tooltip extends Component {
     touch: PropTypes.bool,
     verticalPosition: PropTypes.string
   }
-  
+
   static defaultProps = {
     horizontalPosition: 'center',
     touch: true,
     verticalPosition: 'bottom'
   }
-  
+
   constructor (props) {
     super(props)
-    
+
     this.state = {showTooltip: false}
 
     this.handleBlur = ::this.handleBlur
@@ -28,15 +28,15 @@ export default class Tooltip extends Component {
     this.handleMouseLeave = ::this.handleMouseLeave
     this.handleMouseEnter = ::this.handleMouseEnter
   }
-  
+
   hideTooltip () {
     this.setState({showTooltip: false})
   }
-  
+
   showTooltip () {
     this.setState({showTooltip: true})
   }
-  
+
   handleBlur (event) {
     this.hideTooltip()
   }
@@ -44,7 +44,7 @@ export default class Tooltip extends Component {
   handleFocus (event) {
     this.showTooltip()
   }
-  
+
   handleMouseLeave (event) {
     this.hideTooltip()
   }
