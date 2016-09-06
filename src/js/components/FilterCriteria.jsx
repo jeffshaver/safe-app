@@ -88,7 +88,7 @@ class FilterCriteria extends Component {
     this.toggle = ::this.toggle
   }
 
-  createFilterElement = (filter, i, isFirstAndOnlyOptionalFilter) => {
+  createFilterElement = (filter, i, isFirstAndOnlyOptionalFilter, isLastOptionalFilter) => {
     const {
       criteriaDataProperty,
       fields,
@@ -151,7 +151,11 @@ class FilterCriteria extends Component {
                   ? null
                   : this.renderRemoveButton(filterIndex)
               }
-              {this.renderAddButton()}
+              {
+                isLastOptionalFilter
+                  ? this.renderAddButton()
+                  : null
+              }
             </span>
           )
         })()}
@@ -329,11 +333,13 @@ class FilterCriteria extends Component {
           (i === Math.abs(array.length - required.length - (optional.length - 1))))
         )
       )
+      const isLastOptionalFilter = i === array.length - 1
 
       return this.createFilterElement(
         filter,
         i,
-        isFirstAndOnlyOptionalFilter
+        isFirstAndOnlyOptionalFilter,
+        isLastOptionalFilter
       )
     })
   }
