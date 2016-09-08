@@ -15,15 +15,15 @@ import {getValueByPath} from '../modules/utilities'
 import {sendMetrics} from '../modules/metrics'
 import React, {Component, PropTypes} from 'react'
 
-@connect(({user}) => ({user}))
 export const LogMetrics = (displayName, uniqueProps = []) => {
   return (TargetComponent) => {
-    return class MetricsComponent extends Component {
+    @connect(({user}) => ({user}), null, null, {withRef: true})
+    class MetricsComponent extends Component {
       static propTypes = {
         dispatch: PropTypes.func.isRequired,
         user: PropTypes.object
       }
-      
+
       componentWillMount () {
         const {dispatch, user} = this.props
         const event = {
@@ -33,27 +33,30 @@ export const LogMetrics = (displayName, uniqueProps = []) => {
             sid: user.data.username
           }
         }
-        
+
         let group = displayName
-        
+
         uniqueProps.forEach((prop) => {
           const uniqueKey = getValueByPath(this.props, prop)
-            
+
           group += uniqueKey ? `_${uniqueKey}` : ''
         })
-          
+
         event.group = group
-        
+
         dispatch(sendMetrics([event]))
       }
 
       render () {
         return (
           <TargetComponent
+            ref={(ref) => (this._component = ref)}
             {...this.props}
           />
         )
       }
     }
+
+    return MetricsComponent
   }
 }

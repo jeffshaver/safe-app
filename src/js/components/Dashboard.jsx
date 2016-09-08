@@ -63,8 +63,8 @@ class Dashboard extends Component {
     const {dashboard: {visualizations}} = this.props
     const sources = visualizations.map((visualization) => visualization.source)
 
-    return uniqBy(sources.reduce((fields, source) => (
-      [...fields, ...source.fields]
+    return uniqBy(sources.reduce((fields, {source: {fields: sourceFields = []} = {}}) => (
+      [...fields, ...sourceFields]
     ), []), 'name')
   }
 
@@ -151,6 +151,18 @@ class Dashboard extends Component {
         layout={layout}
         rowHeight={250}
         style={style.gridList}
+        onResizeStop={(layout, item) => {
+          const visualization = this._visualizations[item.i]
+          const {
+            component,
+            typeGroup
+          } = visualization.getVisualization()
+          const isChart = typeGroup === 'Chart'
+
+          if (!isChart) return
+
+          window.requestAnimationFrame(component.resize)
+        }}
       >
         {visualizations.map(this.renderVisualization, this)}
       </GridLayout>
@@ -158,7 +170,7 @@ class Dashboard extends Component {
   }
 
   renderVisualization (visualization, i) {
-    const {dashboard, dispatch, visualizationResults} = this.props
+    const {dashboard, dispatch, filters, visualizationResults} = this.props
     const {dashboardParams = {}, visualizations = []} = dashboard
     const {size = 2, visualizationSizes = []} = dashboardParams
     const visualizationSize = visualizationSizes[visualization._id] || {}
@@ -181,6 +193,20 @@ class Dashboard extends Component {
       >
         <Visualization
           dispatch={dispatch}
+          filters={filters}
+          ref={(ref) => {
+            if (!ref) {
+              this._visualizations = ref
+
+              return
+            }
+
+            if (!this._visualizations) {
+              this._visualizations = {}
+            }
+
+            this._visualizations[ref.props.visualization._id] = ref.getWrappedInstance()._component
+          }}
           results={results}
           visualization={visualization}
         />

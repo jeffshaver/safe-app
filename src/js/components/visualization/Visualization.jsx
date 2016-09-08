@@ -1,6 +1,5 @@
 import {ChartComponent} from './ChartComponent'
 import {CircularProgress} from 'safe-framework'
-import {connect} from 'react-redux'
 import {fetchVisualizationResults} from '../../modules/visualization-results'
 import {LogMetrics} from '../../decorators'
 import {MapComponent} from './MapComponent'
@@ -60,6 +59,19 @@ class Visualization extends Component {
     this._menuItems = undefined
     // const {dispatch} = this.props
     // dispatch(removeVisualizationResults())
+  }
+
+  getVisualization () {
+    const {visualization} = this.props
+    const {visualizationType: {name: type}} = visualization
+    const typeGroup = getTypeGroup(type)
+    const {_component: {_component: component} = {}} = this
+
+    return {
+      component,
+      type,
+      typeGroup
+    }
   }
 
   renderLoading () {
@@ -160,6 +172,4 @@ class Visualization extends Component {
   }
 }
 
-export default connect((state, ownProps) => ({
-  filters: state.filters
-}))(Visualization)
+export default Visualization

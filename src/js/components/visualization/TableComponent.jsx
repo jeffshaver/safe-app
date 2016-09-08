@@ -28,7 +28,7 @@ export class TableComponent extends Component {
         enableColResize='true'
         enableSorting='true'
         exportFileName={`${changeCase.pascalCase(name)}.csv`}
-        ref={(ref) => (this._table = ref)}
+        ref={(ref) => (this._component = ref)}
       />
     )
   }

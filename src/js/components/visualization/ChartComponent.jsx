@@ -98,7 +98,7 @@ export class ChartComponent extends Component {
 
             for (const tooltipField of tooltipFields) {
               const tooltipFieldValue = dataItem[tooltipField]
-              
+
               if (tooltipFieldValue) {
                 if (Array.isArray(tooltipFieldValue)) {
                   tooltipLabels.push(...tooltipFieldValue)
@@ -122,7 +122,7 @@ export class ChartComponent extends Component {
         data={chartData}
         drilldown={drillDownFieldName != null}
         options={options}
-        ref={(ref) => (this._chart = ref)}
+        ref={(ref) => (this._component = ref)}
         style={style.canvas}
         onClick={(dataItem, seriesItem) => {
           if (!drillDownFieldName) {
@@ -135,7 +135,7 @@ export class ChartComponent extends Component {
             drillDownFieldName
           )
 
-          this._chart.drilldown({
+          this._component.drilldown({
             ...chartData,
             data
           })
