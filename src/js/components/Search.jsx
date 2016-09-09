@@ -1,14 +1,13 @@
 import {connect} from 'react-redux'
-import {excludeEmptyFilters} from '../modules/utilities'
 import {fetchFields} from '../modules/fields'
 import {fetchSearchResults} from '../modules/search-results'
 import {fetchSources} from '../modules/sources'
 import FilterCriteria from './FilterCriteria'
-// import MetricsWrapper from './MetricsWrapper'
-// import RaisedButton from 'material-ui/RaisedButton'
 import {resetFilters} from '../modules/filters'
 import {setSource} from '../modules/source'
-import {CircularProgress, DataTable, SelectField} from 'safe-framework'
+import Visualization from './visualization/Visualization'
+import {CircularProgress, SelectField} from 'safe-framework'
+import {excludeEmptyFilters, getNameByID} from '../modules/utilities'
 import {grey300, white} from 'material-ui/styles/colors'
 import {header, main, verticalTop} from '../styles/common'
 import {Hydrateable, LogMetrics} from '../decorators'
@@ -27,6 +26,10 @@ const style = {
   progress: {
     left: '.5em',
     top: '1.2em'
+  },
+  results: {
+    marginTop: '.5em',
+    height: '500px'
   },
   span: {
     position: 'absolute',
@@ -116,12 +119,12 @@ class Search extends Component {
   }
 
   renderSearchResults () {
-    const {searchResults} = this.props
+    const {dispatch, searchResults} = this.props
 
     if (!searchResults) {
       return null
     }
-
+    
     if (searchResults.isFetching) {
       return (
         <div style={style.wrapper}>
@@ -139,14 +142,21 @@ class Search extends Component {
     if (data.length === 0) {
       return <div />
     }
-
+    
+    const visualization = {
+      _id: '',
+      name: 'Search Results',
+      visualizationType: {
+        name: 'Table'
+      }
+    }
+    
     return (
-      <div style={style.wrapper}>
-        <DataTable
-          columns={this.state.columns}
-          data={searchResults.data}
-          enableColResize='true'
-          enableSorting='true'
+      <div style={style.results}>
+        <Visualization
+          dispatch={dispatch}
+          results={searchResults}
+          visualization={visualization}
         />
       </div>
     )
@@ -173,7 +183,9 @@ class Search extends Component {
     const filterStyle = source === ''
       ? style.hidden
       : {}
-
+      
+    const label = 'Search_' + getNameByID(sources.data, source) + `_${source}`
+    
     return (
       <div>
         <header style={header}>
@@ -194,6 +206,7 @@ class Search extends Component {
           />
           <FilterCriteria
             fields={fields}
+            label={label}
             style={verticalTop}
             wrapperStyle={filterStyle}
             onClickReset={this.onClickReset}

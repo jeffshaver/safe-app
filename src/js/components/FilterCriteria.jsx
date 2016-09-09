@@ -302,7 +302,7 @@ class FilterCriteria extends Component {
               style={filterStyle.button}
             />}
           data={{filters: searchFilters}}
-          label={label + '_Filter'}
+          label={label + '_Submit'}
           onTouchTap={this.handleClickFilter}
         />
         <RaisedButton

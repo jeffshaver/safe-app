@@ -44,15 +44,17 @@ class Visualization extends Component {
   }
 
   componentWillMount () {
-    const {dispatch, visualization, filters} = this.props
+    const {dispatch, visualization, filters, results} = this.props
     const {visualizationType} = visualization
     const {name: type} = visualizationType
 
     this._menuItems = generateMenuItems(getTypeGroup(type), [visualization, this])
-
-    dispatch(fetchVisualizationResults(
-      visualization._id, excludeEmptyFilters(filters))
-    )
+    
+    if (!results.data) {
+      dispatch(fetchVisualizationResults(
+        visualization._id, excludeEmptyFilters(filters))
+      )
+    }
   }
 
   componentWillUnmount () {
