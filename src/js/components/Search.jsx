@@ -1,3 +1,4 @@
+import {applicationName} from '../../../config'
 import {connect} from 'react-redux'
 import {fetchFields} from '../modules/fields'
 import {fetchSearchResults} from '../modules/search-results'
@@ -9,13 +10,16 @@ import Visualization from './visualization/Visualization'
 import {CircularProgress, SelectField} from 'safe-framework'
 import {excludeEmptyFilters, getNameByID} from '../modules/utilities'
 import {grey300, white} from 'material-ui/styles/colors'
-import {header, main, verticalTop} from '../styles/common'
+import {header, headerAppName, main, verticalTop} from '../styles/common'
 import {Hydrateable, LogMetrics} from '../decorators'
 import React, {Component, PropTypes} from 'react'
 
 const style = {
   button: {
     margin: '1.5em 0'
+  },
+  h1: {
+    margin: 0
   },
   hidden: {
     display: 'none'
@@ -189,7 +193,8 @@ class Search extends Component {
     return (
       <div>
         <header style={header}>
-          <h1>Search</h1>
+          <p style={headerAppName}>{applicationName}</p>
+          <h1 style={style.h1}>Search</h1>
         </header>
         <main style={main}>
           <SelectField

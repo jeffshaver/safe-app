@@ -1,3 +1,4 @@
+import {applicationName} from '../../../config'
 import {connect} from 'react-redux'
 import {fetchAnalytics} from '../modules/analytics'
 import {fetchFields} from '../modules/fields'
@@ -8,13 +9,16 @@ import {SelectField} from 'safe-framework'
 import {setAnalytic} from '../modules/analytic'
 import {setSource} from '../modules/source'
 import {setVisualization} from '../modules/visualization'
-import {header, main, verticalTop} from '../styles/common'
+import {header, headerAppName, main, verticalTop} from '../styles/common'
 import {Hydrateable, LogMetrics} from '../decorators'
 import React, {Component, PropTypes} from 'react'
 
 const style = {
   hidden: {
     display: 'none'
+  },
+  h1: {
+    margin: 0
   }
 }
 
@@ -96,7 +100,8 @@ class Analytics extends Component {
     return (
       <div>
         <header style={header}>
-          <h1>Analytics</h1>
+          <p style={headerAppName}>{applicationName}</p>
+          <h1 style={style.h1}>Analytics</h1>
         </header>
         <main style={main}>
           <SelectField

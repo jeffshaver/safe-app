@@ -11,6 +11,11 @@ export const main = {
   padding: '0 1.25em'
 }
 
+export const headerAppName = {
+  fontSize: '.9em',
+  margin: '0'
+}
+
 export const verticalTop = {
   verticalAlign: 'top'
 }

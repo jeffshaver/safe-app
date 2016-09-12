@@ -1,5 +1,6 @@
 {
   "apiUri": "http://localhost/api",
+  "applicationAbbreviation": "SAFE",
   "applicationName": "SAFE",
   "bannerText": "",
   "disabledRoutes": [],

@@ -1,3 +1,4 @@
+import {applicationName} from '../../../config'
 import {connect} from 'react-redux'
 import Dialog from 'material-ui/Dialog'
 import DropDownMenu from 'material-ui/DropDownMenu'
@@ -7,7 +8,7 @@ import {LogMetrics} from '../decorators'
 import MenuItem from 'material-ui/MenuItem'
 import Papa from 'papaparse'
 import {toggleDialog} from '../modules/dialog'
-import {header, main} from '../styles/common'
+import {header, headerAppName, main} from '../styles/common'
 import React, {Component, PropTypes} from 'react'
 import {
   resetUploadDataTypes,
@@ -20,6 +21,12 @@ const getFileExtension = (fileName) =>
   fileName
     .slice((fileName.lastIndexOf('.') - 1 >>> 0) + 2)
     .toLowerCase()
+
+const style = {
+  h1: {
+    margin: 0
+  }
+}
 
 @LogMetrics('Upload')
 class Upload extends Component {
@@ -148,7 +155,8 @@ class Upload extends Component {
     return (
       <div>
         <header style={header}>
-          <h1>Data</h1>
+          <p style={headerAppName}>{applicationName}</p>
+          <h1 style={style.h1}>Data</h1>
         </header>
         <main style={main}>
           <h3>Upload a Dataset</h3>

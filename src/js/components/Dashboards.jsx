@@ -1,3 +1,4 @@
+import {applicationName} from '../../../config'
 import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 import {createDashboard} from '../modules/create-dashboard'
@@ -23,11 +24,16 @@ import {
   resetEditDialog
 } from '../modules/edit-dashboard-dialog'
 import {getDashboardById, getDashboardsFromGroups} from '../constants'
-import {header, main} from '../styles/common'
+import {header, headerAppName, main} from '../styles/common'
 import React, {Component, PropTypes} from 'react'
 
 const style = {
-  width: '400px'
+  content: {
+    width: '400px'
+  },
+  h1: {
+    margin: 0
+  }
 }
 
 @LogMetrics('Dashboards')
@@ -204,7 +210,7 @@ class Dashboards extends Component {
       <div>
         <Dialog
           actions={createActions}
-          contentStyle={style}
+          contentStyle={style.content}
           modal={false}
           open={createVisibility}
           title='Create a Dashboard'
@@ -223,7 +229,7 @@ class Dashboards extends Component {
         </Dialog>
         <Dialog
           actions={deleteActions}
-          contentStyle={style}
+          contentStyle={style.content}
           modal={false}
           open={deleteVisibility}
           title='Delete a Dashboard'
@@ -233,7 +239,7 @@ class Dashboards extends Component {
         </Dialog>
         <Dialog
           actions={editActions}
-          contentStyle={style}
+          contentStyle={style.content}
           modal={false}
           open={editVisibility}
           title='Edit a Dashboard'
@@ -273,7 +279,8 @@ class Dashboards extends Component {
     return (
       <div>
         <header style={header}>
-          <h1>Dashboards {title ? `/ ${title}` : ''}</h1>
+          <p style={headerAppName}>{applicationName}</p>
+          <h1 style={style.h1}>Dashboards {title ? `/ ${title}` : ''}</h1>
         </header>
         <main style={main}>
           <SelectField

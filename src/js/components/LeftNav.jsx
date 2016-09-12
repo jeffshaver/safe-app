@@ -9,7 +9,7 @@ import IconButton from 'material-ui/IconButton'
 import {logoStyle} from '../styles/common'
 import MenuItem from 'material-ui/MenuItem'
 import {routes} from '../constants'
-import {applicationName, bannerText, helpMenuItems} from '../../../config'
+import {applicationAbbreviation, bannerText, helpMenuItems} from '../../../config'
 import React, {Component, PropTypes} from 'react'
 
 const style = {
@@ -141,16 +141,16 @@ export class LeftNav extends Component {
       >
         <MenuItem
           innerDivStyle={{padding: 0}}
-          key={applicationName}
+          key={applicationAbbreviation}
           onTouchTap={() => (browserHistory.push('/'))}
         >
           <FlatButton
             hoverColor='transparent'
-            label={applicationName}
+            label={applicationAbbreviation}
             labelStyle={style.logoLabel}
             rippleColor='transparent'
             style={allLogoStyles}
-            tooltip={applicationName}
+            tooltip={applicationAbbreviation}
             tooltipPosition='top-center'
             tooltipStyles={style.tooltip}
           />
