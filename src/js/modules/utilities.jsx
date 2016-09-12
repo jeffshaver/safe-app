@@ -51,7 +51,7 @@ export const saveCanvas = (canvas, name) => {
 }
 
 export const exportTableToCSV = (metadata, visualization) => {
-  visualization._component._table.exportToCSV()
+  visualization._component._component.exportToCSV()
 }
 
 export const menuItemDefs = {
