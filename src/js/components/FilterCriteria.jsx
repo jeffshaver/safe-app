@@ -94,7 +94,7 @@ class FilterCriteria extends Component {
       fields,
       style: filterStyle
     } = this.props
-    const field = fields.data[filter.fieldIndex] || {}
+    const field = fields.data.find((field) => field.name === filter.field) || {}
     const {[criteriaDataProperty]: criteriaData} = field
     const ValueField = criteriaData ? AutoComplete : TextField
     const filterIndex = this.getFilterIndex(filter)
@@ -170,12 +170,11 @@ class FilterCriteria extends Component {
     dispatch(addFilter(createFilter()))
   }
 
-  onChangeField (ev, index, field, fieldIndex) {
+  onChangeField (ev, index, field) {
     const {dispatch} = this.props
 
     dispatch(editFilter(index, {
-      field,
-      fieldIndex
+      field
     }))
   }
 
