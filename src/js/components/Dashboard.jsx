@@ -63,7 +63,7 @@ class Dashboard extends Component {
     const {dashboard: {visualizations}} = this.props
     const sources = visualizations.map((visualization) => visualization.source)
 
-    return uniqBy(sources.reduce((fields, {source: {fields: sourceFields = []} = {}}) => (
+    return uniqBy(sources.reduce((fields, {fields: sourceFields = []} = {}) => (
       [...fields, ...sourceFields]
     ), []), 'name')
   }

@@ -240,10 +240,6 @@ class FilterCriteria extends Component {
   handleClickFilter (...params) {
     const {onClickSubmit} = this.props
 
-    if (this.state.expanded) {
-      this.toggle()
-    }
-
     onClickSubmit(...params)
   }
 
