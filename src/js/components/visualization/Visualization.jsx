@@ -1,5 +1,6 @@
 import {ChartComponent} from './ChartComponent'
 import {CircularProgress} from 'safe-framework'
+import {connect} from 'react-redux'
 import {fetchVisualizationResults} from '../../modules/visualization-results'
 import {LogMetrics} from '../../decorators'
 import {MapComponent} from './MapComponent'
@@ -29,6 +30,7 @@ const getTypeGroup = (type) => {
   return 'Chart'
 }
 
+@connect(({filters}) => ({filters}), null, null, {withRef: true})
 @LogMetrics('Visualization', ['visualization.name', 'visualization._id'])
 class Visualization extends Component {
   static propTypes = {
@@ -49,12 +51,14 @@ class Visualization extends Component {
     const {name: type} = visualizationType
 
     this._menuItems = generateMenuItems(getTypeGroup(type), [visualization, this])
-    
-    if (!results.data) {
-      dispatch(fetchVisualizationResults(
-        visualization._id, excludeEmptyFilters(filters))
-      )
+
+    if (results.data) {
+      return
     }
+
+    dispatch(fetchVisualizationResults(
+      visualization._id, excludeEmptyFilters(filters))
+    )
   }
 
   componentWillUnmount () {

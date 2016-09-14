@@ -135,6 +135,7 @@ class FilterCriteria extends Component {
           floatingLabelText='Filter Criteria'
           hintText='Filter Criteria'
           openOnFocus={true}
+          searchText={filter.value}
           style={filterStyle}
           value={filter.value}
           onChange={(ev) => this.onChangeValue(ev, filterIndex)}

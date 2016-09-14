@@ -170,7 +170,7 @@ class Dashboard extends Component {
   }
 
   renderVisualization (visualization, i) {
-    const {dashboard, dispatch, filters, visualizationResults} = this.props
+    const {dashboard, visualizationResults} = this.props
     const {dashboardParams = {}, visualizations = []} = dashboard
     const {size = 2, visualizationSizes = []} = dashboardParams
     const visualizationSize = visualizationSizes[visualization._id] || {}
@@ -192,8 +192,6 @@ class Dashboard extends Component {
         }}
       >
         <Visualization
-          dispatch={dispatch}
-          filters={filters}
           ref={(ref) => {
             if (!ref) {
               this._visualizations = ref
@@ -205,7 +203,7 @@ class Dashboard extends Component {
               this._visualizations = {}
             }
 
-            this._visualizations[ref.props.visualization._id] = ref.getWrappedInstance()._component
+            this._visualizations[ref.props.visualization._id] = ref.getWrappedInstance().getWrappedInstance()._component
           }}
           results={results}
           visualization={visualization}
