@@ -138,7 +138,9 @@ class FilterCriteria extends Component {
           searchText={filter.value}
           style={filterStyle}
           value={filter.value}
-          onChange={(ev) => this.onChangeValue(ev, filterIndex)}
+          onChange={({target: {value}}) => this.onChangeValue(value, filterIndex)}
+          onNewRequest={(value) => this.onChangeValue(value, filterIndex)}
+          onUpdateInput={(value) => this.onChangeValue(value, filterIndex)}
         />
         {(() => {
           if (filter.required) {
@@ -185,10 +187,10 @@ class FilterCriteria extends Component {
     dispatch(editFilter(index, {operator}))
   }
 
-  onChangeValue (ev, index) {
+  onChangeValue (newValue, index) {
     const {dispatch, fields, filters} = this.props
     const filter = filters[index]
-    let value = ev.target.value
+    let value = newValue
     let valueDataTypeMismatch = false
 
     fields.data.forEach((item) => {
@@ -208,7 +210,7 @@ class FilterCriteria extends Component {
     })
 
     const currentValueIsEmpty = filter.value.toString().length === 0
-    const newValueIsEmpty = ev.target.value.length === 0
+    const newValueIsEmpty = newValue.length === 0
 
     if (valueDataTypeMismatch && !currentValueIsEmpty && !newValueIsEmpty) {
       return
