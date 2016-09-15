@@ -1,12 +1,11 @@
 import {applicationName} from '../../../config'
+import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 import {fetchFields} from '../modules/fields'
-import {fetchSearchResults} from '../modules/search-results'
 import {fetchSources} from '../modules/sources'
 import FilterCriteria from './FilterCriteria'
 import {LogMetrics} from '../decorators'
 import {setFilters} from '../modules/filters'
-import {setSource} from '../modules/source'
 import Visualization from './visualization/Visualization'
 import {CircularProgress, SelectField} from 'safe-framework'
 import {
@@ -16,6 +15,7 @@ import {
   getNameByID,
   validateFilters
 } from '../modules/utilities'
+import {fetchSearchResults, resetSearchResults} from '../modules/search-results'
 import {grey300, white} from 'material-ui/styles/colors'
 import {header, headerAppName, main, verticalTop} from '../styles/common'
 import React, {Component, PropTypes} from 'react'
@@ -87,8 +87,36 @@ class Search extends Component {
     this.state = {
       columns: []
     }
-    this.onChangeSource = ::this.onChangeSource
-    this.onClickSubmit = ::this.onClickSubmit
+  }
+
+  componentWillMount = () => {
+    const {dispatch, searchResults, source} = this.props
+
+    this.updateColumns(searchResults)
+
+    dispatch(fetchSources())
+
+    if (source) {
+      dispatch(fetchFields(source))
+    }
+  }
+
+  componentWillReceiveProps = ({
+    searchResults: nextSearchResults,
+    source: nextSource,
+    fields: nextFields
+  }) => {
+    const {searchResults, source, fields, filters} = this.props
+
+    if (searchResults !== nextSearchResults) {
+      this.updateColumns(nextSearchResults)
+    }
+
+    const newSourceOrFields = source !== nextSource || fields !== nextFields
+
+    if (newSourceOrFields && !filters[nextSource]) {
+      this.resetFilters(nextSource, nextFields.data)
+    }
   }
 
   updateColumns (data) {
@@ -99,26 +127,6 @@ class Search extends Component {
     this.setState({
       columns: generateColumns(data)
     })
-  }
-
-  componentWillMount () {
-    const {dispatch, searchResults} = this.props
-
-    this.updateColumns(searchResults)
-
-    dispatch(fetchSources())
-  }
-
-  componentWillReceiveProps (nextProps) {
-    const {searchResults, source, fields} = this.props
-
-    if (searchResults !== nextProps.searchResults) {
-      this.updateColumns(nextProps.searchResults)
-    }
-
-    if (source !== nextProps.source || fields !== nextProps.fields) {
-      this.resetFilters(nextProps.source, nextProps.fields.data)
-    }
   }
 
   resetFilters (source, fields) {
@@ -136,12 +144,15 @@ class Search extends Component {
     return validateFilters(filters[source])
   }
 
-  onChangeSource (ev, index, source) {
+  onChangeSource = (ev, index, source) => {
     const {dispatch} = this.props
 
     ev.preventDefault()
-    dispatch(setSource(source))
+
+    browserHistory.push(`/search/${source}`)
+
     dispatch(fetchFields(source))
+    dispatch(resetSearchResults())
   }
 
   renderSearchResults () {
@@ -194,7 +205,7 @@ class Search extends Component {
     this.resetFilters(source, fields.data)
   }
 
-  onClickSubmit () {
+  onClickSubmit = () => {
     const {dispatch, filters, source} = this.props
 
     dispatch(fetchSearchResults(source, excludeEmptyFilters(filtersToArray(filters[source]))))
@@ -231,28 +242,38 @@ class Search extends Component {
             valueProp={'_id'}
             onChange={this.onChangeSource}
           />
-          <FilterCriteria
-            containerId={source}
-            fields={fields}
-            label={label}
-            style={verticalTop}
-            valid={this.validateFilters()}
-            wrapperStyle={filterStyle}
-            onClickReset={this.onClickReset}
-            onClickSubmit={this.onClickSubmit}
-          />
-          {this.renderSearchResults()}
+          {(() => {
+            if (!source) return null
+
+            return (
+              <div>
+                <FilterCriteria
+                  containerId={source}
+                  fields={fields}
+                  label={label}
+                  style={verticalTop}
+                  valid={this.validateFilters()}
+                  wrapperStyle={filterStyle}
+                  onClickReset={this.onClickReset}
+                  onClickSubmit={this.onClickSubmit}
+                />
+                {this.renderSearchResults()}
+              </div>
+            )
+          })()}
         </main>
       </div>
     )
   }
 }
 
-export default connect((state) => ({
+export default connect((state, ownProps) => ({
   category: state.category,
   fields: state.fields,
   filters: state.filters,
   searchResults: state.searchResults,
-  source: state.source,
+  source: ownProps.params
+    ? ownProps.params.source
+    : '',
   sources: state.sources
 }))(Search)

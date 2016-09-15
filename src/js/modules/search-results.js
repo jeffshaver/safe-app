@@ -3,6 +3,7 @@ import fetch from 'isomorphic-fetch'
 import {checkFetchStatus, defaultFetchOptions} from './utilities'
 
 export const FAILURE = 'safe-app/search-results/FAILURE'
+export const RESET = 'safe-app/search-results/RESET'
 export const REQUEST = 'safe-app/search-results/REQUEST'
 export const SUCCESS = 'safe-app/search-results/SUCCESS'
 
@@ -36,6 +37,9 @@ export const fetchSearchResults = (source, filters) =>
       .then((json) => dispatch(fetchSearchResultsSuccess(json)))
       .catch((error) => dispatch(fetchSearchResultsFailure(error)))
   }
+export const resetSearchResults = () => ({
+  type: RESET
+})
 
 const initialState = {
   data: [],
@@ -53,6 +57,10 @@ export default (state = initialState, {payload = {}, type, ...action}) => {
         ...state,
         error,
         isFetching: false
+      }
+    case RESET:
+      return {
+        ...initialState
       }
     case REQUEST:
       return {

@@ -13,6 +13,8 @@ import {
   fetchSearchResultsSuccess,
   default as reducer,
   REQUEST,
+  RESET,
+  resetSearchResults,
   SUCCESS
 } from '../../src/js/modules/search-results'
 
@@ -39,6 +41,14 @@ describe('searchResults actions', () => {
       }
 
       expect(fetchSearchResultsRequest(source, filters)).toEqual(expectedAction)
+    })
+    
+    it('resetSearchResults should create a RESET action', () => {
+      const expectedAction = {
+        type: RESET
+      }
+
+      expect(resetSearchResults()).toEqual(expectedAction)
     })
 
     it('fetchSearchResultsSuccess should create a SUCCESS action', () => {
@@ -169,6 +179,20 @@ describe('searchResults reducer', () => {
       data: [],
       error: undefined,
       isFetching: true,
+      lastUpdated: null
+    }
+
+    expect(reducer(undefined, action)).toEqual(stateAfter)
+  })
+  
+  it('should handle RESET', () => {
+    const action = {
+      type: RESET
+    }
+    const stateAfter = {
+      data: [],
+      error: undefined,
+      isFetching: false,
       lastUpdated: null
     }
 

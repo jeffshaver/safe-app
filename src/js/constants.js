@@ -39,7 +39,14 @@ export const routes = {
     avatar: ActionSearch,
     component: Search,
     enabled: isRouteEnabled('Search'),
-    path: 'search'
+    path: 'search',
+    subRoutes: {
+      Source: {
+        component: Search,
+        enabled: isRouteEnabled('Search'),
+        path: ':source'
+      }
+    }
   },
   Analytics: {
     avatar: ActionAssessment,
