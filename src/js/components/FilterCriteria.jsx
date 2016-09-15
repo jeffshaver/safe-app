@@ -4,7 +4,6 @@ import {connect} from 'react-redux'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import ContentRemove from 'material-ui/svg-icons/content/remove'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
-import isEqual from 'lodash.isequal'
 import MetricsWrapper from './MetricsWrapper'
 import {operators} from '../constants'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -13,7 +12,7 @@ import TextField from 'material-ui/TextField'
 import Tooltip from './Tooltip'
 import {verticalTop} from '../styles/common'
 import {addFilter, editFilter, removeFilter} from '../modules/filters'
-import {createFilter, excludeEmptyFilters} from '../modules/utilities'
+import {createFilter, excludeEmptyFilters, filtersToArray} from '../modules/utilities'
 import {cyan500, grey400, redA400} from 'material-ui/styles/colors.js'
 import React, {Component, PropTypes} from 'react'
 
@@ -48,10 +47,11 @@ const style = {
 
 class FilterCriteria extends Component {
   static propTypes = {
+    containerId: PropTypes.string.isRequired,
     criteriaDataProperty: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     fields: PropTypes.object.isRequired,
-    filters: PropTypes.array.isRequired,
+    filters: PropTypes.object.isRequired,
     headerStyle: PropTypes.object,
     headerText: PropTypes.string,
     label: PropTypes.string,
@@ -80,116 +80,38 @@ class FilterCriteria extends Component {
       expanded: true
     }
 
-    this.handleClickFilter = ::this.handleClickFilter
-    this.handleClickReset = ::this.handleClickReset
-    this.onAddFilter = ::this.onAddFilter
-    this.onChangeField = ::this.onChangeField
-    this.onChangeOperator = ::this.onChangeOperator
-    this.toggle = ::this.toggle
+    // this.handleClickFilter = ::this.handleClickFilter
+    // this.handleClickReset = ::this.handleClickReset
   }
 
-  createFilterElement = (filter, i, isFirstAndOnlyOptionalFilter, isLastOptionalFilter) => {
-    const {
-      criteriaDataProperty,
-      fields,
-      style: filterStyle
-    } = this.props
-    const field = fields.data.find((field) => field.name === filter.field) || {}
-    const {[criteriaDataProperty]: criteriaData} = field
-    const ValueField = criteriaData ? AutoComplete : TextField
-    const filterIndex = this.getFilterIndex(filter)
-    const errorText = filter.required && !filter.value
-      ? 'Required'
-      : undefined
+  onAddFilter = () => {
+    const {containerId, dispatch} = this.props
+    const filter = createFilter()
 
-    return (
-      <div key={filterIndex}>
-        <SelectField
-          disabled={filter.required}
-          floatingLabelText='Select a field'
-          hintText='Select a field'
-          isFetching={fields.isFetching}
-          items={fields.data}
-          keyProp={'name'}
-          primaryTextProp={'name'}
-          style={verticalTop}
-          value={filter.field}
-          valueProp={'name'}
-          onChange={(ev, index, value) => this.onChangeField(ev, filterIndex, value, index)}
-        />
-        <SelectField
-          floatingLabelText='Select an operator'
-          hintText='Select an operator'
-          items={operators}
-          keyProp={'value'}
-          primaryTextProp={'primaryText'}
-          style={verticalTop}
-          value={filter.operator}
-          valueProp={'value'}
-          onChange={(ev, index, value) => this.onChangeOperator(ev, filterIndex, value, index)}
-        />
-        <ValueField
-          dataSource={criteriaData}
-          errorText={errorText}
-          filter={AutoComplete.caseInsensitiveFilter}
-          floatingLabelText='Filter Criteria'
-          hintText='Filter Criteria'
-          openOnFocus={true}
-          searchText={filter.value}
-          style={filterStyle}
-          value={filter.value}
-          onChange={({target: {value}}) => this.onChangeValue(value, filterIndex)}
-          onNewRequest={(value) => this.onChangeValue(value, filterIndex)}
-          onUpdateInput={(value) => this.onChangeValue(value, filterIndex)}
-        />
-        {(() => {
-          if (filter.required) {
-            return null
-          }
-
-          return (
-            <span>
-              {
-                isFirstAndOnlyOptionalFilter
-                  ? null
-                  : this.renderRemoveButton(filterIndex)
-              }
-              {
-                isLastOptionalFilter
-                  ? this.renderAddButton()
-                  : null
-              }
-            </span>
-          )
-        })()}
-      </div>
-    )
+    dispatch(addFilter(containerId, filter))
   }
 
-  onAddFilter (ev) {
-    const {dispatch} = this.props
+  onRemoveFilter = (id) => {
+    const {containerId, dispatch} = this.props
 
-    ev.preventDefault()
-    dispatch(addFilter(createFilter()))
+    dispatch(removeFilter(containerId, id))
   }
 
-  onChangeField (ev, index, field) {
-    const {dispatch} = this.props
+  onChangeField = (id, field) => {
+    const {containerId, dispatch} = this.props
 
-    dispatch(editFilter(index, {
-      field
-    }))
+    dispatch(editFilter(containerId, id, {field}))
   }
 
-  onChangeOperator (ev, index, operator) {
-    const {dispatch} = this.props
+  onChangeOperator = (id, operator) => {
+    const {containerId, dispatch} = this.props
 
-    dispatch(editFilter(index, {operator}))
+    dispatch(editFilter(containerId, id, {operator}))
   }
 
-  onChangeValue (newValue, index) {
-    const {dispatch, fields, filters} = this.props
-    const filter = filters[index]
+  onChangeValue = (id, newValue) => {
+    const {containerId, dispatch, fields, filters} = this.props
+    const filter = filters[containerId][id]
     let value = newValue
     let valueDataTypeMismatch = false
 
@@ -216,43 +138,111 @@ class FilterCriteria extends Component {
       return
     }
 
-    dispatch(editFilter(index, {value}))
+    dispatch(editFilter(containerId, id, {value}))
   }
 
-  onRemoveFilter (ev, index) {
-    const {dispatch} = this.props
-
-    ev.preventDefault()
-    dispatch(removeFilter(index))
-  }
-
-  toggle () {
-    this.setState({
-      expanded: !this.state.expanded
-    })
-  }
-
-  getFilterIndex (filter) {
-    const {filters} = this.props
-
-    return filters.findIndex((currentFilter) => {
-      return isEqual(currentFilter, filter)
-    })
-  }
-
-  handleClickFilter (...params) {
+  handleClickFilter = (...params) => {
     const {onClickSubmit} = this.props
 
     onClickSubmit(...params)
   }
 
-  handleClickReset (...params) {
+  handleClickReset = (...params) => {
     const {onClickReset} = this.props
 
     onClickReset(...params)
   }
 
-  renderAddButton () {
+  createFilterElement = (
+    id,
+    {field: fieldName, operator, required, value},
+    isLastFilter
+  ) => {
+    const {criteriaDataProperty, fields, style: filterStyle} = this.props
+    const field = fields.data.find((field) => field.name === fieldName) || {}
+    const {[criteriaDataProperty]: fieldData} = field
+    const ValueField = fieldData ? AutoComplete : TextField
+    const errorText = required && !value
+      ? 'Required'
+      : undefined
+
+    return (
+      <div key={id}>
+        <SelectField
+          disabled={required}
+          floatingLabelText='Select a field'
+          hintText='Select a field'
+          isFetching={fields.isFetching}
+          items={fields.data}
+          keyProp={'name'}
+          primaryTextProp={'name'}
+          style={verticalTop}
+          value={fieldName}
+          valueProp={'name'}
+          onChange={(ev, index, value) => this.onChangeField(id, value)}
+        />
+        <SelectField
+          floatingLabelText='Select an operator'
+          hintText='Select an operator'
+          items={operators}
+          keyProp={'value'}
+          primaryTextProp={'primaryText'}
+          style={verticalTop}
+          value={operator}
+          valueProp={'value'}
+          onChange={(ev, index, value) => this.onChangeOperator(id, value)}
+        />
+        <ValueField
+          dataSource={fieldData}
+          errorText={errorText}
+          filter={AutoComplete.caseInsensitiveFilter}
+          floatingLabelText='Filter Criteria'
+          hintText='Filter Criteria'
+          openOnFocus={true}
+          searchText={value}
+          style={filterStyle}
+          value={value}
+          onChange={({target: {value}}) => this.onChangeValue(id, value)}
+          onNewRequest={(value) => this.onChangeValue(id, value)}
+          onUpdateInput={(value) => this.onChangeValue(id, value)}
+        />
+        {(() => {
+          if (required && !isLastFilter) return null
+
+          if (required && isLastFilter) {
+            return (
+              <span>
+                {
+                  isLastFilter
+                    ? this.renderAddButton()
+                    : null
+                }
+              </span>
+            )
+          }
+
+          return (
+            <span>
+              {this.renderRemoveButton(id)}
+              {
+                isLastFilter
+                  ? this.renderAddButton()
+                  : null
+              }
+            </span>
+          )
+        })()}
+      </div>
+    )
+  }
+
+  toggle = () => {
+    this.setState({
+      expanded: !this.state.expanded
+    })
+  }
+
+  renderAddButton = () => {
     const {style: filterStyle} = this.props
 
     return (
@@ -277,15 +267,41 @@ class FilterCriteria extends Component {
     )
   }
 
-  renderButtons () {
+  renderRemoveButton (containerId, id) {
+    const {style: filterStyle} = this.props
+
+    return (
+      <Tooltip
+        label='Click to remove this filter'
+        style={{
+          ...style.filterButton
+        }}
+      >
+        <FloatingActionButton
+          mini={true}
+          primary={true}
+          style={{
+            ...filterStyle,
+            ...style.filterButton
+          }}
+          onTouchTap={(ev) => this.onRemoveFilter(containerId, id)}
+        >
+          <ContentRemove />
+        </FloatingActionButton>
+      </Tooltip>
+    )
+  }
+
+  renderButtons = () => {
     const {expanded} = this.state
     const {
+      containerId,
       filters,
       label,
       onClickSubmit,
       style: filterStyle
     } = this.props
-    const searchFilters = excludeEmptyFilters(filters)
+    const searchFilters = excludeEmptyFilters(filtersToArray(filters, containerId))
 
     if (!expanded || !onClickSubmit) return null
 
@@ -315,67 +331,24 @@ class FilterCriteria extends Component {
     )
   }
 
-  renderFilters () {
+  renderFilters = () => {
+    const {containerId, filters: allFilters} = this.props
+    const filters = allFilters[containerId]
     const {expanded} = this.state
-    const {filters} = this.props
-    const required = filters.filter((filter) => filter.required)
-    const optional = filters.filter((filter) => !filter.required)
 
     if (!expanded) return null
 
-    return required.concat(optional).map((filter, i, array) => {
-      const isFirstAndOnlyOptionalFilter = (
-        optional.length === 1 && (
-          (i === 0 && required.length === 0) ||
-          ((i !== 0 && required.length !== 0) &&
-          (i === Math.abs(array.length - required.length - (optional.length - 1))))
-        )
-      )
-      const isLastOptionalFilter = i === array.length - 1
+    const filterIds = Object.keys(filters)
 
-      return this.createFilterElement(
-        filter,
-        i,
-        isFirstAndOnlyOptionalFilter,
-        isLastOptionalFilter
-      )
+    return filterIds.map((id, i) => {
+      const filter = filters[id]
+
+      return this.createFilterElement(id, filter, i === filterIds.length - 1)
     })
   }
 
-  // (i) is the index of the filter in filters
-  renderRemoveButton (i) {
-    const {style: filterStyle} = this.props
-
-    return (
-      <Tooltip
-        label='Click to remove this filter'
-        style={{
-          ...style.filterButton
-        }}
-      >
-        <FloatingActionButton
-          mini={true}
-          primary={true}
-          style={{
-            ...filterStyle,
-            ...style.filterButton
-          }}
-          onTouchTap={(ev) => this.onRemoveFilter(ev, i)}
-        >
-          <ContentRemove />
-        </FloatingActionButton>
-      </Tooltip>
-    )
-  }
-
-  render () {
-    const {
-      fields,
-      headerStyle,
-      headerText,
-      onClickSubmit,
-      wrapperStyle
-    } = this.props
+  render = () => {
+    const {fields, headerStyle, headerText, wrapperStyle, onClickSubmit} = this.props
 
     if (fields.data.length === 0) {
       return (

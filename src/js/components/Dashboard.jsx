@@ -1,13 +1,12 @@
 import {connect} from 'react-redux'
 import {fetchVisualizationResults} from '../modules/visualization-results'
 import FilterCriteria from './FilterCriteria'
-import {Hydrateable} from '../decorators/Hydrateable'
 import {LogMetrics} from '../decorators'
-import {setDefaultFilters} from '../modules/filters'
+import {setFilters} from '../modules/filters'
 import uniqBy from 'lodash.uniqby'
 import {verticalTop} from '../styles/common'
 import Visualization from './visualization/Visualization'
-import {createFilter, excludeEmptyFilters, validateFilters} from '../modules/utilities'
+import {excludeEmptyFilters, filtersToArray, getDefaultFilters, validateFilters} from '../modules/utilities'
 import React, {Component, PropTypes} from 'react'
 import ReactGridLayout, {WidthProvider} from 'react-grid-layout'
 
@@ -33,7 +32,6 @@ const style = {
 }
 
 @LogMetrics('Dashboard', ['dashboard.title', 'dashboard._id'])
-@Hydrateable('Dashboard', ['filters'], 'dashboard._id')
 class Dashboard extends Component {
   static propTypes = {
     dashboard: PropTypes.object.isRequired,
@@ -50,13 +48,17 @@ class Dashboard extends Component {
   }
 
   componentWillMount () {
+    const {dashboard, filters} = this.props
+
+    if (filters[dashboard._id]) return
+
     this.resetFilters()
   }
 
   validateFilters = () => {
-    const {filters} = this.props
+    const {dashboard, filters} = this.props
 
-    return validateFilters(filters)
+    return validateFilters(filters[dashboard._id])
   }
 
   getUniqueFields = () => {
@@ -68,51 +70,17 @@ class Dashboard extends Component {
     ), []), 'name')
   }
 
-  getOptionalFilters = (requiredFilters, dashboardFilters) => {
-    const optional = dashboardFilters.filter((filter) => {
-      return !requiredFilters.find((requiredFilter) => {
-        return requiredFilter.field === filter.field
-      })
-    })
-
-    if (optional.length === 0) {
-      optional.push(createFilter())
-    }
-
-    return optional
-  }
-
-  getRequiredFilters = (requiredFields, dashboardFilters) => {
-    return requiredFields
-      .map((field) => {
-        let newFilter = createFilter({
-          field: field.name,
-          required: true
-        })
-        const existingFilter = dashboardFilters.find((filter) => {
-          return filter.field === field.name
-        })
-
-        if (existingFilter) {
-          newFilter = Object.assign({}, newFilter, existingFilter)
-        }
-
-        return newFilter
-      })
-  }
-
   resetFilters () {
     const {dashboard, dispatch} = this.props
     const {dashboardParams = {}} = dashboard
     const {filters: dashboardFilters = []} = dashboardParams
     const fields = this.getUniqueFields()
-    const requiredFields = fields.filter((field) => field.required)
-    const required = this.getRequiredFilters(requiredFields, dashboardFilters)
-    const optional = this.getOptionalFilters(required, dashboardFilters)
+    const defaultFilters = getDefaultFilters(fields, dashboardFilters)
 
     dispatch(
-      setDefaultFilters(
-        required.concat(optional)
+      setFilters(
+        dashboard._id,
+        defaultFilters
       )
     )
   }
@@ -129,8 +97,8 @@ class Dashboard extends Component {
       }
 
       dispatch(fetchVisualizationResults(
-        _id, excludeEmptyFilters(filters))
-      )
+        _id, excludeEmptyFilters(filtersToArray(filters, dashboard._id))
+      ))
     }
   }
 
@@ -170,7 +138,7 @@ class Dashboard extends Component {
   }
 
   renderVisualization (visualization, i) {
-    const {dashboard, visualizationResults} = this.props
+    const {dashboard, filters, visualizationResults} = this.props
     const {dashboardParams = {}, visualizations = []} = dashboard
     const {size = 2, visualizationSizes = []} = dashboardParams
     const visualizationSize = visualizationSizes[visualization._id] || {}
@@ -181,17 +149,10 @@ class Dashboard extends Component {
     } = visualizationSize
     const results = visualizationResults[visualization._id]
     const totalCols = visualizations.length > 1 ? Number(size) : 1
-
-    return (
-      <div
-        data-grid={{x: i % totalCols, y: Math.floor(i / totalCols), w: Number(cols), h: Number(rows) * 2}}
-        key={visualization._id}
-        style={{
-          ...style.gridTile,
-          ...(results && results.isFetching ? {} : style.gridTileLoading)
-        }}
-      >
+    const visualizationElement = filters[dashboard._id]
+      ? (
         <Visualization
+          filters={filters[dashboard._id]}
           ref={(ref) => {
             if (!ref) {
               this._visualizations = ref
@@ -203,11 +164,24 @@ class Dashboard extends Component {
               this._visualizations = {}
             }
 
-            this._visualizations[ref.props.visualization._id] = ref.getWrappedInstance().getWrappedInstance()._component
+            this._visualizations[ref.props.visualization._id] = ref.getWrappedInstance()._component
           }}
           results={results}
           visualization={visualization}
         />
+      )
+      : null
+
+    return (
+      <div
+        data-grid={{x: i % totalCols, y: Math.floor(i / totalCols), w: Number(cols), h: Number(rows) * 2}}
+        key={visualization._id}
+        style={{
+          ...style.gridTile,
+          ...(results && results.isFetching ? {} : style.gridTileLoading)
+        }}
+      >
+        {visualizationElement}
       </div>
     )
   }
@@ -215,14 +189,10 @@ class Dashboard extends Component {
   render () {
     const {dashboard} = this.props
 
-    if (!dashboard) {
-      return null
-    }
+    if (!dashboard) return null
 
     const {_id, title} = dashboard
 
-    // Populate the Fields based off of the fields
-    // for each visualization's source.
     const fields = {
       data: this.getUniqueFields(),
       isFetching: false
@@ -233,6 +203,7 @@ class Dashboard extends Component {
     return (
       <div>
         <FilterCriteria
+          containerId={_id}
           fields={fields}
           headerStyle={{
             margin: 0
@@ -253,7 +224,7 @@ class Dashboard extends Component {
   }
 }
 
-export default connect((state, ownProps) => ({
+export default connect((state) => ({
   filters: state.filters,
   visualizationResults: state.visualizationResults
 }))(Dashboard)

@@ -4,14 +4,20 @@ import {fetchFields} from '../modules/fields'
 import {fetchSearchResults} from '../modules/search-results'
 import {fetchSources} from '../modules/sources'
 import FilterCriteria from './FilterCriteria'
-import {resetFilters} from '../modules/filters'
+import {LogMetrics} from '../decorators'
+import {setFilters} from '../modules/filters'
 import {setSource} from '../modules/source'
 import Visualization from './visualization/Visualization'
 import {CircularProgress, SelectField} from 'safe-framework'
-import {excludeEmptyFilters, getNameByID} from '../modules/utilities'
+import {
+  excludeEmptyFilters,
+  filtersToArray,
+  getDefaultFilters,
+  getNameByID,
+  validateFilters
+} from '../modules/utilities'
 import {grey300, white} from 'material-ui/styles/colors'
 import {header, headerAppName, main, verticalTop} from '../styles/common'
-import {Hydrateable, LogMetrics} from '../decorators'
 import React, {Component, PropTypes} from 'react'
 
 const style = {
@@ -63,7 +69,6 @@ const generateColumns = (data) => {
 }
 
 @LogMetrics('Search')
-@Hydrateable('Search', ['filters', 'source'])
 class Search extends Component {
   static propTypes = {
     category: PropTypes.string.isRequired,
@@ -105,13 +110,30 @@ class Search extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    const {searchResults} = this.props
+    const {searchResults, source, fields} = this.props
 
-    if (searchResults === nextProps.searchResults) {
-      return
+    if (searchResults !== nextProps.searchResults) {
+      this.updateColumns(nextProps.searchResults)
     }
 
-    this.updateColumns(nextProps.searchResults)
+    if (source !== nextProps.source || fields !== nextProps.fields) {
+      this.resetFilters(nextProps.source, nextProps.fields.data)
+    }
+  }
+
+  resetFilters (source, fields) {
+    const {dispatch} = this.props
+
+    dispatch(setFilters(
+      source,
+      getDefaultFilters(fields, [])
+    ))
+  }
+
+  validateFilters = () => {
+    const {source, filters} = this.props
+
+    return validateFilters(filters[source])
   }
 
   onChangeSource (ev, index, source) {
@@ -128,7 +150,7 @@ class Search extends Component {
     if (!searchResults) {
       return null
     }
-    
+
     if (searchResults.isFetching) {
       return (
         <div style={style.wrapper}>
@@ -146,7 +168,7 @@ class Search extends Component {
     if (data.length === 0) {
       return <div />
     }
-    
+
     const visualization = {
       _id: '',
       name: 'Search Results',
@@ -154,7 +176,7 @@ class Search extends Component {
         name: 'Table'
       }
     }
-    
+
     return (
       <div style={style.results}>
         <Visualization
@@ -167,15 +189,15 @@ class Search extends Component {
   }
 
   onClickReset = () => {
-    const {dispatch} = this.props
+    const {source, fields} = this.props
 
-    dispatch(resetFilters())
+    this.resetFilters(source, fields.data)
   }
 
   onClickSubmit () {
     const {dispatch, filters, source} = this.props
 
-    dispatch(fetchSearchResults(source, excludeEmptyFilters(filters)))
+    dispatch(fetchSearchResults(source, excludeEmptyFilters(filtersToArray(filters[source]))))
   }
 
   render () {
@@ -187,9 +209,9 @@ class Search extends Component {
     const filterStyle = source === ''
       ? style.hidden
       : {}
-      
+
     const label = 'Search_' + getNameByID(sources.data, source) + `_${source}`
-    
+
     return (
       <div>
         <header style={header}>
@@ -210,9 +232,11 @@ class Search extends Component {
             onChange={this.onChangeSource}
           />
           <FilterCriteria
+            containerId={source}
             fields={fields}
             label={label}
             style={verticalTop}
+            valid={this.validateFilters()}
             wrapperStyle={filterStyle}
             onClickReset={this.onClickReset}
             onClickSubmit={this.onClickSubmit}

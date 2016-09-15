@@ -1,84 +1,77 @@
+import uuid from 'node-uuid'
+
 export const ADD = 'safe-app/filters/ADD'
 export const EDIT = 'safe-app/filters/EDIT'
-export const HYDRATE = 'safe-app/filters/HYDRATE'
 export const REMOVE = 'safe-app/filters/REMOVE'
-export const RESET = 'safe-app/filters/RESET'
-export const SET_DEFAULT = 'safe-app/filters/SET_DEFAULT'
+export const SET = 'safe-app/filters/SET'
 
-export const addFilter = (filter) => ({
-  type: ADD,
-  payload: {filter}
-})
+export const addFilter = (containerId, filter) => {
+  const id = uuid.v1()
 
-export const editFilter = (index, value) => ({
+  return {
+    type: ADD,
+    payload: {containerId, id, filter}
+  }
+}
+
+export const editFilter = (containerId, id, value) => ({
   type: EDIT,
-  payload: {index, value}
+  payload: {containerId, id, value}
 })
 
-export const hydrateFilters = (filters) => ({
-  type: HYDRATE,
-  state: filters
-})
-
-export const removeFilter = (index) => ({
+export const removeFilter = (containerId, id) => ({
   type: REMOVE,
-  payload: {index}
+  payload: {containerId, id}
 })
 
-export const resetFilters = () => ({
-  type: RESET
+export const setFilters = (containerId, filters) => ({
+  type: SET,
+  payload: {containerId, filters}
 })
 
-export const setDefaultFilters = (filters) => ({
-  payload: {filters},
-  type: SET_DEFAULT
-})
-
-let nextFilterId = 0
-const initialState = [{
-  id: nextFilterId,
-  field: '',
-  operator: '=',
-  required: false,
-  value: ''
-}]
-
-export default (state = initialState, {payload = {}, type, ...action}) => {
-  const {filter, filters, index, value} = payload
+export default (state = {}, {payload = {}, type, ...action}) => {
+  const {containerId, filter, filters, id, value} = payload
 
   switch (type) {
     case ADD:
-      return [
+      return {
         ...state,
-        {
-          ...filter,
-          id: ++nextFilterId
+        [containerId]: {
+          ...state[containerId],
+          [id]: {
+            ...filter
+          }
         }
-      ]
+      }
     case EDIT:
-      return [
-        ...state.slice(0, index),
-        {
-          ...state[index],
-          ...value
-        },
-        ...state.slice(index + 1)
-      ]
+      return {
+        ...state,
+        [containerId]: {
+          ...state[containerId],
+          [id]: {
+            ...state[containerId][id],
+            ...value
+          }
+        }
+      }
     case REMOVE:
-      return [
-        ...state.slice(0, index),
-        ...state.slice(index + 1)
-      ]
-    case RESET:
-      const newFilters = [...initialState]
+      const newState = {
+        ...state,
+        [containerId]: {
+          ...state[containerId]
+        }
+      }
 
-      newFilters[0].id = ++nextFilterId
+      delete newState[containerId][id]
 
-      return newFilters
-    case SET_DEFAULT:
-      return [...filters]
-    case HYDRATE:
-      return [...state]
+      return newState
+    case SET:
+      return {
+        ...state,
+        [containerId]: {
+          ...filters
+        }
+      }
     default:
       return state
   }

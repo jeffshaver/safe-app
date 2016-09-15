@@ -2,166 +2,138 @@
 
 import deepFreeze from 'deep-freeze'
 import expect from 'expect'
+import uuid from 'node-uuid'
 import {
   ADD,
   addFilter,
   EDIT,
   editFilter,
-  HYDRATE,
-  hydrateFilters,
   default as reducer,
   REMOVE,
   removeFilter,
-  RESET,
-  resetFilters,
-  SET_DEFAULT,
-  setDefaultFilters
+  SET,
+  setFilters
 } from '../../src/js/modules/filters'
+
+const containerId = '123abc'
 
 describe('filter actions', () => {
   it('addFilter should create an ADD action', () => {
     const filter = {
-      id: 0,
       field: 'fieldA',
       operator: '=',
+      required: false,
       value: 'fieldAValue'
     }
     const expectedAction = {
       type: ADD,
-      payload: {filter}
+      payload: {containerId, filter}
     }
+    const result = addFilter(containerId, filter)
 
-    expect(addFilter(filter)).toEqual(expectedAction)
+    expectedAction.payload.id = result.payload.id
+
+    expect(result).toEqual(expectedAction)
   })
 
   it('editFilter should create an EDIT action', () => {
-    const index = 0
+    const id = uuid.v1()
     const value = 'value'
     const expectedAction = {
       type: EDIT,
-      payload: {index, value}
+      payload: {containerId, id, value}
     }
 
-    expect(editFilter(index, value)).toEqual(expectedAction)
-  })
-
-  it('hydrateFilters should create a HYDRATE action', () => {
-    const filters = [{
-      id: 0,
-      field: 'fieldA',
-      operator: '=',
-      value: 'fieldAValue'
-    }]
-    const expectedAction = {
-      type: HYDRATE,
-      state: filters
-    }
-
-    expect(hydrateFilters(filters)).toEqual(expectedAction)
+    expect(editFilter(containerId, id, value)).toEqual(expectedAction)
   })
 
   it('removeFilter should create a REMOVE action', () => {
-    const index = 0
+    const id = uuid.v1()
     const expectedAction = {
       type: REMOVE,
-      payload: {index}
+      payload: {containerId, id}
     }
 
-    expect(removeFilter(index)).toEqual(expectedAction)
+    expect(removeFilter(containerId, id)).toEqual(expectedAction)
   })
 
-  it('resetFilters should create a RESET action', () => {
+  it('setFilters should create a SET action', () => {
+    const filters = {
+      [uuid.v1()]: {
+        field: 'fieldA',
+        operator: '=',
+        required: false,
+        value: 'fieldAValue'
+      }
+    }
     const expectedAction = {
-      type: RESET
+      type: SET,
+      payload: {containerId, filters}
     }
 
-    expect(resetFilters()).toEqual(expectedAction)
-  })
-
-  it('setDefaultFilters should create a SET_DEFAULT action', () => {
-    const filters = [{
-      id: 0,
-      field: 'FieldA',
-      operator: '=',
-      value: 'FieldAValue'
-    }]
-    const expectedAction = {
-      type: SET_DEFAULT,
-      payload: {filters}
-    }
-
-    expect(setDefaultFilters(filters)).toEqual(expectedAction)
+    expect(setFilters(containerId, filters)).toEqual(expectedAction)
   })
 })
 
 describe('filters reducer', () => {
   it('should return the initial state', () => {
-    const stateAfter = [{
-      field: '',
-      operator: '=',
-      required: false,
-      value: ''
-    }]
-
+    const stateAfter = {}
     const result = reducer(undefined, {})
-
-    stateAfter[0].id = result[0].id
 
     expect(result).toEqual(stateAfter)
   })
 
   it('should handle ADD', () => {
-    const stateBefore = []
+    const stateBefore = {}
     const filter = {
       field: 'fieldA',
       operator: '=',
+      required: false,
       value: 'fieldAValue'
     }
     const action = {
       type: ADD,
-      payload: {filter}
+      payload: {containerId, filter}
     }
-    const stateAfter = [{
-      ...filter,
-      id: 1
-    }]
 
     deepFreeze(stateBefore)
     deepFreeze(action)
 
-    expect(reducer(stateBefore, action)).toEqual(stateAfter)
+    const result = reducer(stateBefore, action)
+    const id = Object.keys(result[containerId])[0]
+    const stateAfter = {
+      [containerId]: {
+        [id]: filter
+      }
+    }
+
+    expect(result).toEqual(stateAfter)
   })
 
   it('should handle EDIT', () => {
-    const stateBefore = [{
-      id: 0,
-      field: 'fieldA',
-      operator: '=',
-      value: 'fieldAValue'
-    }, {
-      id: 1,
-      field: 'fieldB',
-      operator: '<=',
-      value: 'fieldBValue'
-    }]
-    const action = {
-      type: EDIT,
-      payload: {
-        value: {operator: '>='},
-        index: 0
+    const id = uuid.v1()
+    const stateBefore = {
+      [containerId]: {
+        [id]: {
+          field: 'fieldA',
+          operator: '=',
+          value: 'fieldAValue'
+        }
       }
     }
-    const stateAfter = [{
-      id: 0,
-      field: 'fieldA',
-      operator: '>=',
-      value: 'fieldAValue'
-    }, {
-      id: 1,
-      field: 'fieldB',
-      operator: '<=',
-      value: 'fieldBValue'
-    }]
+    const action = {
+      type: EDIT,
+      payload: {containerId, id, value: {operator: '>='}}
+    }
+    const stateAfter = {
+      [containerId]: {
+        [id]: {
+          field: 'fieldA',
+          operator: '>=',
+          value: 'fieldAValue'
+        }
+      }
+    }
 
     deepFreeze(stateBefore)
     deepFreeze(action)
@@ -170,29 +142,23 @@ describe('filters reducer', () => {
   })
 
   it('should handle REMOVE', () => {
-    const stateBefore = [{
-      id: 0,
-      field: 'fieldA',
-      operator: '=',
-      value: 'fieldAValue'
-    }, {
-      id: 1,
-      field: 'fieldB',
-      operator: '<=',
-      value: 'fieldBValue'
-    }]
-    const action = {
-      type: REMOVE,
-      payload: {
-        index: 0
+    const id = uuid.v1()
+    const stateBefore = {
+      [containerId]: {
+        [id]: {
+          field: 'fieldA',
+          operator: '=',
+          value: 'fieldAValue'
+        }
       }
     }
-    const stateAfter = [{
-      id: 1,
-      field: 'fieldB',
-      operator: '<=',
-      value: 'fieldBValue'
-    }]
+    const action = {
+      type: REMOVE,
+      payload: {containerId, id}
+    }
+    const stateAfter = {
+      [containerId]: {}
+    }
 
     deepFreeze(stateBefore)
     deepFreeze(action)
@@ -200,81 +166,25 @@ describe('filters reducer', () => {
     expect(reducer(stateBefore, action)).toEqual(stateAfter)
   })
 
-  it('should handle RESET', () => {
-    const stateBefore = [{
-      id: 0,
-      field: 'fieldA',
-      operator: '=',
-      value: 'fieldAValue'
-    }, {
-      id: 1,
-      field: 'fieldB',
-      operator: '<=',
-      value: 'fieldBValue'
-    }]
-    const action = {
-      type: RESET
+  it('should handle SET', () => {
+    const stateBefore = {}
+    const id = uuid.v1()
+    const filters = {
+      [id]: {
+        field: 'fieldA',
+        operator: '=',
+        value: 'fieldAValue'
+      }
     }
-    const stateAfter = [{
-      field: '',
-      operator: '=',
-      required: false,
-      value: ''
-    }]
-
-    deepFreeze(stateBefore)
-    deepFreeze(action)
-
-    const result = reducer(stateBefore, action)
-
-    stateAfter[0].id = result[0].id
-
-    expect(result).toEqual(stateAfter)
-  })
-
-  it('should handle SET_DEFAULT when no filters exist', () => {
-    const stateBefore = [{
-      id: 0,
-      field: '',
-      operator: '',
-      value: ''
-    }]
-    const filters = [{
-      id: 0,
-      field: 'FieldA',
-      operator: '=',
-      value: 'FieldAValue'
-    }]
     const action = {
-      payload: {filters},
-      type: SET_DEFAULT
+      type: SET,
+      payload: {containerId, filters}
     }
-    const stateAfter = [...filters]
-
-    deepFreeze(stateBefore)
-    deepFreeze(action)
-
-    expect(reducer(stateBefore, action)).toEqual(stateAfter)
-  })
-
-  it('should handle SET_DEFAULT when filters exist', () => {
-    const stateBefore = [{
-      id: 0,
-      field: 'Field',
-      operator: '=',
-      value: 'FieldBValue'
-    }]
-    const filters = [{
-      id: 0,
-      field: 'FieldA',
-      operator: '=',
-      value: 'FieldAValue'
-    }]
-    const action = {
-      payload: {filters},
-      type: SET_DEFAULT
+    const stateAfter = {
+      [containerId]: {
+        ...filters
+      }
     }
-    const stateAfter = [...filters]
 
     deepFreeze(stateBefore)
     deepFreeze(action)

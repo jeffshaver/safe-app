@@ -1,13 +1,12 @@
 import {ChartComponent} from './ChartComponent'
 import {CircularProgress} from 'safe-framework'
-import {connect} from 'react-redux'
 import {fetchVisualizationResults} from '../../modules/visualization-results'
 import {LogMetrics} from '../../decorators'
 import {MapComponent} from './MapComponent'
 import {SummaryComponent} from './SummaryComponent'
 import {TableComponent} from './TableComponent'
 import VisualizationToolbar from './VisualizationToolbar'
-import {excludeEmptyFilters, generateMenuItems} from '../../modules/utilities'
+import {excludeEmptyFilters, filtersToArray, generateMenuItems} from '../../modules/utilities'
 import {grey300, white} from 'material-ui/styles/colors'
 import React, {Component, PropTypes} from 'react'
 
@@ -30,7 +29,6 @@ const getTypeGroup = (type) => {
   return 'Chart'
 }
 
-@connect(({filters}) => ({filters}), null, null, {withRef: true})
 @LogMetrics('Visualization', ['visualization.name', 'visualization._id'])
 class Visualization extends Component {
   static propTypes = {
@@ -57,7 +55,7 @@ class Visualization extends Component {
     }
 
     dispatch(fetchVisualizationResults(
-      visualization._id, excludeEmptyFilters(filters))
+      visualization._id, excludeEmptyFilters(filtersToArray(filters)))
     )
   }
 

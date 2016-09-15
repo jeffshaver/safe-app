@@ -12,6 +12,7 @@ import fetchCreateDashboard from './create-dashboard'
 import fetchDeleteDashboard from './delete-dashboard'
 import fetchEditDashboard from './edit-dashboard'
 import fields from './fields'
+import filters from './filters'
 import hydrateable from './hydrateable'
 import label from './label'
 import latitude from './latitude'
@@ -29,10 +30,6 @@ import analytic, {
   HYDRATE as HYDRATE_ANALYTIC,
   hydrateAnalytic
 } from './analytic'
-import filters, {
-  HYDRATE as HYDRATE_FILTERS,
-  hydrateFilters
-} from './filters'
 import source, {
   HYDRATE as HYDRATE_SOURCE,
   hydrateSource
@@ -44,7 +41,6 @@ import visualization, {
 
 export const actions = {
   hydrateAnalytic,
-  hydrateFilters,
   hydrateSource,
   hydrateVisualization
 }
@@ -64,7 +60,7 @@ export const rootReducer = combineReducers({
   editDashboard: fetchEditDashboard,
   editDashboardDialog,
   fields,
-  filters: hydrateable(filters, HYDRATE_FILTERS),
+  filters,
   label,
   latitude,
   longitude,
