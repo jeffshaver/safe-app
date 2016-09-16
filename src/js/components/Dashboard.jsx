@@ -132,58 +132,71 @@ class Dashboard extends Component {
           window.requestAnimationFrame(component.resize)
         }}
       >
-        {visualizations.map(this.renderVisualization, this)}
+        {this.renderVisualizations()}
       </GridLayout>
     )
   }
 
-  renderVisualization (visualization, i) {
+  renderVisualizations () {
     const {dashboard, filters, visualizationResults} = this.props
     const {dashboardParams = {}, visualizations = []} = dashboard
     const {size = 2, visualizationSizes = []} = dashboardParams
-    const visualizationSize = visualizationSizes[visualization._id] || {}
-    const {
-      // remove typeof check once mongodb change is in place
-      cols = (typeof visualizationSize !== 'object' ? visualizationSize : 1),
-      rows = 1
-    } = visualizationSize
-    const results = visualizationResults[visualization._id]
     const totalCols = visualizations.length > 1 ? Number(size) : 1
-    const visualizationElement = filters[dashboard._id]
-      ? (
-        <Visualization
-          filters={filters[dashboard._id]}
-          ref={(ref) => {
-            if (!ref) {
-              this._visualizations = ref
-
-              return
-            }
-
-            if (!this._visualizations) {
-              this._visualizations = {}
-            }
-
-            this._visualizations[ref.props.visualization._id] = ref.getWrappedInstance()._component
+    let columnWidths = 0
+    
+    return visualizations.map((visualization, i) => {
+      const visualizationSize = visualizationSizes[visualization._id] || {}
+      const {
+        // remove typeof check once mongodb change is in place
+        cols = (typeof visualizationSize !== 'object' ? visualizationSize : 1),
+        rows = 1
+      } = visualizationSize
+      const results = visualizationResults[visualization._id]
+      const visualizationElement = filters[dashboard._id]
+        ? (
+          <Visualization
+            filters={filters[dashboard._id]}
+            ref={(ref) => {
+              if (!ref) {
+                this._visualizations = ref
+  
+                return
+              }
+  
+              if (!this._visualizations) {
+                this._visualizations = {}
+              }
+  
+              this._visualizations[ref.props.visualization._id] = ref.getWrappedInstance()._component
+            }}
+            results={results}
+            visualization={visualization}
+          />
+        )
+        : null
+  
+      const gridData = {
+        x: (i + columnWidths) % totalCols,
+        y: Math.floor((i + columnWidths) / totalCols),
+        w: Number(cols),
+        h: Number(rows) * 2
+      }
+      
+      columnWidths += cols > 1 ? cols - 1 : 0
+        
+      return (
+        <div
+          data-grid={gridData}
+          key={visualization._id}
+          style={{
+            ...style.gridTile,
+            ...(results && results.isFetching ? {} : style.gridTileLoading)
           }}
-          results={results}
-          visualization={visualization}
-        />
+        >
+          {visualizationElement}
+        </div>
       )
-      : null
-
-    return (
-      <div
-        data-grid={{x: i % totalCols, y: Math.floor(i / totalCols), w: Number(cols), h: Number(rows) * 2}}
-        key={visualization._id}
-        style={{
-          ...style.gridTile,
-          ...(results && results.isFetching ? {} : style.gridTileLoading)
-        }}
-      >
-        {visualizationElement}
-      </div>
-    )
+    })
   }
 
   render () {
