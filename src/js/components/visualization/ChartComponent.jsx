@@ -65,6 +65,7 @@ export class ChartComponent extends Component {
 
       options.zoom = {
         enabled: true,
+        drag: true,
         mode: 'x'
       }
     }
