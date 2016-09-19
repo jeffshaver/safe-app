@@ -1,6 +1,23 @@
 # safe-app ChangeLog
 
+## 0.0.24 (September 18, 2016)
+
+### Changes
+
+* [[fa30263](https://github.com/jeffshaver/safe-app/commit/fa30263)] - fix issue with grid layout ([jeffshaver](https://github.com/jeffshaver))
+* [[d4fbc1c](https://github.com/jeffshaver/safe-app/commit/d4fbc1c)] - rewrite filters ([jeffshaver](https://github.com/jeffshaver))
+* [[880972a](https://github.com/jeffshaver/safe-app/commit/880972a)] - fix issue where filter values wouldn't be right if selected from auto-complete ([jeffshaver](https://github.com/jeffshaver))
+* [[3ab07a9](https://github.com/jeffshaver/safe-app/commit/3ab07a9)] - fix issue where default filters weren't getting sent ([jeffshaver](https://github.com/jeffshaver))
+* [[b5b1792](https://github.com/jeffshaver/safe-app/commit/b5b1792)] - add application name to header ([knorris](https://github.com/knorris))
+* [[2289e93](https://github.com/jeffshaver/safe-app/commit/2289e93)] - stop collapsing of filters on submit ([knorris](https://github.com/knorris))
+* [[e691210](https://github.com/jeffshaver/safe-app/commit/e691210)] - fix autocomplete values for default filters ([jeffshaver](https://github.com/jeffshaver))
+* [[5093d58](https://github.com/jeffshaver/safe-app/commit/5093d58)] - fix issue with exporting tables ([pml984](https://github.com/pml984))
+* [[16906b3](https://github.com/jeffshaver/safe-app/commit/16906b3)] - add export option to search results ([knorris](https://github.com/knorris))
+* [[a13ab81](https://github.com/jeffshaver/safe-app/commit/a13ab81)] - fix charts not resizing correctly ([jeffshaver](https://github.com/jeffshaver))
+
 ## 0.0.23 (September 06, 2016)
+
+### Changes
 
 * [[dc7d79e](https://github.com/jeffshaver/safe-app/commit/dc7d79e)] - fix issue where add filter button appeared after every filter ([jeffshaver](https://github.com/jeffshaver))
 * [[405041a](https://github.com/jeffshaver/safe-app/commit/405041a)] - fix PropType warnings and some other issues ([jeffshaver](https://github.com/jeffshaver))
