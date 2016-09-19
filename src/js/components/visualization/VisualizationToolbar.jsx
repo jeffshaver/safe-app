@@ -57,10 +57,10 @@ class VisualizationToolbar extends Component {
         className={'visualizationToolbar'}
         style={style.toolbar}
       >
-        <ToolbarGroup float='left'>
+        <ToolbarGroup>
           <ToolbarTitle text={title} />
         </ToolbarGroup>
-        <ToolbarGroup float='right'>
+        <ToolbarGroup>
           {this.renderMenuItems()}
         </ToolbarGroup>
       </Toolbar>

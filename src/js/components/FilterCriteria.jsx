@@ -12,7 +12,7 @@ import TextField from 'material-ui/TextField'
 import Tooltip from './Tooltip'
 import {verticalTop} from '../styles/common'
 import {addFilter, editFilter, removeFilter} from '../modules/filters'
-import {createFilter, excludeEmptyFilters, filtersToArray} from '../modules/utilities'
+import {createFilter, excludeEmptyFilters, filtersToArray, getRequiredFields} from '../modules/utilities'
 import {cyan500, grey400, redA400} from 'material-ui/styles/colors.js'
 import React, {Component, PropTypes} from 'react'
 
@@ -156,6 +156,7 @@ class FilterCriteria extends Component {
   createFilterElement = (
     id,
     {field: fieldName, operator, required, value},
+    isFirstAndOnlyOptionalFilter,
     isLastFilter
   ) => {
     const {criteriaDataProperty, fields, style: filterStyle} = this.props
@@ -223,7 +224,11 @@ class FilterCriteria extends Component {
 
           return (
             <span>
-              {this.renderRemoveButton(id)}
+              {
+                !isFirstAndOnlyOptionalFilter
+                  ? this.renderRemoveButton(id)
+                  : null
+              }
               {
                 isLastFilter
                   ? this.renderAddButton()
@@ -332,9 +337,10 @@ class FilterCriteria extends Component {
   }
 
   renderFilters = () => {
-    const {containerId, filters: allFilters} = this.props
+    const {containerId, filters: allFilters, fields} = this.props
     const filters = allFilters[containerId]
     const {expanded} = this.state
+    const numberOfRequiredFields = getRequiredFields(fields.data).length
 
     if (!expanded) return null
 
@@ -342,8 +348,12 @@ class FilterCriteria extends Component {
 
     return filterIds.map((id, i) => {
       const filter = filters[id]
+      const isFirstAndOnlyOptionalFilter = (
+        i - numberOfRequiredFields === 0 &&
+        i === filterIds.length - 1
+      )
 
-      return this.createFilterElement(id, filter, i === filterIds.length - 1)
+      return this.createFilterElement(id, filter, isFirstAndOnlyOptionalFilter, i === filterIds.length - 1)
     })
   }
 

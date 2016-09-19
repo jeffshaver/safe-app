@@ -36,7 +36,7 @@ class Dashboard extends Component {
   static propTypes = {
     dashboard: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    filters: PropTypes.array.isRequired,
+    filters: PropTypes.object.isRequired,
     visualizationResults: PropTypes.object.isRequired
   }
 
@@ -143,7 +143,7 @@ class Dashboard extends Component {
     const {size = 2, visualizationSizes = []} = dashboardParams
     const totalCols = visualizations.length > 1 ? Number(size) : 1
     let columnWidths = 0
-    
+
     return visualizations.map((visualization, i) => {
       const visualizationSize = visualizationSizes[visualization._id] || {}
       const {
@@ -159,14 +159,14 @@ class Dashboard extends Component {
             ref={(ref) => {
               if (!ref) {
                 this._visualizations = ref
-  
+
                 return
               }
-  
+
               if (!this._visualizations) {
                 this._visualizations = {}
               }
-  
+
               this._visualizations[ref.props.visualization._id] = ref.getWrappedInstance()._component
             }}
             results={results}
@@ -174,16 +174,16 @@ class Dashboard extends Component {
           />
         )
         : null
-  
+
       const gridData = {
         x: (i + columnWidths) % totalCols,
         y: Math.floor((i + columnWidths) / totalCols),
         w: Number(cols),
         h: Number(rows) * 2
       }
-      
+
       columnWidths += cols > 1 ? cols - 1 : 0
-        
+
       return (
         <div
           data-grid={gridData}

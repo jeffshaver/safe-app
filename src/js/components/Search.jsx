@@ -74,7 +74,7 @@ class Search extends Component {
     category: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     fields: PropTypes.object.isRequired,
-    filters: PropTypes.array.isRequired,
+    filters: PropTypes.object.isRequired,
     searchResults: PropTypes.object.isRequired,
     source: PropTypes.string.isRequired,
     sources: PropTypes.object.isRequired

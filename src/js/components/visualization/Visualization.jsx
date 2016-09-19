@@ -33,13 +33,13 @@ const getTypeGroup = (type) => {
 class Visualization extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    filters: PropTypes.array,
+    filters: PropTypes.object,
     results: PropTypes.object,
     visualization: PropTypes.object.isRequired
   }
 
   static defaultProps = {
-    filters: [],
+    filters: {},
     results: {}
   }
 
