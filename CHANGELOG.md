@@ -1,5 +1,12 @@
 # safe-app ChangeLog
 
+## 0.0.25 (September 19, 2016)
+
+### Changes
+
+* [[fae8696](https://github.com/jeffshaver/safe-app/commit/fae8696)] - Adding drag to zoom ([pml984](https://github.com/pml984))
+* [[4c003de](https://github.com/jeffshaver/safe-app/commit/4c003de)] - fix proptype warnings. fix issue where user could remove last optiona… ([jeffshaver](https://github.com/jeffshaver))
+
 ## 0.0.24 (September 18, 2016)
 
 ### Changes
