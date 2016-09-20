@@ -17,7 +17,7 @@ export const GlobalStyles = () => (
       fontWeight: '400'
     },
     '.ag-material #borderLayout_eRootPanel': {
-      height: 'calc(100% - 128px) !important'
+      height: 'calc(100% - 152px) !important'
     }
   }} />
 )
