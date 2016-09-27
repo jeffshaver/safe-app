@@ -59,7 +59,7 @@ export class ChartComponent extends Component {
 
     if (xAxisType === 'timeline') {
       options.pan = {
-        enabled: true,
+        enabled: false,
         mode: 'x'
       }
 
