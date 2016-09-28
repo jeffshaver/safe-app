@@ -166,14 +166,12 @@ class Dashboard extends Component {
         onResizeStop={(layout, item) => {
           const visualization = this._visualizations[item.i]
           const {
-            component,
-            typeGroup
+            component
           } = visualization.getVisualization()
-          const isChart = typeGroup === 'Chart'
 
-          if (!isChart) return
+          if (!component || !component.redraw) return
 
-          window.requestAnimationFrame(component.resize)
+          window.requestAnimationFrame(component.redraw)
         }}
       >
         {this.renderVisualizations()}
