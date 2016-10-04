@@ -1,10 +1,21 @@
 # safe-app ChangeLog
 
+## 0.0.26 (October 04, 2016)
+
+### Changes
+
+* [[4f0548c](https://github.com/jeffshaver/safe-app/commit/4f0548c)] - fix chart export ([jeffshaver](https://github.com/jeffshaver))
+* [[141dcb9](https://github.com/jeffshaver/safe-app/commit/141dcb9)] - fix issues with resizing visualizations ([jeffshaver](https://github.com/jeffshaver))
+* [[a507416](https://github.com/jeffshaver/safe-app/commit/a507416)] - dashboard crud operations ([pml984](https://github.com/pml984))
+* [[380589d](https://github.com/jeffshaver/safe-app/commit/380589d)] - remove panning from charts ([pml984](https://github.com/pml984))
+* [[b9db68b](https://github.com/jeffshaver/safe-app/commit/b9db68b)] - add source id to search route ([knorris](https://github.com/knorris))
+* [[8e7141e](https://github.com/jeffshaver/safe-app/commit/8e7141e)] - style fix for row count ([jeffshaver](https://github.com/jeffshaver))
+
 ## 0.0.25 (September 19, 2016)
 
 ### Changes
 
-* [[fae8696](https://github.com/jeffshaver/safe-app/commit/fae8696)] - Adding drag to zoom ([pml984](https://github.com/pml984))
+* [[fae8696](https://github.com/jeffshaver/safe-app/commit/fae8696)] - adding drag to zoom ([pml984](https://github.com/pml984))
 * [[4c003de](https://github.com/jeffshaver/safe-app/commit/4c003de)] - fix proptype warnings. fix issue where user could remove last optiona… ([jeffshaver](https://github.com/jeffshaver))
 
 ## 0.0.24 (September 18, 2016)
