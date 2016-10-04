@@ -33,11 +33,11 @@ export const excludeEmptyFilters = (filters) => (
 )
 
 export const saveCanvasFromVisualization = (metadata, visualization) => {
-  const {_chart} = visualization._component
+  const {_component: {_component}} = visualization
   const {name} = metadata
 
   saveCanvas(
-    _chart.getChartCanvas(),
+    _component.getChartCanvas(),
     changeCase.pascalCase(name) + '.png'
   )
 }
