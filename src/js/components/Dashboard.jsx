@@ -44,11 +44,11 @@ class Dashboard extends Component {
     dashboard: PropTypes.object.isRequired,
     dashboardFetch: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    filters: PropTypes.array.isRequired,
+    filters: PropTypes.object.isRequired,
     gridOptions: PropTypes.object,
     visualizationResults: PropTypes.object.isRequired
   }
-  
+
   static defaultProps = {
     gridOptions: {}
   }
@@ -119,11 +119,11 @@ class Dashboard extends Component {
   onClickReset () {
     this.resetFilters()
   }
-  
+
   onVisualizationClose (vizToRemove) {
     const {dashboard, dispatch} = this.props
     const {visualizations = []} = dashboard
-    
+
     dashboard.visualizations = visualizations.filter((viz) => (
       vizToRemove._id !== viz._id
     ))
@@ -139,10 +139,10 @@ class Dashboard extends Component {
 
     const layout = []
     let i = 0
-    
+
     for (const id in visualizationSizes) {
       const {[id]: vizSize} = visualizationSizes
-      
+
       layout.push({
         x: i % totalCols,
         y: Math.floor(i / totalCols),
@@ -151,7 +151,7 @@ class Dashboard extends Component {
         i: id,
         ...vizSize
       })
-      
+
       i++
     }
 
@@ -182,7 +182,7 @@ class Dashboard extends Component {
   renderVisualizations () {
     const {dashboard, filters, visualizationResults} = this.props
     const {visualizations = []} = dashboard
-    
+
     return visualizations.map((visualization, i) => {
       const results = visualizationResults[visualization._id]
       const visualizationElement = filters[dashboard._id]
@@ -208,7 +208,7 @@ class Dashboard extends Component {
           />
         )
         : null
-  
+
       return (
         <div
           key={visualization._id}

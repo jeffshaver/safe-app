@@ -150,9 +150,6 @@ export class LeftNav extends Component {
             labelStyle={style.logoLabel}
             rippleColor='transparent'
             style={allLogoStyles}
-            tooltip={applicationAbbreviation}
-            tooltipPosition='top-center'
-            tooltipStyles={style.tooltip}
           />
         </MenuItem>
         {this.renderRoutes()}

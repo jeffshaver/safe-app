@@ -162,7 +162,30 @@ class FilterCriteria extends Component {
     const {criteriaDataProperty, fields, style: filterStyle} = this.props
     const field = fields.data.find((field) => field.name === fieldName) || {}
     const {[criteriaDataProperty]: fieldData} = field
-    const ValueField = fieldData ? AutoComplete : TextField
+    const valueField = fieldData
+      ? (
+        <AutoComplete
+          dataSource={fieldData}
+          errorText={errorText}
+          filter={AutoComplete.caseInsensitiveFilter}
+          floatingLabelText='Filter Criteria'
+          hintText='Filter Criteria'
+          openOnFocus={true}
+          searchText={value}
+          style={filterStyle}
+          onNewRequest={(value) => this.onChangeValue(id, value)}
+          onUpdateInput={(value) => this.onChangeValue(id, value)}
+        />
+      ) : (
+        <TextField
+          errorText={errorText}
+          floatingLabelText='Filter Criteria'
+          hintText='Filter Criteria'
+          style={filterStyle}
+          value={value}
+          onChange={({target: {value}}) => this.onChangeValue(id, value)}
+        />
+      )
     const errorText = required && !value
       ? 'Required'
       : undefined
@@ -193,20 +216,7 @@ class FilterCriteria extends Component {
           valueProp={'value'}
           onChange={(ev, index, value) => this.onChangeOperator(id, value)}
         />
-        <ValueField
-          dataSource={fieldData}
-          errorText={errorText}
-          filter={AutoComplete.caseInsensitiveFilter}
-          floatingLabelText='Filter Criteria'
-          hintText='Filter Criteria'
-          openOnFocus={true}
-          searchText={value}
-          style={filterStyle}
-          value={value}
-          onChange={({target: {value}}) => this.onChangeValue(id, value)}
-          onNewRequest={(value) => this.onChangeValue(id, value)}
-          onUpdateInput={(value) => this.onChangeValue(id, value)}
-        />
+        {valueField}
         {(() => {
           if (required && !isLastFilter) return null
 

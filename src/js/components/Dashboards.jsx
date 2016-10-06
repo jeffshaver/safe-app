@@ -53,7 +53,6 @@ class Dashboards extends Component {
   static propTypes = {
     dashboardGroups: PropTypes.object.isRequired,
     dashboardId: PropTypes.string,
-    dashboards: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     visualizations: PropTypes.object.isRequired
   }
@@ -62,7 +61,10 @@ class Dashboards extends Component {
     super(props)
 
     this.state = {
-      dashboardLayout: []
+      createVisibility: false,
+      dashboardLayout: [],
+      deleteVisibility: false,
+      editVisibility: false
     }
 
     this.displayName = 'Dashboards'
@@ -300,7 +302,7 @@ class Dashboards extends Component {
           onClose={this.hideDeleteDialog}
           onSubmitClick={this.deleteDashboard}
         >
-          <p>Are you sure you want to delete this dashboard?</p>
+          {[<p key={'delete'}>Are you sure you want to delete this dashboard?</p>]}
         </FormDialog>
         <FormDialog
           open={editVisibility}
