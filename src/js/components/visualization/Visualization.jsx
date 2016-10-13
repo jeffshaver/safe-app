@@ -21,6 +21,10 @@ const style = {
     flexDirection: 'column',
     height: '100%',
     overflow: 'hidden'
+  },
+  flex: {
+    flex: 1,
+    position: 'relative'
   }
 }
 const getTypeGroup = (type) => {
@@ -93,6 +97,46 @@ class Visualization extends Component {
       typeGroup
     }
   }
+  
+  renderError (message) {
+    const {visualization} = this.props
+    const {name} = visualization
+    const {data, label} = message
+    
+    return (
+      <div style={style.container}>
+        <VisualizationToolbar
+          title={name}
+          onClose={this.onClose}
+        />
+        <div style={style.flex}>
+          <span
+            style={{
+              color: 'red',
+              left: '50%',
+              position: 'absolute',
+              top: '50%',
+              transform: 'translate(-50%, -50%)'
+            }}
+          >
+            {label}
+            {
+              Object.keys(data).map((key) => {
+                return (
+                  <p key={key}>
+                    <span>
+                      {key}:
+                      {data[key].toString()}
+                    </span>
+                  </p>
+                )
+              })
+            }
+          </span>
+        </div>
+      </div>
+    )
+  }
 
   renderLoading () {
     const {visualization} = this.props
@@ -103,7 +147,7 @@ class Visualization extends Component {
         <VisualizationToolbar
           title={name}
         />
-        <div style={{flex: 1, position: 'relative'}}>
+        <div style={style.flex}>
           <CircularProgress
             size={0.5}
             spanStyle={{
@@ -131,7 +175,7 @@ class Visualization extends Component {
           title={name}
           onClose={this.onClose}
         />
-        <div style={{flex: 1, position: 'relative'}}>
+        <div style={style.flex}>
           <span
             style={{
               left: '50%',
@@ -184,6 +228,22 @@ class Visualization extends Component {
 
     if (results.isFetching) {
       return this.renderLoading()
+    }
+    
+    if (results.error) {
+      const {message} = results.error
+      let text = {}
+      
+      try {
+        text = JSON.parse(message)
+      } catch (err) {
+        text = {
+          label: message,
+          data: {}
+        }
+      }
+    
+      return this.renderError(text)
     }
 
     if (data.length === 0) {
