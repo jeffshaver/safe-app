@@ -90,12 +90,30 @@ export class ChartComponent extends Component {
       options.tooltips = {
         callbacks: {
           afterLabel: (tooltipItem, data) => {
-            const {data: dataList = [], ySeriesField} = data
-            let dataItem = dataList[tooltipItem.index]
+            const {
+              data: dataList = [],
+              datasets, ySeriesField,
+              ySeriesFieldName
+            } = data
+            const {index: dataIndex, datasetIndex} = tooltipItem
+            let dataItem = dataList[dataIndex]
             const tooltipLabels = []
+            const datasetLabel = datasets[datasetIndex].label
 
             if (ySeriesField) {
-              dataItem = dataItem[ySeriesField][tooltipItem.datasetIndex]
+              dataItem = dataItem[ySeriesField]
+              
+              for (const dataset of dataItem) {
+                if (dataset[ySeriesFieldName].toUpperCase() === datasetLabel) {
+                  dataItem = dataset
+                  
+                  break
+                }
+              }
+            }
+            
+            if (!dataItem) {
+              return
             }
 
             for (const tooltipField of tooltipFields) {
