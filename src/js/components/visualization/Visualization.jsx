@@ -8,8 +8,8 @@ import {MapComponent} from './MapComponent'
 import {SummaryComponent} from './SummaryComponent'
 import {TableComponent} from './TableComponent'
 import VisualizationToolbar from './VisualizationToolbar'
-import {excludeEmptyFilters, filtersToArray, generateMenuItems} from '../../modules/utilities'
-import {grey300, white} from 'material-ui/styles/colors'
+import {excludeEmptyFilters, filtersToArray, generateMenuItems, renderError} from '../../modules/utilities'
+import {grey300, red500, white} from 'material-ui/styles/colors'
 import React, {Component, PropTypes} from 'react'
 
 const components = {ChartComponent, MapComponent, SummaryComponent, TableComponent}
@@ -21,6 +21,16 @@ const style = {
     flexDirection: 'column',
     height: '100%',
     overflow: 'hidden'
+  },
+  flex: {
+    flex: 1,
+    position: 'relative'
+  },
+  span: {
+    left: '50%',
+    position: 'absolute',
+    top: '50%',
+    transform: 'translate(-50%, -50%)'
   }
 }
 const getTypeGroup = (type) => {
@@ -93,6 +103,23 @@ class Visualization extends Component {
       typeGroup
     }
   }
+  
+  renderError (message) {
+    const {visualization} = this.props
+    const {name} = visualization
+    const spanStyle = {...style.span, color: red500}
+    const error = renderError(message, style.flex, spanStyle)
+     
+    return (
+      <div style={style.container}>
+        <VisualizationToolbar
+          title={name}
+          onClose={this.onClose}
+        />
+        {error}
+      </div>
+    )
+  }
 
   renderLoading () {
     const {visualization} = this.props
@@ -103,15 +130,10 @@ class Visualization extends Component {
         <VisualizationToolbar
           title={name}
         />
-        <div style={{flex: 1, position: 'relative'}}>
+        <div style={style.flex}>
           <CircularProgress
             size={0.5}
-            spanStyle={{
-              left: '50%',
-              position: 'absolute',
-              top: '50%',
-              transform: 'translate(-50%, -50%)'
-            }}
+            spanStyle={style.span}
             style={{
               verticalAlign: 'middle'
             }}
@@ -124,27 +146,23 @@ class Visualization extends Component {
   renderNoData () {
     const {visualization} = this.props
     const {name} = visualization
-
+    const message = {
+      label: 'No data',
+      data: {}
+    }
+    const error = renderError(message, style.flex, style.span)
+    
     return (
       <div style={style.container}>
         <VisualizationToolbar
           title={name}
           onClose={this.onClose}
         />
-        <div style={{flex: 1, position: 'relative'}}>
-          <span
-            style={{
-              left: '50%',
-              position: 'absolute',
-              top: '50%',
-              transform: 'translate(-50%, -50%)'
-            }}
-          >No data</span>
-        </div>
+        {error}
       </div>
     )
   }
-
+  
   renderVisualization () {
     const {results, visualization} = this.props
     const {data = []} = results
@@ -184,6 +202,20 @@ class Visualization extends Component {
 
     if (results.isFetching) {
       return this.renderLoading()
+    }
+    
+    if (results.error) {
+      const {message} = results.error
+      let text = {}
+       
+      try {
+        text = JSON.parse(message)
+      } catch (err) {
+        text.label = message
+        text.data = {}
+      }
+     
+      return this.renderError(text)
     }
 
     if (data.length === 0) {

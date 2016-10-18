@@ -214,3 +214,29 @@ export const getOptionalFilters = (requiredFilters, dashboardFilters) => {
 
   return optional
 }
+
+export const renderError = (message, style, spanStyle) => {
+  const {data, label} = message
+  
+  return (
+    <div style={style}>
+      <span
+        style={spanStyle}
+      >
+        {label}
+        {
+          Object.keys(data).map((key) => {
+            return (
+              <p key={key}>
+                <span>
+                  {key}:
+                  {data[key].toString()}
+                </span>
+              </p>
+            )
+          })
+        }
+      </span>
+    </div>
+  )
+}

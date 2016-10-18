@@ -13,10 +13,11 @@ import {
   filtersToArray,
   getDefaultFilters,
   getNameByID,
+  renderError,
   validateFilters
 } from '../modules/utilities'
 import {fetchSearchResults, resetSearchResults} from '../modules/search-results'
-import {grey300, white} from 'material-ui/styles/colors'
+import {grey300, red500, white} from 'material-ui/styles/colors'
 import {header, headerAppName, main, verticalTop} from '../styles/common'
 import React, {Component, PropTypes} from 'react'
 
@@ -173,11 +174,35 @@ class Search extends Component {
         </div>
       )
     }
+    
+    if (searchResults.error) {
+      const {message} = searchResults.error
+      const spanStyle = {...style.span, color: red500}
+      let text = {}
+       
+      try {
+        text = JSON.parse(message)
+      } catch (err) {
+        text.label = message
+        text.data = {}
+      }
+      
+      return (
+        renderError(text, style.wrapper, spanStyle)
+      )
+    }
 
     const {data = []} = searchResults
 
     if (data.length === 0) {
-      return <div />
+      const message = {
+        label: 'No data',
+        data: {}
+      }
+      
+      return (
+        renderError(message, style.wrapper, style.span)
+      )
     }
 
     const visualization = {
