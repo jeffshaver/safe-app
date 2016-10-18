@@ -54,6 +54,7 @@ class Dashboards extends Component {
     dashboardGroups: PropTypes.object.isRequired,
     dashboardId: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
     visualizations: PropTypes.object.isRequired
   }
 
@@ -414,10 +415,12 @@ class Dashboards extends Component {
   render () {
     const {
       dashboardGroups,
-      dashboardId = ''
+      dashboardId = '',
+      user
     } = this.props
     const dashboard = this.getCurrentDashboard()
     const {title} = dashboard || {}
+    const {data: userData} = user
 
     return (
       <div>
@@ -449,7 +452,7 @@ class Dashboards extends Component {
                 onChange={this.selectDashboard}
               />
             </ToolbarGroup>
-            {/* this.renderDashboardIcons() */}
+            {userData.admin ? this.renderDashboardIcons() : null}
           </Toolbar>
           {(() => {
             if (!dashboardId || dashboardGroups.data.length === 0 || dashboardGroups.isFetching || dashboardGroups.error) {
@@ -479,5 +482,6 @@ export default connect((state, ownProps) => ({
     ? ownProps.params.dashboardId
     : '',
   dashboardGroups: state.dashboardGroups,
+  user: state.user,
   visualizations: state.visualizations
 }))(Dashboards)
