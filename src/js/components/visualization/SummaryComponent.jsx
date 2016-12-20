@@ -43,7 +43,7 @@ export class SummaryComponent extends Component {
                     {key}
                   </h4>
                 </div>
-               )
+              )
             })
           }
         </div>
